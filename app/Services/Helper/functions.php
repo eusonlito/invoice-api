@@ -12,6 +12,19 @@ if (!function_exists('uniqidReal')) {
     }
 }
 
+if (!function_exists('number')) {
+    /**
+     * @param mixed $value
+     * @param int $decimals = 2
+     *
+     * @return string
+     */
+    function number($value, int $decimals = 2): string
+    {
+        return number_format((float)$value, $decimals, ',', '.');
+    }
+}
+
 if (!function_exists('money')) {
     /**
      * @param mixed $value
@@ -21,7 +34,7 @@ if (!function_exists('money')) {
      */
     function money($value, int $decimals = 2): string
     {
-        return number_format((float)$value, $decimals, ',', '.').'€';
+        return number($value, $decimals).'€';
     }
 }
 

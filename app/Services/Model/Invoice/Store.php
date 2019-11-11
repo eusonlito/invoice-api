@@ -59,11 +59,11 @@ class Store extends StoreAbstract
 
         $this->items();
         $this->amount();
-        $this->fileMain();
 
         $this->invoice->save();
-        $this->invoice->load(['items']);
+        $this->invoice->load(['file', 'items']);
 
+        $this->fileMain();
         $this->configuration();
 
         $this->cacheFlush('Invoice');
@@ -341,14 +341,6 @@ class Store extends StoreAbstract
     /**
      * @return void
      */
-    protected function configuration()
-    {
-        Services\Model\InvoiceConfiguration\StoreNumber::setNext($this->user);
-    }
-
-    /**
-     * @return void
-     */
     protected function fileMain()
     {
         $service = new Services\Model\InvoiceFile\Store($this->user, ['main' => true]);
@@ -358,6 +350,14 @@ class Store extends StoreAbstract
         } else {
             $service->create($this->invoice);
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function configuration()
+    {
+        Services\Model\InvoiceConfiguration\StoreNumber::setNext($this->user);
     }
 
     /**

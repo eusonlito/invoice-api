@@ -83,10 +83,12 @@
                 <tr>
                     <td class="description">{{ $item->description }}</td>
                     <td class="amount">{{ money($item->amount_price) }}</td>
-                    <td class="quantity">{{ $item->quantity }}</td>
+                    <td class="quantity">{{ number($item->quantity) }}</td>
                     <td class="discount">
                         @if ($item->percent_discount)
                         {{ $item->percent_discount }}%
+                        @else
+                        -
                         @endif
                     </td>
                     <td class="total">{{ money($item->amount_subtotal) }}</td>

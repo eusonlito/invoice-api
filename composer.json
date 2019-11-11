@@ -5,7 +5,7 @@
     "keywords": [],
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "eusonlito/laravel-packer": "^2.1",
         "laravel/framework": "^6.5",
         "laravel/helpers": "^1.1",
