@@ -1,0 +1,178 @@
+html {
+    font-family: Arial;
+    font-size: 0.9em;
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+}
+
+div, span, p, table, tr, td, th {
+    margin: 0;
+    padding: 0;
+}
+
+#company {
+    float: right;
+    border-right: 18px solid #06C;
+    padding-right: 20px;
+    text-align: right;
+}
+
+#client {
+    margin-top: 20px;
+}
+
+#client div.header {
+    float: left;
+    width: 120px;
+    margin-right: 10px;
+}
+
+#client p {
+    line-height: 1.4em;
+    margin-bottom: 2px;
+    padding-left: 10px;
+}
+
+#client div.header p {
+    background: #EEE;
+    border-bottom: 1px solid #CCC;
+    height: 20px;
+}
+
+#client div.data p {
+    border-bottom: 1px solid #EEE;
+    padding-right: 20px;
+    height: 20px;
+}
+
+#info div.header {
+    margin-top: 20px;
+    background: #EEE;
+    height: 20px;
+    border-bottom: 1px solid #CCC;
+}
+
+#info div.header span {
+    float: left;
+    width: 170px;
+    padding-left: 10px;
+    border-right: 2px solid #FFF;
+    margin-right: 2px;
+}
+
+#info div.data {
+    margin-top: 5px;
+    height: 20px;
+    border-bottom: 1px solid #CCC;
+}
+
+#info div.data span {
+    float: left;
+    width: 170px;
+    padding-left: 10px;
+    margin-right: 4px;
+}
+
+#items {
+    height: 300px;
+    border-right: 18px solid #06C;
+}
+
+#items table {
+    width: 100%;
+    font-size: 0.9em;
+}
+
+#items table th {
+    font-weight: bold;
+    background: #EEE;
+    border-bottom: 1px solid #CCC;
+}
+
+#items table .reference {
+    padding: 0 5px;
+    text-align: left;
+}
+
+#items table .description {
+    padding: 0 5px;
+    text-align: left;
+}
+
+#items table .amount,
+#items table .quantity,
+#items table .discount {
+    text-align: center;
+    width: 80px;
+}
+
+#items table .total {
+    text-align: center;
+    width: 100px;
+}
+
+#items table td {
+    padding: 10px 0;
+    border-bottom: 1px solid #EEE;
+    font-size: 0.9em;
+}
+
+#total {
+    float: right;
+    border-right: 18px solid #06C;
+    padding-right: 20px;
+}
+
+#total div.header {
+    float: left;
+    width: 120px;
+    text-align: right;
+}
+
+#total div.data {
+    float: left;
+    margin-left: 10px;
+    width: 140px;
+}
+
+#total p {
+    line-height: 1.4em;
+    margin-bottom: 2px;
+    padding: 0 10px;
+}
+
+#total div.header p {
+    background: #EEE;
+    border-bottom: 1px solid #CCC;
+}
+
+#total div.data p {
+    border-bottom: 1px solid #EEE;
+    padding-right: 20px;
+    text-align: right;
+}
+
+#comment {
+    margin-top: 40px;
+    border: 1px solid #CCC;
+    height: 120px;
+}
+
+#comment p.title {
+    padding: 3px 10px;
+    background: #CCC;
+    color: #FFF;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#comment div {
+    padding: 10px;
+}
+
+.clear {
+    clear: both;
+}

@@ -1,0 +1,3 @@
+# ecs.yaml
+services:
+    Symplify\CodingStandard\Sniffs\DeadCode\UnusedPublicMethodSniff: ~

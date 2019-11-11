@@ -1,0 +1,7 @@
+/public/storage
+/resources/ksi
+/vendor
+
+.env
+
+*.sh

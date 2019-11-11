@@ -1,0 +1,60 @@
+{
+    "name": "invoice/api",
+    "type": "project",
+    "description": "Invoice API",
+    "keywords": [],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3",
+        "eusonlito/laravel-packer": "^2.1",
+        "laravel/framework": "^6.5",
+        "laravel/helpers": "^1.1",
+        "predis/predis": "^1.1",
+        "sentry/sentry-laravel": "^1.4",
+        "tymon/jwt-auth": "^1.0",
+        "h4cc/wkhtmltopdf-amd64": "^0.12",
+        "mikehaertl/phpwkhtmltopdf": "^2.4",
+        "fzaninotto/faker": "master"
+    },
+    "require-dev": {
+        "nunomaduro/larastan": "^0.4",
+        "nunomaduro/phpinsights": "^1.9",
+        "symplify/easy-coding-standard": "^6.1"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "autoload": {
+        "classmap": [
+            "database/migrations"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\": "database/"
+        },
+        "files": [
+            "app/Services/Helper/functions.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "pre-install-cmd": [
+            "rm -f bootstrap/cache/*.php"
+        ],
+        "pre-update-cmd": [
+            "rm -f bootstrap/cache/*.php"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-install-cmd": [
+            "@php artisan config:cache",
+            "@php artisan route:cache",
+            "@php artisan queue:restart"
+        ]
+    }
+}
