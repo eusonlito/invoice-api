@@ -14,7 +14,7 @@ Este proyecto es la base del API para https://invoice.lito.com.es y https://invo
 $> git clone https://github.com/eusonlito/invoice-api.git api
 $> cd api
 $> cp .env.example .env
-$> vi .env # Rellenar el fichero
+$> vi .env # Rellenar con la configuración de entorno
 $> composer install
 $> php artisan key:generate
 $> php artisan jwt:key
