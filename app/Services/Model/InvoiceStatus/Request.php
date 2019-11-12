@@ -21,7 +21,7 @@ class Request extends RequestAbstract
      */
     public function indexCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->index());
+        return $this->cache(__METHOD__, fn () => $this->index());
     }
 
     /**
@@ -37,7 +37,7 @@ class Request extends RequestAbstract
      */
     public function enabledCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->enabled());
+        return $this->cache(__METHOD__, fn () => $this->enabled());
     }
 
     /**
@@ -57,7 +57,7 @@ class Request extends RequestAbstract
      */
     public function detailCached(int $id): array
     {
-        return $this->cache(__METHOD__, fn() => $this->detail($id));
+        return $this->cache(__METHOD__, fn () => $this->detail($id));
     }
 
     /**

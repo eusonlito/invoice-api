@@ -2,10 +2,8 @@
 
 namespace App\Services\Model\InvoiceFile;
 
-use Illuminate\Support\Facades\Storage;
 use App\Models;
 use App\Models\InvoiceFile as Model;
-use App\Services;
 use App\Services\Model\StoreAbstract;
 
 class Store extends StoreAbstract

@@ -42,6 +42,6 @@ class UserPasswordReset extends ModelAbstract
      */
     public function scopeSimple(Builder $q)
     {
-        $q->select('id', 'hash', 'ip', 'finished_at', 'canceled_at','created_at', 'user_id');
+        $q->select('id', 'hash', 'ip', 'finished_at', 'canceled_at', 'created_at', 'user_id');
     }
 }

@@ -142,6 +142,7 @@ class Base extends Migration
 
             $table->text('description');
 
+            $table->boolean('default')->default(0);
             $table->boolean('enabled')->default(1);
 
             $this->timestamps($table);
@@ -183,6 +184,8 @@ class Base extends Migration
             $table->string('company_postal_code')->default('');
             $table->string('company_country')->default('');
             $table->string('company_tax_number')->default('');
+            $table->string('company_phone')->default('');
+            $table->string('company_email')->default('');
 
             $table->string('billing_name')->default('');
             $table->string('billing_address')->default('');
@@ -296,6 +299,7 @@ class Base extends Migration
             $table->unsignedTinyInteger('order')->default(0);
 
             $table->boolean('paid')->default(0);
+            $table->boolean('default')->default(0);
             $table->boolean('enabled')->default(1);
 
             $this->timestamps($table);
@@ -358,6 +362,8 @@ class Base extends Migration
 
             $table->string('name');
             $table->text('description');
+
+            $table->boolean('default')->default(0);
             $table->boolean('enabled')->default(1);
 
             $this->timestamps($table);
@@ -388,6 +394,8 @@ class Base extends Migration
             $table->string('name');
             $table->unsignedDecimal('value')->default(0);
             $table->text('description');
+
+            $table->boolean('default')->default(0);
             $table->boolean('enabled')->default(1);
 
             $this->timestamps($table);
@@ -412,6 +420,8 @@ class Base extends Migration
             $table->string('name');
             $table->unsignedDecimal('value');
             $table->text('description');
+
+            $table->boolean('default')->default(0);
             $table->boolean('enabled')->default(1);
 
             $this->timestamps($table);

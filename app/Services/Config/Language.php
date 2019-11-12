@@ -36,7 +36,7 @@ class Language
     {
         $iso = preg_split('/[^a-zA-Z]/', $header)[0];
 
-        return cache()->tags('language')->remember('language|'.$iso, 3600, static fn() => static::byHeaderCached($iso));
+        return cache()->tags('language')->remember('language|'.$iso, 3600, static fn () => static::byHeaderCached($iso));
     }
 
     /**
@@ -61,6 +61,6 @@ class Language
     protected static function set(Models\Language $language): void
     {
         app()->setLocale($language->iso);
-        app()->singleton('language', static fn() => $language);
+        app()->singleton('language', static fn () => $language);
     }
 }

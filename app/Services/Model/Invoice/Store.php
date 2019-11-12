@@ -3,6 +3,7 @@
 namespace App\Services\Model\Invoice;
 
 use App\Models;
+use App\Models\Invoice as Model;
 use App\Services;
 use App\Services\Model\StoreAbstract;
 
@@ -11,14 +12,14 @@ class Store extends StoreAbstract
     /**
      * @var \App\Models\Invoice
      */
-    protected Models\Invoice $invoice;
+    protected Model $invoice;
 
     /**
      * @return \App\Models\Invoice
      */
-    public function create(): Models\Invoice
+    public function create(): Model
     {
-        $row = new Models\Invoice([
+        $row = new Model([
             'company_id' => $this->user->company_id,
             'user_id' => $this->user->id,
         ]);
@@ -31,7 +32,7 @@ class Store extends StoreAbstract
      *
      * @return \App\Models\Invoice
      */
-    public function update(Models\Invoice $row): Models\Invoice
+    public function update(Model $row): Model
     {
         $this->invoice = $row;
 
@@ -85,6 +86,8 @@ class Store extends StoreAbstract
         $this->invoice->company_postal_code = $this->user->company->postal_code;
         $this->invoice->company_country = $this->user->company->state->country->name;
         $this->invoice->company_tax_number = $this->user->company->tax_number;
+        $this->invoice->company_phone = $this->user->company->phone;
+        $this->invoice->company_email = $this->user->company->email;
     }
 
     /**

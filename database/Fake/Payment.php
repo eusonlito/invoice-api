@@ -15,6 +15,7 @@ class Payment extends FakeAbstract
             [
                 'name' => 'Transferencia Bancaria',
                 'description' => 'Realizar ingreso en la siguiente cuenta bancaria indicando el número de factura.',
+                'default' => true,
                 'enabled' => true,
                 'company_id' => 1,
                 'user_id' => 1
@@ -23,6 +24,7 @@ class Payment extends FakeAbstract
             [
                 'name' => 'Paypal',
                 'description' => 'Realizar el ingreso en la siguiente cuenta indicando el número de factura.',
+                'default' => false,
                 'enabled' => true,
                 'company_id' => 1,
                 'user_id' => 1

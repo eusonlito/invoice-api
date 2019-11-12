@@ -2,7 +2,6 @@
 namespace App\Services\KSI;
 
 use Exception;
-use App\Services\Html\Html;
 
 class ESecure extends SignAbstract
 {

@@ -34,9 +34,9 @@ class App extends ServiceProvider
      */
     protected function singletons()
     {
-        $this->app->singleton('configuration', static fn() =>Models\Configuration::pluck('value', 'key'));
-        $this->app->singleton('language', static fn() => null);
-        $this->app->singleton('user', static fn() => auth()->user());
+        $this->app->singleton('configuration', static fn () =>Models\Configuration::pluck('value', 'key'));
+        $this->app->singleton('language', static fn () => null);
+        $this->app->singleton('user', static fn () => auth()->user());
     }
 
     /**

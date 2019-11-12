@@ -4,6 +4,7 @@ namespace App\Services\Model\Invoice;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Invoice as Model;
+use App\Services;
 use App\Services\Model\RequestAbstract;
 
 class Request extends RequestAbstract
@@ -21,7 +22,7 @@ class Request extends RequestAbstract
      */
     public function indexCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->index());
+        return $this->cache(__METHOD__, fn () => $this->index());
     }
 
     /**
@@ -37,7 +38,23 @@ class Request extends RequestAbstract
      */
     public function exportCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->export());
+        return $this->cache(__METHOD__, fn () => $this->export());
+    }
+
+    /**
+     * @return string
+     */
+    public function preview(): string
+    {
+        return $this->detailPreview($this->model()->select('id')->orderBy('date_at', 'DESC')->firstOrFail()->id);
+    }
+
+    /**
+     * @return string
+     */
+    public function previewCached(): string
+    {
+        return $this->cache(__METHOD__, fn () => $this->preview());
     }
 
     /**
@@ -57,7 +74,27 @@ class Request extends RequestAbstract
      */
     public function detailCached(int $id): array
     {
-        return $this->cache(__METHOD__, fn() => $this->detail($id));
+        return $this->cache(__METHOD__, fn () => $this->detail($id));
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return string
+     */
+    public function detailPreview(int $id): string
+    {
+        return Services\Model\InvoiceFile\StoreGenerator::html($this->modelDetailById($id));
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return string
+     */
+    public function detailPreviewCached(int $id): string
+    {
+        return $this->cache(__METHOD__, fn () => $this->detailPreview($id));
     }
 
     /**

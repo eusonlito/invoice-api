@@ -17,8 +17,9 @@ class Fractal extends FractalAbstract
         return [
             'id' => $row->id,
             'name' => $row->name,
-            'enabled' => $row->enabled,
             'description' => $row->description,
+            'default' => $row->default,
+            'enabled' => $row->enabled,
         ];
     }
 

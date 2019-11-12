@@ -17,13 +17,15 @@ class Validator extends ValidatorAbstract
             'rules' => [
                 'name' => 'required|string',
                 'value' => 'numeric',
-                'enabled' => 'boolean',
                 'description' => 'string',
+                'default' => 'boolean',
+                'enabled' => 'boolean',
             ],
 
             'messages' => [
                 'name.required' => __('validator.name-required'),
                 'value.numeric' => __('validator.value-numeric'),
+                'default.boolean' => __('validator.default-boolean'),
                 'enabled.boolean' => __('validator.enabled-boolean'),
             ]
         ];

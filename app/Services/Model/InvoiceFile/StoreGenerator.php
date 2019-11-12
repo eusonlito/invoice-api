@@ -3,6 +3,7 @@
 namespace App\Services\Model\InvoiceFile;
 
 use Illuminate\Support\Facades\Storage;
+use App\Models;
 use App\Models\InvoiceFile as Model;
 use App\Services;
 
@@ -16,7 +17,7 @@ class StoreGenerator
     public static function generate(Model $row): Model
     {
         $row->name = $row->invoice->number.'.pdf';
-        $row->file = static::pdf($row);
+        $row->file = static::pdf($row->invoice);
         $row->main = true;
 
         $row->save();
@@ -41,16 +42,24 @@ class StoreGenerator
     }
 
     /**
-     * @param \App\Models\InvoiceFile $row
+     * @param \App\Models\Invoice $invoice
      *
      * @return string
      */
-    protected static function pdf(Model $row): string
+    public static function html(Models\Invoice $invoice): string
     {
-        $html = (string)view('pdf.pages.invoice.detail', [
-            'invoice' => $row->invoice
+        return (string)view('pdf.pages.invoice.detail', [
+            'invoice' => $invoice
         ]);
+    }
 
-        return Services\Pdf\Pdf::fromHtml($html, 'invoice-file/file/'.$row->invoice->id.'.pdf');
+    /**
+     * @param \App\Models\Invoice $invoice
+     *
+     * @return string
+     */
+    public static function pdf(Models\Invoice $invoice): string
+    {
+        return Services\Pdf\Pdf::fromHtml(static::html($invoice), 'invoice-file/file/'.$invoice->id.'.pdf');
     }
 }

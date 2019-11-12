@@ -103,6 +103,8 @@ class Invoice extends FakeAbstract
             'company_postal_code' => $this->user->company->postal_code,
             'company_country' => $this->user->company->state->country->name,
             'company_tax_number' => $this->user->company->tax_number,
+            'company_phone' => $this->user->company->phone,
+            'company_email' => $this->user->company->email,
 
             'billing_name' => $billing->name,
             'billing_address' => $billing->address,

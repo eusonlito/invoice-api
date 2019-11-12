@@ -56,7 +56,7 @@ abstract class FractalAbstract
      */
     protected static function collection(string $function, Collection $value, array $parameters): array
     {
-        return $value->map(static fn($value) => static::call($function, $value, $parameters))->values()->toArray();
+        return $value->map(static fn ($value) => static::call($function, $value, $parameters))->values()->toArray();
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class FractalAbstract
      */
     protected static function sequential(string $function, array $value, array $parameters): array
     {
-        return array_map(static fn($value) => static::call($function, $value, $parameters), array_values($value));
+        return array_map(static fn ($value) => static::call($function, $value, $parameters), array_values($value));
     }
 
     /**

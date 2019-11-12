@@ -66,9 +66,9 @@ abstract class RequestAbstract
      * @param Closure $closure
      * @param int $time = 3600
      *
-     * @return array
+     * @return array|string
      */
-    protected function cache(string $name, Closure $closure, int $time = 3600): array
+    protected function cache(string $name, Closure $closure, int $time = 3600)
     {
         return cache()->tags($this->cacheTags($name))->remember($this->cacheName($name), $time, $closure);
     }

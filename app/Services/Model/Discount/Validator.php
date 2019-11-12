@@ -18,8 +18,9 @@ class Validator extends ValidatorAbstract
                 'name' => 'required|string',
                 'type' => 'required|in:fixed,percent',
                 'value' => 'numeric',
-                'enabled' => 'boolean',
                 'description' => 'string',
+                'default' => 'boolean',
+                'enabled' => 'boolean',
             ],
 
             'messages' => [
@@ -27,6 +28,7 @@ class Validator extends ValidatorAbstract
                 'type.required' => __('validator.type-required'),
                 'type.in' => __('validator.type-in'),
                 'value.numeric' => __('validator.value-numeric'),
+                'default.boolean' => __('validator.default-boolean'),
                 'enabled.boolean' => __('validator.enabled-boolean'),
             ]
         ];

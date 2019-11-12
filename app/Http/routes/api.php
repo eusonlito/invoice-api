@@ -51,7 +51,9 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/invoice', 'Invoice@index')->name('invoice.index');
     Route::get('/invoice/export', 'Invoice@export')->name('invoice.export');
+    Route::get('/invoice/preview', 'Invoice@preview')->name('invoice.preview');
     Route::get('/invoice/{id}', 'Invoice@detail')->name('invoice.detail');
+    Route::get('/invoice/{id}/preview', 'Invoice@detailPreview')->name('invoice.detail.preview');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
 

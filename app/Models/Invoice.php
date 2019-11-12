@@ -148,10 +148,23 @@ class Invoice extends ModelAbstract
     public function scopeSimple(Builder $q)
     {
         $q->select(
-            'id', 'number', 'billing_name', 'amount_total', 'amount_paid', 'amount_due',
-            'date_at', 'paid_at', 'company_id', 'client_address_billing_id',
-            'client_address_shipping_id', 'discount_id', 'invoice_status_id', 'payment_id',
-            'shipping_id', 'tax_id', 'user_id'
+            'id',
+            'number',
+            'billing_name',
+            'amount_total',
+            'amount_paid',
+            'amount_due',
+            'date_at',
+            'paid_at',
+            'company_id',
+            'client_address_billing_id',
+            'client_address_shipping_id',
+            'discount_id',
+            'invoice_status_id',
+            'payment_id',
+            'shipping_id',
+            'tax_id',
+            'user_id'
         );
     }
 }

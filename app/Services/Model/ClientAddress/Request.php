@@ -22,7 +22,7 @@ class Request extends RequestAbstract
      */
     public function enabledCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->enabled());
+        return $this->cache(__METHOD__, fn () => $this->enabled());
     }
 
     /**
@@ -42,7 +42,7 @@ class Request extends RequestAbstract
      */
     public function clientCached(int $client_id): array
     {
-        return $this->cache(__METHOD__, fn() => $this->client($client_id));
+        return $this->cache(__METHOD__, fn () => $this->client($client_id));
     }
 
     /**
@@ -62,7 +62,7 @@ class Request extends RequestAbstract
      */
     public function clientEnabledCached(int $client_id): array
     {
-        return $this->cache(__METHOD__, fn() => $this->clientEnabled($client_id));
+        return $this->cache(__METHOD__, fn () => $this->clientEnabled($client_id));
     }
 
     /**

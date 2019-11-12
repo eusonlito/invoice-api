@@ -21,7 +21,7 @@ class Request extends RequestAbstract
      */
     public function detailCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->detail());
+        return $this->cache(__METHOD__, fn () => $this->detail());
     }
 
     /**

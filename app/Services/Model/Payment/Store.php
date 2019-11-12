@@ -2,7 +2,7 @@
 
 namespace App\Services\Model\Payment;
 
-use App\Models;
+use App\Models\Payment as Model;
 use App\Services\Model\StoreAbstract;
 
 class Store extends StoreAbstract
@@ -10,9 +10,9 @@ class Store extends StoreAbstract
     /**
      * @return \App\Models\Payment
      */
-    public function create(): Models\Payment
+    public function create(): Model
     {
-        $row = new Models\Payment([
+        $row = new Model([
             'company_id' => $this->user->company_id,
             'user_id' => $this->user->id,
         ]);
@@ -25,10 +25,15 @@ class Store extends StoreAbstract
      *
      * @return \App\Models\Payment
      */
-    public function update(Models\Payment $row): Models\Payment
+    public function update(Model $row): Model
     {
+        if ($this->data['default'] && empty($row->default)) {
+            Model::where('default', true)->update(['default' => false]);
+        }
+
         $row->name = $this->data['name'];
         $row->description = $this->data['description'];
+        $row->default = (bool)$this->data['default'];
         $row->enabled = (bool)$this->data['enabled'];
 
         $row->save();

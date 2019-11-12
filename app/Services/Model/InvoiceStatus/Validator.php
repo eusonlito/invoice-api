@@ -18,6 +18,7 @@ class Validator extends ValidatorAbstract
                 'name' => 'required|string',
                 'order' => 'required|integer',
                 'paid' => 'boolean',
+                'default' => 'boolean',
                 'enabled' => 'boolean',
             ],
 
@@ -26,6 +27,7 @@ class Validator extends ValidatorAbstract
                 'order.required' => __('validator.order-required'),
                 'order.integer' => __('validator.order-integer'),
                 'paid.boolean' => __('validator.paid-boolean'),
+                'default.boolean' => __('validator.default-boolean'),
                 'enabled.boolean' => __('validator.enabled-boolean'),
             ]
         ];

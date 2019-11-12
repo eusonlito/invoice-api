@@ -25,7 +25,7 @@ class Request extends RequestAbstract
      */
     public function indexCached(int $country_id): array
     {
-        return $this->cache(__METHOD__, fn() => $this->index($country_id));
+        return $this->cache(__METHOD__, fn () => $this->index($country_id));
     }
 
     /**

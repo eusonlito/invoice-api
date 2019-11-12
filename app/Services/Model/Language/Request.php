@@ -21,7 +21,7 @@ class Request extends RequestAbstract
      */
     public function indexCached(): array
     {
-        return $this->cache(__METHOD__, fn() => $this->index());
+        return $this->cache(__METHOD__, fn () => $this->index());
     }
 
     /**

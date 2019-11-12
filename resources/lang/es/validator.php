@@ -19,6 +19,7 @@
     'discount_id-integer' => 'El descuento seleccionar no es válido.',
     'email-email' => 'El correo electrónico no es válido.',
     'email-required' => 'La correo electrónico es obligatorio.',
+    'default-boolean' => 'El campo de "Por defecto" no parece correcto.',
     'enabled-boolean' => 'El campo de "Activo" no parece correcto.',
     'file-file' => 'El fichero no es válido.',
     'file-required' => 'El fichero es obligatorio.',

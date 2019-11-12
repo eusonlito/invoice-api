@@ -2,7 +2,7 @@
 
 namespace App\Services\Model\Discount;
 
-use App\Models;
+use App\Models\Discount as Model;
 use App\Services\Model\StoreAbstract;
 
 class Store extends StoreAbstract
@@ -10,9 +10,9 @@ class Store extends StoreAbstract
     /**
      * @return \App\Models\Discount
      */
-    public function create(): Models\Discount
+    public function create(): Model
     {
-        $row = new Models\Discount([
+        $row = new Model([
             'company_id' => $this->user->company_id,
             'user_id' => $this->user->id,
         ]);
@@ -25,12 +25,17 @@ class Store extends StoreAbstract
      *
      * @return \App\Models\Discount
      */
-    public function update(Models\Discount $row): Models\Discount
+    public function update(Model $row): Model
     {
+        if ($this->data['default'] && empty($row->default)) {
+            Model::where('default', true)->update(['default' => false]);
+        }
+
         $row->name = $this->data['name'];
         $row->type = $this->data['type'];
         $row->value = (float)abs($this->data['value']);
         $row->description = $this->data['description'];
+        $row->default = (bool)$this->data['default'];
         $row->enabled = (bool)$this->data['enabled'];
 
         $row->save();

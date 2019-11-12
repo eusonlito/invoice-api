@@ -15,6 +15,7 @@ class Tax extends FakeAbstract
             [
                 'name' => 'IVA 21%',
                 'value' => 21,
+                'default' => true,
                 'enabled' => true,
                 'company_id' => 1,
                 'user_id' => 1
@@ -23,6 +24,7 @@ class Tax extends FakeAbstract
             [
                 'name' => 'IVA 10%',
                 'value' => 10,
+                'default' => false,
                 'enabled' => true,
                 'company_id' => 1,
                 'user_id' => 1
@@ -31,6 +33,7 @@ class Tax extends FakeAbstract
             [
                 'name' => 'IVA 4%',
                 'value' => 4,
+                'default' => false,
                 'enabled' => true,
                 'company_id' => 1,
                 'user_id' => 1
