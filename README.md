@@ -18,6 +18,7 @@ $> vi .env # Rellenar con la configuración de entorno
 $> composer install
 $> php artisan key:generate
 $> php artisan jwt:key
+$> composer install # Necesario para limpiar y regenerar las cachés después de realizar cambios en el .env
 $> php artisan migrate:refresh
 $> php artisan db:seed --class=Database\\Seeds\\Database
 $> php artisan db:seed --class=Database\\Fake\\Fake # Si deseas datos de prueba
