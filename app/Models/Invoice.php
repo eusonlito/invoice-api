@@ -44,6 +44,14 @@ class Invoice extends ModelAbstract
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function company(): Relations\BelongsTo
+    {
+        return $this->belongsTo(Company::class, Company::$foreign);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function discount(): Relations\BelongsTo
     {
         return $this->belongsTo(Discount::class, Discount::$foreign);

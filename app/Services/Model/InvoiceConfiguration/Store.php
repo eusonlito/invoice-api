@@ -15,17 +15,19 @@ class Store extends StoreAbstract
     protected array $keys = ['number_prefix', 'number_fill', 'number_next'];
 
     /**
+     * @param array $keys = []
+     *
      * @return \Illuminate\Support\Collection
      */
-    public function update(): Collection
+    public function update(array $keys = []): Collection
     {
         $list = collect();
 
-        foreach ($this->keys as $key) {
+        foreach (($keys ?: $this->keys) as $key) {
             $each = $this->firstOrNew($key);
 
             $each->user_id = $this->user->id;
-            $each->value = $this->value($key, $this->data[$key] ?? '');
+            $each->value = $this->value($key, $this->data[$key] ?? null);
             $each->public = 1;
 
             $each->save();
@@ -53,11 +55,11 @@ class Store extends StoreAbstract
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param ?string $value
      *
      * @return mixed
      */
-    protected function value(string $key, $value)
+    protected function value(string $key, ?string $value)
     {
         switch ($key) {
             case 'number_prefix':
@@ -69,38 +71,51 @@ class Store extends StoreAbstract
             case 'number_next':
                 return $this->valueNumberNext($value);
 
+            case 'css':
+                return $this->valueCss($value);
+
             default:
                 return '';
         }
     }
 
     /**
-     * @param mixed $value
+     * @param ?string $value
      *
      * @return string
      */
-    protected function valueNumberPrefix($value): string
+    protected function valueNumberPrefix(?string $value): string
     {
         return (string)$value;
     }
 
     /**
-     * @param mixed $value
+     * @param ?string $value
      *
      * @return int
      */
-    protected function valueNumberFill($value): int
+    protected function valueNumberFill(?string $value): int
     {
         return (int)$value;
     }
 
     /**
-     * @param mixed $value
+     * @param ?string $value
      *
      * @return int
      */
-    protected function valueNumberNext($value): int
+    protected function valueNumberNext(?string $value): int
     {
         return (int)$value;
+    }
+
+    /**
+     * @param ?string $value
+     *
+     * @return string
+     */
+    protected function valueCss(?string $value): string
+    {
+        return StoreCss::save($this->user->company, $value);
     }
 }

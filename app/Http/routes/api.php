@@ -58,7 +58,10 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
 
     Route::get('/invoice-configuration', 'InvoiceConfiguration@index')->name('invoice-configuration.index');
+    Route::get('/invoice-configuration/css', 'InvoiceConfiguration@css')->name('invoice-configuration.css');
+    Route::post('/invoice-configuration/css/preview', 'InvoiceConfiguration@cssPreview')->name('invoice-configuration.css.preview');
     Route::patch('/invoice-configuration', 'InvoiceConfiguration@update')->name('invoice-configuration.update');
+    Route::patch('/invoice-configuration/css', 'InvoiceConfiguration@cssUpdate')->name('invoice-configuration.css.update');
 
     Route::get('/invoice-file/{id}', 'InvoiceFile@detail')->name('invoice-file.detail');
     Route::get('/invoice-file/{id}/download', 'InvoiceFile@download')->name('invoice-file.download');

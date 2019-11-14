@@ -48,13 +48,23 @@ class Pdf
 
     /**
      * @param string $html
+     *
+     * @return string
+     */
+    public static function binary(string $html): string
+    {
+        return static::load($html)->toString();
+    }
+
+    /**
+     * @param string $html
      * @param string $file
      *
      * @throws \App\Exceptions\UnexpectedValueException
      *
      * @return string
      */
-    public static function fromHtml(string $html, string $file): string
+    public static function save(string $html, string $file): string
     {
         $disk = Storage::disk('private');
         $disk->makeDirectory(dirname($file));

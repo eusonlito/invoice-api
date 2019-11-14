@@ -28,7 +28,7 @@ class Store extends StoreAbstract
     public function update(Model $row): Model
     {
         if ($this->data['default'] && empty($row->default)) {
-            Model::where('default', true)->update(['default' => false]);
+            Model::byCompany($this->user->company)->where('default', true)->update(['default' => false]);
         }
 
         $row->name = $this->data['name'];

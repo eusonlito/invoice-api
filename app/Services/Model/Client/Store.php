@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\Client;
 
+use App\Exceptions;
 use App\Models;
 use App\Models\Client as Model;
 use App\Services\Model\StoreAbstract;
@@ -30,6 +31,8 @@ class Store extends StoreAbstract
     {
         $this->row = $row;
 
+        $this->check();
+
         $this->row->name = $this->data['name'];
         $this->row->phone = $this->data['phone'];
         $this->row->email = $this->data['email'];
@@ -53,6 +56,21 @@ class Store extends StoreAbstract
         service()->log('client', 'update', $this->user->id, ['client_id' => $this->row->id]);
 
         return $this->row;
+    }
+
+    /**
+     * @return void
+     */
+    protected function check()
+    {
+        $exists = Model::byCompany($this->user->company)
+            ->where('id', '!=', $this->row->id)
+            ->where('tax_number', $this->data['tax_number'])
+            ->count();
+
+        if ($exists) {
+            throw new Exceptions\ValidatorException(__('validator.tax_number-duplicated'));
+        }
     }
 
     /**

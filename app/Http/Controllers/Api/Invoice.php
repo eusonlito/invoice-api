@@ -35,7 +35,7 @@ class Invoice extends ControllerAbstract
      */
     public function preview(): Response
     {
-        return response($this->request()->preview());
+        return response($this->request()->previewCached());
     }
 
     /**

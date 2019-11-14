@@ -3,7 +3,9 @@
 namespace App\Services\Model\InvoiceConfiguration;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use App\Models\InvoiceConfiguration as Model;
+use App\Services;
 use App\Services\Model\RequestAbstract;
 
 class Request extends RequestAbstract
@@ -25,6 +27,36 @@ class Request extends RequestAbstract
     }
 
     /**
+     * @return string
+     */
+    public function css(): string
+    {
+        return Value::cssByCompany($this->user->company);
+    }
+
+    /**
+     * @return string
+     */
+    public function cssPreview(): string
+    {
+        $css = (string)$this->request->input('css');
+
+        StoreCss::validate($css);
+
+        return Services\Pdf\Pdf::binary((string)view('pdf.pages.invoice.preview', [
+            'css' => $css
+        ]));
+    }
+
+    /**
+     * @return string
+     */
+    public function cssCached(): string
+    {
+        return $this->cache(__METHOD__, fn () => $this->css());
+    }
+
+    /**
      * @return array
      */
     public function update(): array
@@ -33,11 +65,29 @@ class Request extends RequestAbstract
     }
 
     /**
+     * @return string
+     */
+    public function cssUpdate(): string
+    {
+        return $this->store($this->validator('css'))->update(['css'])->get('css');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function model(): Builder
     {
-        return Model::list();
+        return Model::byCompany($this->user->company);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return array
+     */
+    protected function validator(string $name): array
+    {
+        return Validator::validate($name, $this->request->all());
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\Invoice;
 
+use App\Exceptions;
 use App\Models;
 use App\Models\Invoice as Model;
 use App\Services;
@@ -9,11 +10,6 @@ use App\Services\Model\StoreAbstract;
 
 class Store extends StoreAbstract
 {
-    /**
-     * @var \App\Models\Invoice
-     */
-    protected Model $invoice;
-
     /**
      * @return \App\Models\Invoice
      */
@@ -34,17 +30,19 @@ class Store extends StoreAbstract
      */
     public function update(Model $row): Model
     {
-        $this->invoice = $row;
+        $this->row = $row;
 
-        $this->invoice->number = $this->data['number'];
-        $this->invoice->date_at = $this->data['date_at'];
-        $this->invoice->required_at = $this->data['required_at'];
-        $this->invoice->paid_at = $this->data['paid_at'];
-        $this->invoice->comment_public = $this->data['comment_public'];
-        $this->invoice->comment_private = $this->data['comment_private'];
+        $this->check();
 
-        $this->invoice->amount_paid = $this->float($this->data['amount_paid']);
-        $this->invoice->amount_shipping = $this->float($this->data['amount_shipping']);
+        $this->row->number = $this->data['number'];
+        $this->row->date_at = $this->data['date_at'];
+        $this->row->required_at = $this->data['required_at'];
+        $this->row->paid_at = $this->data['paid_at'];
+        $this->row->comment_public = $this->data['comment_public'];
+        $this->row->comment_private = $this->data['comment_private'];
+
+        $this->row->amount_paid = $this->float($this->data['amount_paid']);
+        $this->row->amount_shipping = $this->float($this->data['amount_shipping']);
 
         $this->company();
         $this->clientAddressBilling();
@@ -55,23 +53,38 @@ class Store extends StoreAbstract
         $this->tax();
         $this->shipping();
 
-        $this->invoice->save();
-        $this->invoice->load(['discount', 'shipping', 'tax']);
+        $this->row->save();
+        $this->row->load(['discount', 'shipping', 'tax']);
 
         $this->items();
         $this->amount();
 
-        $this->invoice->save();
-        $this->invoice->load(['file', 'items']);
+        $this->row->save();
+        $this->row->load(['file', 'items']);
 
         $this->fileMain();
         $this->configuration();
 
         $this->cacheFlush('Invoice');
 
-        service()->log('invoice', 'update', $this->user->id, ['invoice_id' => $this->invoice->id]);
+        service()->log('invoice', 'update', $this->user->id, ['invoice_id' => $this->row->id]);
 
-        return $this->invoice;
+        return $this->row;
+    }
+
+    /**
+     * @return void
+     */
+    protected function check()
+    {
+        $exists = Model::byCompany($this->user->company)
+            ->where('id', '!=', $this->row->id)
+            ->where('number', $this->data['number'])
+            ->count();
+
+        if ($exists) {
+            throw new Exceptions\ValidatorException(__('validator.number-duplicated'));
+        }
     }
 
     /**
@@ -79,15 +92,15 @@ class Store extends StoreAbstract
      */
     protected function company()
     {
-        $this->invoice->company_name = $this->user->company->name;
-        $this->invoice->company_address = $this->user->company->address;
-        $this->invoice->company_city = $this->user->company->city;
-        $this->invoice->company_state = $this->user->company->state->name;
-        $this->invoice->company_postal_code = $this->user->company->postal_code;
-        $this->invoice->company_country = $this->user->company->state->country->name;
-        $this->invoice->company_tax_number = $this->user->company->tax_number;
-        $this->invoice->company_phone = $this->user->company->phone;
-        $this->invoice->company_email = $this->user->company->email;
+        $this->row->company_name = $this->user->company->name;
+        $this->row->company_address = $this->user->company->address;
+        $this->row->company_city = $this->user->company->city;
+        $this->row->company_state = $this->user->company->state->name;
+        $this->row->company_postal_code = $this->user->company->postal_code;
+        $this->row->company_country = $this->user->company->state->country->name;
+        $this->row->company_tax_number = $this->user->company->tax_number;
+        $this->row->company_phone = $this->user->company->phone;
+        $this->row->company_email = $this->user->company->email;
     }
 
     /**
@@ -99,15 +112,15 @@ class Store extends StoreAbstract
             ->byCompany($this->user->company)
             ->firstOrFail();
 
-        $this->invoice->client_id = $address->client_id;
-        $this->invoice->client_address_billing_id = $address->id;
-        $this->invoice->billing_name = $address->name;
-        $this->invoice->billing_address = $address->address;
-        $this->invoice->billing_city = $address->city;
-        $this->invoice->billing_state = $address->state;
-        $this->invoice->billing_postal_code = $address->postal_code;
-        $this->invoice->billing_country = $address->country;
-        $this->invoice->billing_tax_number = $address->tax_number;
+        $this->row->client_id = $address->client_id;
+        $this->row->client_address_billing_id = $address->id;
+        $this->row->billing_name = $address->name;
+        $this->row->billing_address = $address->address;
+        $this->row->billing_city = $address->city;
+        $this->row->billing_state = $address->state;
+        $this->row->billing_postal_code = $address->postal_code;
+        $this->row->billing_country = $address->country;
+        $this->row->billing_tax_number = $address->tax_number;
     }
 
     /**
@@ -120,17 +133,17 @@ class Store extends StoreAbstract
         }
 
         $address = Models\ClientAddress::byId($this->data['client_address_billing_id'])
-            ->where('client_id', $this->invoice->client_id)
+            ->where('client_id', $this->row->client_id)
             ->byCompany($this->user->company)
             ->firstOrFail();
 
-        $this->invoice->client_address_shipping_id = $address->id;
-        $this->invoice->shipping_name = $address->name;
-        $this->invoice->shipping_address = $address->address;
-        $this->invoice->shipping_city = $address->city;
-        $this->invoice->shipping_state = $address->state;
-        $this->invoice->shipping_postal_code = $address->postal_code;
-        $this->invoice->shipping_country = $address->country;
+        $this->row->client_address_shipping_id = $address->id;
+        $this->row->shipping_name = $address->name;
+        $this->row->shipping_address = $address->address;
+        $this->row->shipping_city = $address->city;
+        $this->row->shipping_state = $address->state;
+        $this->row->shipping_postal_code = $address->postal_code;
+        $this->row->shipping_country = $address->country;
     }
 
     /**
@@ -138,7 +151,7 @@ class Store extends StoreAbstract
      */
     protected function status()
     {
-        $this->invoice->invoice_status_id = Models\InvoiceStatus::select('id')
+        $this->row->invoice_status_id = Models\InvoiceStatus::select('id')
             ->byId($this->data['invoice_status_id'])
             ->byCompany($this->user->company)
             ->firstOrFail()
@@ -151,10 +164,10 @@ class Store extends StoreAbstract
     protected function payment()
     {
         if (empty($this->data['payment_id'])) {
-            return $this->invoice->payment_id = null;
+            return $this->row->payment_id = null;
         }
 
-        $this->invoice->payment_id = Models\Payment::select('id')
+        $this->row->payment_id = Models\Payment::select('id')
             ->byId($this->data['payment_id'])
             ->byCompany($this->user->company)
             ->firstOrFail()
@@ -167,10 +180,10 @@ class Store extends StoreAbstract
     protected function discount()
     {
         if (empty($this->data['discount_id'])) {
-            return $this->invoice->discount_id = null;
+            return $this->row->discount_id = null;
         }
 
-        $this->invoice->discount_id = Models\Discount::byId($this->data['discount_id'])
+        $this->row->discount_id = Models\Discount::byId($this->data['discount_id'])
             ->byCompany($this->user->company)
             ->firstOrFail()
             ->id;
@@ -182,10 +195,10 @@ class Store extends StoreAbstract
     protected function tax()
     {
         if (empty($this->data['tax_id'])) {
-            return $this->invoice->tax_id = null;
+            return $this->row->tax_id = null;
         }
 
-        $this->invoice->tax_id = Models\Tax::byId($this->data['tax_id'])
+        $this->row->tax_id = Models\Tax::byId($this->data['tax_id'])
             ->byCompany($this->user->company)
             ->firstOrFail()
             ->id;
@@ -197,10 +210,10 @@ class Store extends StoreAbstract
     protected function shipping()
     {
         if (empty($this->data['shipping_id'])) {
-            return $this->invoice->shipping_id = null;
+            return $this->row->shipping_id = null;
         }
 
-        $this->invoice->shipping_id = Models\Shipping::byId($this->data['shipping_id'])
+        $this->row->shipping_id = Models\Shipping::byId($this->data['shipping_id'])
             ->byCompany($this->user->company)
             ->firstOrFail()
             ->id;
@@ -214,11 +227,11 @@ class Store extends StoreAbstract
         $ids = array_filter(array_column($this->data['items'], 'id'));
 
         Models\InvoiceItem::whereNotIn('id', $ids)
-            ->where('invoice_id', $this->invoice->id)
+            ->where('invoice_id', $this->row->id)
             ->delete();
 
         $items = Models\InvoiceItem::whereIn('id', $ids)
-            ->where('invoice_id', $this->invoice->id)
+            ->where('invoice_id', $this->row->id)
             ->get()
             ->keyBy('id');
 
@@ -249,14 +262,14 @@ class Store extends StoreAbstract
         $item->line = $line;
         $item->quantity = $this->float($item->quantity);
         $item->percent_discount = $this->float($item->percent_discount);
-        $item->percent_tax = $this->invoice->tax ? $this->float($this->invoice->tax->value) : 0;
+        $item->percent_tax = $this->row->tax ? $this->float($this->row->tax->value) : 0;
         $item->amount_price = $this->float($item->amount_price);
         $item->amount_subtotal = 0;
         $item->amount_discount = 0;
         $item->amount_tax = 0;
         $item->amount_total = 0;
-        $item->invoice_id = $this->invoice->id;
-        $item->user_id = $this->invoice->user_id;
+        $item->invoice_id = $this->row->id;
+        $item->user_id = $this->row->user_id;
         $item->product_id = $product ? $product->id : null;
 
         if ($item->amount_price && $item->quantity) {
@@ -275,7 +288,7 @@ class Store extends StoreAbstract
      */
     protected function amount()
     {
-        $this->invoice->amount_subtotal = $this->float($this->invoice->items->sum('amount_subtotal'));
+        $this->row->amount_subtotal = $this->float($this->row->items->sum('amount_subtotal'));
 
         $this->amountDiscount();
         $this->amountTax();
@@ -288,18 +301,18 @@ class Store extends StoreAbstract
      */
     protected function amountDiscount()
     {
-        if (empty($this->invoice->discount)) {
-            return $this->invoice->percent_discount = $this->invoice->amount_discount = 0;
+        if (empty($this->row->discount)) {
+            return $this->row->percent_discount = $this->row->amount_discount = 0;
         }
 
-        $value = $this->float($this->invoice->discount->value);
+        $value = $this->float($this->row->discount->value);
 
-        if ($this->invoice->discount->type === 'fixed') {
-            $this->invoice->percent_discount = 0;
-            $this->invoice->amount_discount = $value;
-        } elseif ($this->invoice->discount->type === 'percent') {
-            $this->invoice->percent_discount = $value;
-            $this->invoice->amount_discount = $this->float($this->invoice->amount_subtotal * $this->invoice->percent_discount / 100);
+        if ($this->row->discount->type === 'fixed') {
+            $this->row->percent_discount = 0;
+            $this->row->amount_discount = $value;
+        } elseif ($this->row->discount->type === 'percent') {
+            $this->row->percent_discount = $value;
+            $this->row->amount_discount = $this->float($this->row->amount_subtotal * $this->row->percent_discount / 100);
         }
     }
 
@@ -308,12 +321,12 @@ class Store extends StoreAbstract
      */
     protected function amountTax()
     {
-        if (empty($this->invoice->tax)) {
-            return $this->invoice->percent_tax = $this->invoice->amount_tax = 0;
+        if (empty($this->row->tax)) {
+            return $this->row->percent_tax = $this->row->amount_tax = 0;
         }
 
-        $this->invoice->percent_tax = $this->float($this->invoice->tax->value);
-        $this->invoice->amount_tax = $this->float($this->invoice->amount_subtotal * $this->invoice->percent_tax / 100);
+        $this->row->percent_tax = $this->float($this->row->tax->value);
+        $this->row->amount_tax = $this->float($this->row->amount_subtotal * $this->row->percent_tax / 100);
     }
 
     /**
@@ -321,11 +334,11 @@ class Store extends StoreAbstract
      */
     protected function amountTotal()
     {
-        $this->invoice->amount_total = $this->float(
-            $this->invoice->amount_subtotal
-            - $this->invoice->amount_discount
-            + $this->invoice->amount_tax
-            + $this->invoice->amount_shipping
+        $this->row->amount_total = $this->float(
+            $this->row->amount_subtotal
+            - $this->row->amount_discount
+            + $this->row->amount_tax
+            + $this->row->amount_shipping
         );
     }
 
@@ -334,11 +347,11 @@ class Store extends StoreAbstract
      */
     protected function amountPaidDue()
     {
-        if ($this->invoice->amount_paid > $this->invoice->amount_total) {
-            $this->invoice->amount_paid = $this->invoice->amount_total;
+        if ($this->row->amount_paid > $this->row->amount_total) {
+            $this->row->amount_paid = $this->row->amount_total;
         }
 
-        $this->invoice->amount_due = $this->float($this->invoice->amount_total - $this->invoice->amount_paid);
+        $this->row->amount_due = $this->float($this->row->amount_total - $this->row->amount_paid);
     }
 
     /**
@@ -348,10 +361,10 @@ class Store extends StoreAbstract
     {
         $service = new Services\Model\InvoiceFile\Store($this->user, ['main' => true]);
 
-        if ($this->invoice->file) {
-            $service->update($this->invoice->file);
+        if ($this->row->file) {
+            $service->update($this->row->file);
         } else {
-            $service->create($this->invoice);
+            $service->create($this->row);
         }
     }
 

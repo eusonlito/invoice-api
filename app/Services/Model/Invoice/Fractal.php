@@ -27,9 +27,9 @@ class Fractal extends FractalAbstract
             'id' => $row->id,
             'number' => $row->number,
             'billing_name' => $row->billing_name,
-            'amount_total' => $row->amount_total,
-            'amount_paid' => $row->amount_paid,
-            'amount_due' => $row->amount_due,
+            'amount_total' => (float)$row->amount_total,
+            'amount_paid' => (float)$row->amount_paid,
+            'amount_due' => (float)$row->amount_due,
             'date_at' => $row->date_at,
             'paid_at' => $row->paid_at,
             'created_at' => $row->created_at,
@@ -67,15 +67,15 @@ class Fractal extends FractalAbstract
             'shipping_postal_code' => $row->shipping_postal_code,
             'shipping_country' => $row->shipping_country,
 
-            'quantity' => $row->quantity,
+            'quantity' => (int)$row->quantity,
 
-            'percent_discount' => $row->percent_discount,
-            'percent_tax' => $row->percent_tax,
+            'percent_discount' => (float)$row->percent_discount,
+            'percent_tax' => (float)$row->percent_tax,
 
-            'amount_subtotal' => $row->amount_subtotal,
-            'amount_discount' => $row->amount_discount,
-            'amount_tax' => $row->amount_tax,
-            'amount_shipping' => $row->amount_shipping,
+            'amount_subtotal' => (float)$row->amount_subtotal,
+            'amount_discount' => (float)$row->amount_discount,
+            'amount_tax' => (float)$row->amount_tax,
+            'amount_shipping' => (float)$row->amount_shipping,
 
             'required_at' => $row->required_at,
 

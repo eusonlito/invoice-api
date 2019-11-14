@@ -5,11 +5,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <style type="text/css">
-        {{ include base_path('resources/views/pdf/pages/invoice/detail.css') }}
+        {!! strip_tags($css) !!}
         </style>
     </head>
 
     <body>
+        <div id="logo"></div>
+
         <div id="company">
             <p class="line name">{{ $invoice->company_name }}</p>
             <p class="line tax_number">{{ $invoice->company_tax_number }}</p>

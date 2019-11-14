@@ -13,6 +13,10 @@ body {
     font-size: 0.7rem;
 }
 
+#logo {
+    display: none;
+}
+
 #company {
     float: right;
     border-right: 18px solid #06C;
@@ -29,6 +33,7 @@ body {
 #info {
     margin: 40px 0;
     text-align: center;
+    font-size: 0.8rem;
 }
 
 #info .header .line,

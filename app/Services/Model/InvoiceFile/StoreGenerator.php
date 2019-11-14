@@ -17,7 +17,7 @@ class StoreGenerator
     public static function generate(Model $row): Model
     {
         $row->name = $row->invoice->number.'.pdf';
-        $row->file = static::pdf($row->invoice);
+        $row->file = static::save($row->invoice);
         $row->main = true;
 
         $row->save();
@@ -49,6 +49,7 @@ class StoreGenerator
     public static function html(Models\Invoice $invoice): string
     {
         return (string)view('pdf.pages.invoice.detail', [
+            'css' => Services\Model\InvoiceConfiguration\Value::cssByCompany($invoice->company),
             'invoice' => $invoice
         ]);
     }
@@ -58,8 +59,8 @@ class StoreGenerator
      *
      * @return string
      */
-    public static function pdf(Models\Invoice $invoice): string
+    public static function save(Models\Invoice $invoice): string
     {
-        return Services\Pdf\Pdf::fromHtml(static::html($invoice), 'invoice-file/file/'.$invoice->id.'.pdf');
+        return Services\Pdf\Pdf::save(static::html($invoice), 'invoice-file/file/'.$invoice->id.'.pdf');
     }
 }

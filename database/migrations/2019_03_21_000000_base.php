@@ -203,8 +203,8 @@ class Base extends Migration
             $table->string('shipping_country')->default('');
 
             $table->unsignedTinyInteger('quantity')->default(0);
-            $table->unsignedTinyInteger('percent_discount')->default(0);
 
+            $table->unsignedDecimal('percent_discount')->default(0);
             $table->unsignedDecimal('percent_tax', 5, 2)->default(0);
 
             $table->unsignedDecimal('amount_subtotal', 10, 2)->default(0);
@@ -274,8 +274,8 @@ class Base extends Migration
             $table->string('description')->default('');
 
             $table->unsignedDecimal('quantity', 10, 2)->default(0);
-            $table->unsignedTinyInteger('percent_discount')->default(0);
 
+            $table->unsignedDecimal('percent_discount')->default(0);
             $table->unsignedDecimal('percent_tax', 5, 2)->default(0);
 
             $table->unsignedDecimal('amount_price', 10, 2)->default(0);

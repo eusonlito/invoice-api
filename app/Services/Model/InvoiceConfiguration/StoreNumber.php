@@ -14,9 +14,9 @@ class StoreNumber
      */
     public static function setNext(Models\User $user): Model
     {
-        $prefix = Model::select('value')
+        $prefix = Model::byCompany($user->company)
+            ->select('value')
             ->where('key', 'number_prefix')
-            ->byCompany($user->company)
             ->first()
             ->value ?? null;
 
@@ -37,8 +37,8 @@ class StoreNumber
      */
     protected static function nextWithPrefix(Models\Company $company, string $prefix): int
     {
-        $last = Models\Invoice::where('number', 'LIKE', $prefix.'%')
-            ->byCompany($company)
+        $last = Models\Invoice::byCompany($company)
+            ->where('number', 'LIKE', $prefix.'%')
             ->orderBy('number', 'DESC')
             ->first();
 

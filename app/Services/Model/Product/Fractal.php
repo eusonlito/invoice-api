@@ -18,7 +18,7 @@ class Fractal extends FractalAbstract
             'id' => $row->id,
             'reference' => $row->reference,
             'name' => $row->name,
-            'price' => $row->price,
+            'price' => (float)$row->price,
             'enabled' => $row->enabled,
         ];
     }
