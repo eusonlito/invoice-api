@@ -17,6 +17,14 @@ class Payment extends ModelAbstract
     public static string $foreign = 'payment_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'default' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void

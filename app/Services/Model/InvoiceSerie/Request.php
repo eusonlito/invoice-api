@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Services\Model\Invoice;
+namespace App\Services\Model\InvoiceSerie;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Invoice as Model;
-use App\Services;
+use App\Models\InvoiceSerie as Model;
 use App\Services\Model\RequestAbstract;
 
 class Request extends RequestAbstract
@@ -28,17 +27,17 @@ class Request extends RequestAbstract
     /**
      * @return array
      */
-    public function export(): array
+    public function enabled(): array
     {
-        return $this->fractal('export', $this->model()->export()->get());
+        return $this->fractal('simple', $this->model()->enabled()->list()->get());
     }
 
     /**
      * @return array
      */
-    public function exportCached(): array
+    public function enabledCached(): array
     {
-        return $this->cache(__METHOD__, fn () => $this->export());
+        return $this->cache(__METHOD__, fn () => $this->enabled());
     }
 
     /**
@@ -80,6 +79,38 @@ class Request extends RequestAbstract
     }
 
     /**
+     * @param int $id
+     *
+     * @return string
+     */
+    public function css(int $id): string
+    {
+        return StoreCss::get($this->modelById($id));
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return string
+     */
+    public function cssPreview(int $id): string
+    {
+        return StoreCss::preview($this->modelById($id), (string)$this->request->input('css'));
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return string
+     */
+    public function cssUpdate(int $id): string
+    {
+        $this->store($this->validator('css'))->cssUpdate($this->modelById($id));
+
+        return $this->request->input('css');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function model(): Builder
@@ -111,7 +142,7 @@ class Request extends RequestAbstract
     /**
      * @param array $data = []
      *
-     * @return \App\Services\Model\Invoice\Store
+     * @return \App\Services\Model\InvoiceSerie\Store
      */
     protected function store(array $data = []): Store
     {

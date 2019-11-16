@@ -25,7 +25,7 @@
 
         <div id="info">
             <div class="header">
-                <span class="line number">Factura Nº</span>
+                <span class="line number">{{ $invoice->serie->name ?? '' }} Nº</span>
                 <span class="line date">Fecha</span>
                 <span class="line payment">Método de pago</span>
             </div>

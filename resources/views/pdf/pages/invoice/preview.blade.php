@@ -18,21 +18,21 @@
             <p class="line address">Avinguda Santiago, 0, 1º C</p>
             <p class="line city">36490 - Os Pascual de las Torres</p>
             <p class="line phone">+34 972 08 2269</p>
-            <p class="line email">angela61@yahoo.com</p>
+            <p class="line email">angela61@emiliode.com</p>
         </div>
 
         <div class="clear"></div>
 
         <div id="info">
             <div class="header">
-                <span class="line number">Factura Nº</span>
+                <span class="line number">{{ $serie->name ?? '' }} Nº</span>
                 <span class="line date">Fecha</span>
                 <span class="line payment">Método de pago</span>
             </div>
 
             <div class="data">
-                <span class="line number">2019-0723</span>
-                <span class="line date">2019-11-15</span>
+                <span class="line number">{{ $serie ? ($serie->number_prefix.$serie->number_next) : 1 }}</span>
+                <span class="line date">{{ date('Y-m-d') }}</span>
                 <span class="line payment">Transferencia Bancaria</span>
             </div>
         </div>

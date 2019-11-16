@@ -51,23 +51,24 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/invoice', 'Invoice@index')->name('invoice.index');
     Route::get('/invoice/export', 'Invoice@export')->name('invoice.export');
-    Route::get('/invoice/preview', 'Invoice@preview')->name('invoice.preview');
     Route::get('/invoice/{id}', 'Invoice@detail')->name('invoice.detail');
-    Route::get('/invoice/{id}/preview', 'Invoice@detailPreview')->name('invoice.detail.preview');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
-
-    Route::get('/invoice-configuration', 'InvoiceConfiguration@index')->name('invoice-configuration.index');
-    Route::get('/invoice-configuration/css', 'InvoiceConfiguration@css')->name('invoice-configuration.css');
-    Route::post('/invoice-configuration/css/preview', 'InvoiceConfiguration@cssPreview')->name('invoice-configuration.css.preview');
-    Route::patch('/invoice-configuration', 'InvoiceConfiguration@update')->name('invoice-configuration.update');
-    Route::patch('/invoice-configuration/css', 'InvoiceConfiguration@cssUpdate')->name('invoice-configuration.css.update');
 
     Route::get('/invoice-file/{id}', 'InvoiceFile@detail')->name('invoice-file.detail');
     Route::get('/invoice-file/{id}/download', 'InvoiceFile@download')->name('invoice-file.download');
     Route::get('/invoice-file/invoice/{invoice_id}/main', 'InvoiceFile@main')->name('invoice-file.main');
     Route::post('/invoice-file/invoice/{invoice_id}', 'InvoiceFile@create')->name('invoice-file.create');
     Route::delete('/invoice-file/{id}', 'InvoiceFile@delete')->name('invoice-file.delete');
+
+    Route::get('/invoice-serie', 'InvoiceSerie@index')->name('invoice-serie.index');
+    Route::get('/invoice-serie/enabled', 'InvoiceSerie@enabled')->name('invoice-serie.enabled');
+    Route::get('/invoice-serie/{id}', 'InvoiceSerie@detail')->name('invoice-serie.detail');
+    Route::get('/invoice-serie/{id}/css', 'InvoiceSerie@css')->name('invoice-serie.css');
+    Route::post('/invoice-serie', 'InvoiceSerie@create')->name('invoice-serie.create');
+    Route::post('/invoice-serie/{id}/css', 'InvoiceSerie@cssPreview')->name('invoice-serie.css.preview');
+    Route::patch('/invoice-serie/{id}', 'InvoiceSerie@update')->name('invoice-serie.update');
+    Route::patch('/invoice-serie/{id}/css', 'InvoiceSerie@cssUpdate')->name('invoice-serie.css.update');
 
     Route::get('/invoice-status', 'InvoiceStatus@index')->name('invoice-status.index');
     Route::get('/invoice-status/enabled', 'InvoiceStatus@enabled')->name('invoice-status.enabled');

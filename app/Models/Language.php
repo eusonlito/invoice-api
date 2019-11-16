@@ -17,6 +17,15 @@ class Language extends ModelAbstract
     public static string $foreign = 'language_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'order' => 'integer',
+        'default' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void

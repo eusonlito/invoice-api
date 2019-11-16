@@ -18,6 +18,24 @@ class Invoice extends ModelAbstract
     public static string $foreign = 'invoice_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'quantity' => 'integer',
+
+        'percent_discount' => 'float',
+        'percent_tax' => 'float',
+
+        'amount_subtotal' => 'float',
+        'amount_discount' => 'float',
+        'amount_tax' => 'float',
+        'amount_shipping' => 'float',
+        'amount_total' => 'float',
+        'amount_paid' => 'float',
+        'amount_due' => 'float',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function client(): Relations\BelongsTo
@@ -92,6 +110,14 @@ class Invoice extends ModelAbstract
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function serie(): Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceSerie::class, InvoiceSerie::$foreign);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function shipping(): Relations\BelongsTo
     {
         return $this->belongsTo(Shipping::class, Shipping::$foreign);
@@ -120,7 +146,7 @@ class Invoice extends ModelAbstract
      */
     public function scopeList(Builder $q)
     {
-        $q->simple()->with(['status'])->orderBy('date_at', 'DESC');
+        $q->simple()->with(['serie', 'status'])->orderBy('date_at', 'DESC');
     }
 
     /**
@@ -132,7 +158,7 @@ class Invoice extends ModelAbstract
     {
         $q->with([
             'clientAddressBilling', 'clientAddressShipping', 'discount', 'files', 'items',
-            'payment', 'shipping', 'status', 'tax'
+            'payment', 'shipping', 'serie', 'status', 'tax'
         ]);
     }
 
@@ -168,6 +194,7 @@ class Invoice extends ModelAbstract
             'client_address_billing_id',
             'client_address_shipping_id',
             'discount_id',
+            'invoice_serie_id',
             'invoice_status_id',
             'payment_id',
             'shipping_id',

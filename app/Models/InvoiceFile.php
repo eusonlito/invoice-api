@@ -18,6 +18,13 @@ class InvoiceFile extends ModelAbstract
     public static string $foreign = 'invoice_file_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'main' => 'boolean',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function invoice(): Relations\BelongsTo

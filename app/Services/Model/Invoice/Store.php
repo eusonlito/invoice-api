@@ -47,6 +47,7 @@ class Store extends StoreAbstract
         $this->company();
         $this->clientAddressBilling();
         $this->clientAddressShipping();
+        $this->serie();
         $this->status();
         $this->payment();
         $this->discount();
@@ -144,6 +145,18 @@ class Store extends StoreAbstract
         $this->row->shipping_state = $address->state;
         $this->row->shipping_postal_code = $address->postal_code;
         $this->row->shipping_country = $address->country;
+    }
+
+    /**
+     * @return void
+     */
+    protected function serie()
+    {
+        $this->row->invoice_serie_id = Models\InvoiceSerie::select('id')
+            ->byId($this->data['invoice_serie_id'])
+            ->byCompany($this->user->company)
+            ->firstOrFail()
+            ->id;
     }
 
     /**
@@ -261,7 +274,7 @@ class Store extends StoreAbstract
     {
         $item->line = $line;
         $item->quantity = $this->float($item->quantity);
-        $item->percent_discount = $this->float($item->percent_discount);
+        $item->percent_discount = (int)$item->percent_discount;
         $item->percent_tax = $this->row->tax ? $this->float($this->row->tax->value) : 0;
         $item->amount_price = $this->float($item->amount_price);
         $item->amount_subtotal = 0;
@@ -373,7 +386,7 @@ class Store extends StoreAbstract
      */
     protected function configuration()
     {
-        Services\Model\InvoiceConfiguration\StoreNumber::setNext($this->user);
+        Services\Model\InvoiceSerie\StoreNumber::setNext($this->row->serie);
     }
 
     /**

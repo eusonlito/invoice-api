@@ -18,6 +18,15 @@ class ClientAddress extends ModelAbstract
     public static string $foreign = 'client_address_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'billing' => 'boolean',
+        'shipping' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function client(): Relations\BelongsTo

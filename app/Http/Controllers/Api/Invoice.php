@@ -29,16 +29,6 @@ class Invoice extends ControllerAbstract
     }
 
     /**
-     * GET /invoice/preview
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function preview(): Response
-    {
-        return response($this->request()->previewCached());
-    }
-
-    /**
      * GET /invoice/{id}
      *
      * @param int $id
@@ -48,18 +38,6 @@ class Invoice extends ControllerAbstract
     public function detail(int $id): JsonResponse
     {
         return $this->json($this->request()->detailCached($id));
-    }
-
-    /**
-     * GET /invoice/{id}/preview
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function detailPreview(int $id): Response
-    {
-        return $this->json($this->request()->detailPreviewCached($id));
     }
 
     /**

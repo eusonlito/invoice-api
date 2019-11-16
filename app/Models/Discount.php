@@ -17,6 +17,15 @@ class Discount extends ModelAbstract
     public static string $foreign = 'discount_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'value' => 'float',
+        'default' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void

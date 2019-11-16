@@ -18,6 +18,14 @@ class Country extends ModelAbstract
     public static string $foreign = 'country_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'default' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function states(): Relations\HasMany

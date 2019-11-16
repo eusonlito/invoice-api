@@ -39,7 +39,7 @@ class W extends ControllerAbstract
         return [
             'client_address' => (new Model\ClientAddress\Request($this->request, $this->user))->enabledCached(),
             'discount' => (new Model\Discount\Request($this->request, $this->user))->enabledCached(),
-            'invoice_configuration' => (new Model\InvoiceConfiguration\Request($this->request, $this->user))->indexCached(),
+            'invoice_serie' => (new Model\InvoiceSerie\Request($this->request, $this->user))->enabledCached(),
             'invoice_status' => (new Model\InvoiceStatus\Request($this->request, $this->user))->enabledCached(),
             'payment' => (new Model\Payment\Request($this->request, $this->user))->enabledCached(),
             'product' => (new Model\Product\Request($this->request, $this->user))->enabledCached(),

@@ -204,7 +204,7 @@ class Base extends Migration
 
             $table->unsignedTinyInteger('quantity')->default(0);
 
-            $table->unsignedDecimal('percent_discount')->default(0);
+            $table->unsignedDecimal('percent_discount', 5, 2)->default(0);
             $table->unsignedDecimal('percent_tax', 5, 2)->default(0);
 
             $table->unsignedDecimal('amount_subtotal', 10, 2)->default(0);
@@ -229,24 +229,11 @@ class Base extends Migration
             $table->unsignedBigInteger('client_address_billing_id');
             $table->unsignedBigInteger('client_address_shipping_id')->nullable();
             $table->unsignedBigInteger('discount_id')->nullable();
-            $table->unsignedBigInteger('invoice_status_id')->nullable();
+            $table->unsignedBigInteger('invoice_serie_id');
+            $table->unsignedBigInteger('invoice_status_id');
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->unsignedBigInteger('shipping_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
-            $table->unsignedBigInteger('user_id');
-        });
-
-        Schema::create('invoice_configuration', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
-            $table->string('key');
-            $table->string('value')->default('');
-
-            $table->boolean('public')->default(0);
-
-            $this->timestamps($table);
-
-            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id');
         });
 
@@ -275,7 +262,7 @@ class Base extends Migration
 
             $table->unsignedDecimal('quantity', 10, 2)->default(0);
 
-            $table->unsignedDecimal('percent_discount')->default(0);
+            $table->unsignedTinyInteger('percent_discount')->default(0);
             $table->unsignedDecimal('percent_tax', 5, 2)->default(0);
 
             $table->unsignedDecimal('amount_price', 10, 2)->default(0);
@@ -288,6 +275,24 @@ class Base extends Migration
 
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+        });
+
+        Schema::create('invoice_serie', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->string('name')->default('');
+            $table->string('number_prefix')->default('');
+            $table->string('number_fill')->default('');
+            $table->string('number_next')->default('');
+            $table->string('css')->default('');
+
+            $table->boolean('default')->default(0);
+            $table->boolean('enabled')->default(0);
+
+            $this->timestamps($table);
+
+            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id');
         });
 
@@ -349,6 +354,7 @@ class Base extends Migration
             $table->unsignedBigInteger('discount_id')->nullable();
             $table->unsignedBigInteger('invoice_id')->nullable();
             $table->unsignedBigInteger('invoice_file_id')->nullable();
+            $table->unsignedBigInteger('invoice_serie_id')->nullable();
             $table->unsignedBigInteger('invoice_status_id')->nullable();
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
@@ -577,9 +583,13 @@ class Base extends Migration
                 ->references('id')->on('discount')
                 ->onDelete('SET NULL');
 
+            $table->foreign('invoice_serie_id')
+                ->references('id')->on('invoice_serie')
+                ->onDelete('CASCADE');
+
             $table->foreign('invoice_status_id')
                 ->references('id')->on('invoice_status')
-                ->onDelete('SET NULL');
+                ->onDelete('CASCADE');
 
             $table->foreign('payment_id')
                 ->references('id')->on('payment')
@@ -592,16 +602,6 @@ class Base extends Migration
             $table->foreign('tax_id')
                 ->references('id')->on('tax')
                 ->onDelete('SET NULL');
-
-            $table->foreign('user_id')
-                ->references('id')->on('user')
-                ->onDelete('CASCADE');
-        });
-
-        Schema::table('invoice_configuration', function (Blueprint $table) {
-            $table->foreign('company_id')
-                ->references('id')->on('company')
-                ->onDelete('CASCADE');
 
             $table->foreign('user_id')
                 ->references('id')->on('user')
@@ -630,6 +630,16 @@ class Base extends Migration
             $table->foreign('product_id')
                 ->references('id')->on('product')
                 ->onDelete('SET NULL');
+
+            $table->foreign('user_id')
+                ->references('id')->on('user')
+                ->onDelete('CASCADE');
+        });
+
+        Schema::table('invoice_serie', function (Blueprint $table) {
+            $table->foreign('company_id')
+                ->references('id')->on('company')
+                ->onDelete('CASCADE');
 
             $table->foreign('user_id')
                 ->references('id')->on('user')
@@ -673,6 +683,10 @@ class Base extends Migration
 
             $table->foreign('invoice_file_id')
                 ->references('id')->on('invoice_file')
+                ->onDelete('SET NULL');
+
+            $table->foreign('invoice_serie_id')
+                ->references('id')->on('invoice_serie')
                 ->onDelete('SET NULL');
 
             $table->foreign('invoice_status_id')

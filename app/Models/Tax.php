@@ -17,6 +17,15 @@ class Tax extends ModelAbstract
     public static string $foreign = 'tax_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'value' => 'float',
+        'default' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void

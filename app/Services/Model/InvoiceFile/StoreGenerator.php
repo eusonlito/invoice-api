@@ -49,7 +49,7 @@ class StoreGenerator
     public static function html(Models\Invoice $invoice): string
     {
         return (string)view('pdf.pages.invoice.detail', [
-            'css' => Services\Model\InvoiceConfiguration\Value::cssByCompany($invoice->company),
+            'css' => Services\Model\InvoiceSerie\StoreCss::get($invoice->serie),
             'invoice' => $invoice
         ]);
     }

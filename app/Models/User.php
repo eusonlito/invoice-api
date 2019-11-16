@@ -24,6 +24,13 @@ class User extends ModelAbstract implements AuthenticatableContract, JWTSubject
     /**
      * @var array
      */
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
+
+    /**
+     * @var array
+     */
     protected $hidden = ['password'];
 
     /**

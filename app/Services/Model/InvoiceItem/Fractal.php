@@ -17,17 +17,17 @@ class Fractal extends FractalAbstract
     {
         return [
             'id' => $row->id,
-            'line' => (int)$row->line,
+            'line' => $row->line,
             'reference' => $row->reference,
             'description' => $row->description,
-            'quantity' => (float)$row->quantity,
-            'percent_discount' => (float)$row->percent_discount,
-            'percent_tax' => (float)$row->percent_tax,
-            'amount_price' => (float)$row->amount_price,
-            'amount_discount' => (float)$row->amount_discount,
-            'amount_tax' => (float)$row->amount_tax,
-            'amount_subtotal' => (float)$row->amount_subtotal,
-            'amount_total' => (float)$row->amount_total,
+            'quantity' => $row->quantity,
+            'percent_discount' => $row->percent_discount,
+            'percent_tax' => $row->percent_tax,
+            'amount_price' => $row->amount_price,
+            'amount_discount' => $row->amount_discount,
+            'amount_tax' => $row->amount_tax,
+            'amount_subtotal' => $row->amount_subtotal,
+            'amount_total' => $row->amount_total,
         ];
     }
 

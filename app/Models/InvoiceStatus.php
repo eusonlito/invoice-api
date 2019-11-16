@@ -18,6 +18,16 @@ class InvoiceStatus extends ModelAbstract
     public static string $foreign = 'invoice_status_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'order' => 'integer',
+        'paid' => 'boolean',
+        'default' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function invoices(): Relations\HasMany

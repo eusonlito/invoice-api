@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use App\Models;
 use App\Models\Invoice as Model;
+use App\Services\Model\InvoiceSerie\StoreNumber;
 
 class Invoice extends FakeAbstract
 {
@@ -25,6 +26,11 @@ class Invoice extends FakeAbstract
      * @var \Illuminate\Support\Collection
      */
     protected Collection $discount;
+
+    /**
+     * @var \Illuminate\Support\Collection
+     */
+    protected Collection $invoiceSerie;
 
     /**
      * @var \Illuminate\Support\Collection
@@ -64,6 +70,7 @@ class Invoice extends FakeAbstract
         $this->user = Models\User::with(['company'])->first();
         $this->client = Models\Client::with(['addresses'])->get();
         $this->discount = Models\Discount::get();
+        $this->invoiceSerie = Models\InvoiceSerie::get();
         $this->invoiceStatus = Models\InvoiceStatus::get();
         $this->payment = Models\Payment::get();
         $this->product = Models\Product::get();
@@ -90,11 +97,12 @@ class Invoice extends FakeAbstract
 
         $client = $this->client->random();
         $billing = $client->addresses->random();
+        $invoiceSerie = $this->invoiceSerie->random();
         $shipping = $client->addresses->random();
         $tax = $this->tax->random();
 
         $row = Model::create([
-            'number' => $date->format('Y-').sprintf('%04d', $this->number++),
+            'number' => $this->number($invoiceSerie),
 
             'company_name' => $this->user->company->name,
             'company_address' => $this->user->company->address,
@@ -127,6 +135,7 @@ class Invoice extends FakeAbstract
             'client_id' => $client->id,
             'client_address_billing_id' => $billing->id,
             'client_address_shipping_id' => $shipping->id,
+            'invoice_serie_id' => $invoiceSerie->id,
             'user_id' => 1,
         ]);
 
@@ -137,6 +146,18 @@ class Invoice extends FakeAbstract
         }
 
         $this->amount($date, $row, $items, $tax);
+
+        StoreNumber::setNext($invoiceSerie);
+    }
+
+    /**
+     * @param \App\Models\InvoiceSerie $invoiceSerie
+     *
+     * @return string
+     */
+    protected function number(Models\InvoiceSerie $invoiceSerie): string
+    {
+        return $invoiceSerie->number_prefix.sprintf('%0'.$invoiceSerie->number_fill.'d', $invoiceSerie->number_next);
     }
 
     /**

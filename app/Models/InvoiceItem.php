@@ -17,6 +17,21 @@ class InvoiceItem extends ModelAbstract
     public static string $foreign = 'invoice_item_id';
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'line' => 'integer',
+        'quantity' => 'float',
+        'percent_discount' => 'integer',
+        'percent_tax' => 'float',
+        'amount_price' => 'float',
+        'amount_discount' => 'float',
+        'amount_tax' => 'float',
+        'amount_subtotal' => 'float',
+        'amount_total' => 'float',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function invoice(): Relations\BelongsTo

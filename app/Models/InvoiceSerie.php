@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations;
 
-class Shipping extends ModelAbstract
+class InvoiceSerie extends ModelAbstract
 {
     /**
      * @var string
      */
-    protected $table = 'shipping';
+    protected $table = 'invoice_serie';
 
     /**
      * @var string
      */
-    public static string $foreign = 'shipping_id';
+    public static string $foreign = 'invoice_serie_id';
 
     /**
      * @var array
@@ -26,12 +27,20 @@ class Shipping extends ModelAbstract
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company(): Relations\BelongsTo
+    {
+        return $this->belongsTo(Company::class, Company::$foreign);
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void
      */
     public function scopeList(Builder $q)
     {
-        $q->orderBy('name', 'ASC');
+        $q->orderBy('default', 'DESC');
     }
 }

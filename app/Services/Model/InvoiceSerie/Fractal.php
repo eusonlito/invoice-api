@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Services\Model\Discount;
+namespace App\Services\Model\InvoiceSerie;
 
-use App\Models\Discount as Model;
+use App\Models\InvoiceSerie as Model;
 use App\Services\Model\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {
     /**
-     * @param \App\Models\Discount $row
+     * @param \App\Models\InvoiceSerie $row
      *
      * @return array
      */
@@ -17,22 +17,21 @@ class Fractal extends FractalAbstract
         return [
             'id' => $row->id,
             'name' => $row->name,
-            'type' => $row->type,
-            'value' => $row->value,
+            'number_prefix' => $row->number_prefix,
+            'number_fill' => $row->number_fill,
+            'number_next' => $row->number_next,
             'default' => $row->default,
             'enabled' => $row->enabled,
         ];
     }
 
     /**
-     * @param \App\Models\Discount $row
+     * @param \App\Models\InvoiceSerie $row
      *
      * @return array
      */
     public static function detail(Model $row): array
     {
-        return [
-            'description' => $row->description
-        ] + static::simple($row);
+        return static::simple($row);
     }
 }
