@@ -32,7 +32,7 @@ class Request extends RequestAbstract
      */
     public function client(int $client_id): array
     {
-        return $this->fractal('simple', $this->getClientById($client_id)->addresses);
+        return $this->fractal('simple', $this->modelByClientId($client_id)->get());
     }
 
     /**
@@ -52,7 +52,7 @@ class Request extends RequestAbstract
      */
     public function clientEnabled(int $client_id): array
     {
-        return $this->fractal('simple', $this->getClientById($client_id)->addresses()->enabled()->get());
+        return $this->fractal('simple', $this->modelByClientId($client_id)->enabled()->get());
     }
 
     /**
@@ -70,24 +70,29 @@ class Request extends RequestAbstract
      *
      * @return array
      */
-    public function clientCreate(int $client_id): array
+    public function create(int $client_id): array
     {
-        $client = $this->getClientById($client_id);
-
-        return $this->fractal('detail', $this->store($this->validator('clientCreate'))->create($client));
+        return $this->fractal('detail', $this->store($this->validator('create'))->create($this->getClientById($client_id)));
     }
 
     /**
-     * @param int $client_id
      * @param int $id
      *
      * @return array
      */
-    public function clientUpdate(int $client_id, int $id): array
+    public function update(int $id): array
     {
-        $row = $this->getClientById($client_id)->addresses()->byId($id)->firstOrFail();
+        return $this->fractal('detail', $this->store($this->validator('update'))->update($this->modelDetailById($id)));
+    }
 
-        return $this->fractal('detail', $this->store($this->validator('clientUpdate'))->update($row));
+    /**
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->store()->delete($this->modelDetailById($id));
     }
 
     /**
@@ -106,6 +111,16 @@ class Request extends RequestAbstract
     protected function model(): Builder
     {
         return Model::byCompany($this->user->company);
+    }
+
+    /**
+     * @param int $client_id
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function modelByClientId(int $client_id): Builder
+    {
+        return $this->model()->where('client_id', $client_id);
     }
 
     /**

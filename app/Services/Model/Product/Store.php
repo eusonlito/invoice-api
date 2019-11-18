@@ -3,7 +3,7 @@
 namespace App\Services\Model\Product;
 
 use App\Exceptions;
-use App\Models;
+use App\Models\Product as Model;
 use App\Services\Model\StoreAbstract;
 
 class Store extends StoreAbstract
@@ -11,9 +11,9 @@ class Store extends StoreAbstract
     /**
      * @return \App\Models\Product
      */
-    public function create(): Models\Product
+    public function create(): Model
     {
-        $row = new Models\Product([
+        $row = new Model([
             'company_id' => $this->user->company_id,
             'user_id' => $this->user->id,
         ]);
@@ -26,7 +26,7 @@ class Store extends StoreAbstract
      *
      * @return \App\Models\Product
      */
-    public function update(Models\Product $row): Models\Product
+    public function update(Model $row): Model
     {
         $this->row = $row;
 
@@ -55,7 +55,7 @@ class Store extends StoreAbstract
             return;
         }
 
-        $exists = Models\Product::where('reference', $this->data['reference'])
+        $exists = Model::where('reference', $this->data['reference'])
             ->where('id', '!=', $this->row->id)
             ->byCompany($this->user->company)
             ->count();
@@ -63,5 +63,19 @@ class Store extends StoreAbstract
         if ($exists) {
             throw new Exceptions\ValidatorException(__('validator.reference-duplicated'));
         }
+    }
+
+    /**
+     * @param \App\Models\Product $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        $row->delete();
+
+        $this->cacheFlush('Product');
+
+        service()->log('product', 'delete', $this->user->id);
     }
 }

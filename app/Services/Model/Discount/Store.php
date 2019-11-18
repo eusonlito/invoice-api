@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\Discount;
 
+use App\Exceptions;
 use App\Models\Discount as Model;
 use App\Services\Model\StoreAbstract;
 
@@ -45,5 +46,27 @@ class Store extends StoreAbstract
         service()->log('discount', 'update', $this->user->id, ['discount_id' => $row->id]);
 
         return $row;
+    }
+
+    /**
+     * @param \App\Models\Discount $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        if ($row->clients()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-clients'));
+        }
+
+        if ($row->invoices()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
+        }
+
+        $row->delete();
+
+        $this->cacheFlush('Discount');
+
+        service()->log('discount', 'delete', $this->user->id);
     }
 }

@@ -9,7 +9,7 @@ use App\Services\Model\InvoiceSerie\Request;
 class InvoiceSerie extends ControllerAbstract
 {
     /**
-     * GET /invoice-status
+     * GET /invoice-serie
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -19,7 +19,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * GET /invoice-status/enabled
+     * GET /invoice-serie/enabled
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -29,7 +29,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * GET /invoice-status/{id}
+     * GET /invoice-serie/{id}
      *
      * @param int $id
      *
@@ -41,7 +41,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * GET /invoice-status/{id}/css
+     * GET /invoice-serie/{id}/css
      *
      * @param int $id
      *
@@ -53,7 +53,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * POST /invoice-status
+     * POST /invoice-serie
      *
      * @uses POST array
      *
@@ -65,7 +65,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * PATCH /invoice-status/{id}
+     * PATCH /invoice-serie/{id}
      *
      * @param int $id
      *
@@ -79,7 +79,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * POST /invoice-status/{id}/css
+     * POST /invoice-serie/{id}/css
      *
      * @param int $id
      *
@@ -95,7 +95,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * PATCH /invoice-status/{id}/css
+     * PATCH /invoice-serie/{id}/css
      *
      * @param int $id
      *
@@ -106,6 +106,18 @@ class InvoiceSerie extends ControllerAbstract
     public function cssUpdate(int $id): Response
     {
         return response($this->request()->cssUpdate($id));
+    }
+
+    /**
+     * DELETE /invoice-serie/{id}
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->json($this->request()->delete($id));
     }
 
     /**

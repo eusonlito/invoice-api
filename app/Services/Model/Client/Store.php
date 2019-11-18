@@ -136,4 +136,22 @@ class Store extends StoreAbstract
             ->firstOrFail()
             ->id;
     }
+
+    /**
+     * @param \App\Models\Client $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        if ($row->invoices()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
+        }
+
+        $row->delete();
+
+        $this->cacheFlush('Client');
+
+        service()->log('client', 'delete', $this->user->id);
+    }
 }

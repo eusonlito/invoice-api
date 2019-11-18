@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\Payment;
 
+use App\Exceptions;
 use App\Models\Payment as Model;
 use App\Services\Model\StoreAbstract;
 
@@ -43,5 +44,27 @@ class Store extends StoreAbstract
         service()->log('payment', 'update', $this->user->id, ['payment_id' => $row->id]);
 
         return $row;
+    }
+
+    /**
+     * @param \App\Models\Payment $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        if ($row->clients()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-clients'));
+        }
+
+        if ($row->invoices()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
+        }
+
+        $row->delete();
+
+        $this->cacheFlush('Payment');
+
+        service()->log('payment', 'delete', $this->user->id);
     }
 }

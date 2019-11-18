@@ -111,6 +111,16 @@ class Request extends RequestAbstract
     }
 
     /**
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->store()->delete($this->modelById($id));
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function model(): Builder

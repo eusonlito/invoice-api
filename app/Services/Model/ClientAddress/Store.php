@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\ClientAddress;
 
+use App\Exceptions;
 use App\Models;
 use App\Models\ClientAddress as Model;
 use App\Services\Model\StoreAbstract;
@@ -54,5 +55,23 @@ class Store extends StoreAbstract
         service()->log('client_address', 'update', $this->user->id, ['client_address_id' => $this->row->id]);
 
         return $this->row;
+    }
+
+    /**
+     * @param \App\Models\ClientAddress $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        if ($row->invoicesBilling()->count() || $row->invoicesShipping()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
+        }
+
+        $row->delete();
+
+        $this->cacheFlush('ClientAddress');
+
+        service()->log('client_address', 'delete', $this->user->id);
     }
 }

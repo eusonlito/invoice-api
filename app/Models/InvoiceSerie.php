@@ -35,6 +35,14 @@ class InvoiceSerie extends ModelAbstract
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices(): Relations\HasMany
+    {
+        return $this->hasMany(Invoice::class, static::$foreign);
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void

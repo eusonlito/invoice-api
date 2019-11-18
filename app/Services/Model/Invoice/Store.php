@@ -398,4 +398,18 @@ class Store extends StoreAbstract
     {
         return round(abs((float)$value), 2);
     }
+
+    /**
+     * @param \App\Models\Invoice $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        $row->delete();
+
+        $this->cacheFlush('Invoice');
+
+        service()->log('invoice', 'delete', $this->user->id);
+    }
 }

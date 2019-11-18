@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\Shipping;
 
+use App\Exceptions;
 use App\Models\Shipping as Model;
 use App\Services\Model\StoreAbstract;
 
@@ -44,5 +45,27 @@ class Store extends StoreAbstract
         service()->log('shipping', 'update', $this->user->id, ['shipping_id' => $row->id]);
 
         return $row;
+    }
+
+    /**
+     * @param \App\Models\Shipping $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        if ($row->clients()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-clients'));
+        }
+
+        if ($row->invoices()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
+        }
+
+        $row->delete();
+
+        $this->cacheFlush('Shipping');
+
+        service()->log('shipping', 'delete', $this->user->id);
     }
 }

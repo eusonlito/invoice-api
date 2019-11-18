@@ -14,23 +14,23 @@ class Validator extends ValidatorAbstract
     protected static function config(string $name): array
     {
         return [
-            'clientCreate' => static::configClientCreate(),
-            'clientUpdate' => static::configClientUpdate()
+            'create' => static::configCreate(),
+            'update' => static::configUpdate()
         ][$name];
     }
 
     /**
      * @return array
      */
-    protected static function configClientCreate(): array
+    protected static function configCreate(): array
     {
-        return static::configClientUpdate();
+        return static::configUpdate();
     }
 
     /**
      * @return array
      */
-    protected static function configClientUpdate(): array
+    protected static function configUpdate(): array
     {
         return [
             'all' => false,
@@ -43,7 +43,7 @@ class Validator extends ValidatorAbstract
                 'postal_code' => 'required',
                 'country' => 'required',
                 'phone' => 'string',
-                'email' => 'email',
+                'email' => 'email|string',
                 'comment' => 'string',
                 'tax_number' => 'required_if:billing,true|string',
                 'billing' => 'boolean',

@@ -66,6 +66,18 @@ class InvoiceStatus extends ControllerAbstract
     }
 
     /**
+     * DELETE /invoice-status/{id}
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->json($this->request()->delete($id));
+    }
+
+    /**
      * @return \App\Services\Model\InvoiceStatus\Request
      */
     protected function request(): Request

@@ -42,6 +42,14 @@ class Client extends ModelAbstract
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices(): Relations\HasMany
+    {
+        return $this->hasMany(Invoice::class, static::$foreign);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function payment(): Relations\BelongsTo

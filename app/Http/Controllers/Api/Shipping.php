@@ -66,6 +66,18 @@ class Shipping extends ControllerAbstract
     }
 
     /**
+     * DELETE /shipping/{id}
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->json($this->request()->delete($id));
+    }
+
+    /**
      * @return \App\Services\Model\Shipping\Request
      */
     protected function request(): Request

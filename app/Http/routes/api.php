@@ -36,24 +36,28 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/client/{id}', 'Client@detail')->name('client.detail');
     Route::post('/client', 'Client@create')->name('client.create');
     Route::patch('/client/{id}', 'Client@update')->name('client.update');
+    Route::delete('/client/{id}', 'Client@delete')->name('client.delete');
 
     Route::get('/client-address/enabled', 'ClientAddress@enabled')->name('client-address.enabled');
     Route::get('/client-address/{client_id}', 'ClientAddress@client')->name('client-address.client');
     Route::get('/client-address/{client_id}/enabled', 'ClientAddress@clientEnabled')->name('client-address.client-enabled');
-    Route::post('/client-address/{client_id}', 'ClientAddress@clientCreate')->name('client-address.client-create');
-    Route::patch('/client-address/{client_id}/{id}', 'ClientAddress@clientUpdate')->name('client-address.client-update');
+    Route::post('/client-address/{client_id}', 'ClientAddress@create')->name('client-address.create');
+    Route::patch('/client-address/{id}', 'ClientAddress@update')->name('client-address.update');
+    Route::delete('/client-address/{id}', 'ClientAddress@delete')->name('client-address.delete');
 
     Route::get('/discount', 'Discount@index')->name('discount.index');
     Route::get('/discount/enabled', 'Discount@enabled')->name('discount.enabled');
     Route::get('/discount/{id}', 'Discount@detail')->name('discount.detail');
     Route::post('/discount', 'Discount@create')->name('discount.create');
     Route::patch('/discount/{id}', 'Discount@update')->name('discount.update');
+    Route::delete('/discount/{id}', 'Discount@delete')->name('discount.delete');
 
     Route::get('/invoice', 'Invoice@index')->name('invoice.index');
     Route::get('/invoice/export', 'Invoice@export')->name('invoice.export');
     Route::get('/invoice/{id}', 'Invoice@detail')->name('invoice.detail');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
+    Route::delete('/invoice/{id}', 'Invoice@delete')->name('invoice.delete');
 
     Route::get('/invoice-file/{id}', 'InvoiceFile@detail')->name('invoice-file.detail');
     Route::get('/invoice-file/{id}/download', 'InvoiceFile@download')->name('invoice-file.download');
@@ -69,18 +73,21 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::post('/invoice-serie/{id}/css', 'InvoiceSerie@cssPreview')->name('invoice-serie.css.preview');
     Route::patch('/invoice-serie/{id}', 'InvoiceSerie@update')->name('invoice-serie.update');
     Route::patch('/invoice-serie/{id}/css', 'InvoiceSerie@cssUpdate')->name('invoice-serie.css.update');
+    Route::delete('/invoice-serie/{id}', 'InvoiceSerie@delete')->name('invoice-serie.delete');
 
     Route::get('/invoice-status', 'InvoiceStatus@index')->name('invoice-status.index');
     Route::get('/invoice-status/enabled', 'InvoiceStatus@enabled')->name('invoice-status.enabled');
     Route::get('/invoice-status/{id}', 'InvoiceStatus@detail')->name('invoice-status.detail');
     Route::post('/invoice-status', 'InvoiceStatus@create')->name('invoice-status.create');
     Route::patch('/invoice-status/{id}', 'InvoiceStatus@update')->name('invoice-status.update');
+    Route::delete('/invoice-status/{id}', 'InvoiceStatus@delete')->name('invoice-status.delete');
 
     Route::get('/payment', 'Payment@index')->name('payment.index');
     Route::get('/payment/enabled', 'Payment@enabled')->name('payment.enabled');
     Route::get('/payment/{id}', 'Payment@detail')->name('payment.detail');
     Route::post('/payment', 'Payment@create')->name('payment.create');
     Route::patch('/payment/{id}', 'Payment@update')->name('payment.update');
+    Route::delete('/payment/{id}', 'Payment@delete')->name('payment.delete');
 
     Route::get('/product', 'Product@index')->name('product.index');
     Route::get('/product/enabled', 'Product@enabled')->name('product.enabled');
@@ -88,18 +95,21 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/product/{id}', 'Product@detail')->name('product.detail');
     Route::post('/product', 'Product@create')->name('product.create');
     Route::patch('/product/{id}', 'Product@update')->name('product.update');
+    Route::delete('/product/{id}', 'Product@delete')->name('product.delete');
 
     Route::get('/shipping', 'Shipping@index')->name('shipping.index');
     Route::get('/shipping/enabled', 'Shipping@enabled')->name('shipping.enabled');
     Route::get('/shipping/{id}', 'Shipping@detail')->name('shipping.detail');
     Route::post('/shipping', 'Shipping@create')->name('shipping.create');
     Route::patch('/shipping/{id}', 'Shipping@update')->name('shipping.update');
+    Route::delete('/shipping/{id}', 'Shipping@delete')->name('shipping.delete');
 
     Route::get('/tax', 'Tax@index')->name('tax.index');
     Route::get('/tax/enabled', 'Tax@enabled')->name('tax.enabled');
     Route::get('/tax/{id}', 'Tax@detail')->name('tax.detail');
     Route::post('/tax', 'Tax@create')->name('tax.create');
     Route::patch('/tax/{id}', 'Tax@update')->name('tax.update');
+    Route::delete('/tax/{id}', 'Tax@delete')->name('tax.delete');
 
     Route::get('/w/invoice', 'W@invoiceCreate')->name('w.invoice.create');
     Route::get('/w/invoice/{id}', 'W@invoiceUpdate')->name('w.invoice.update');

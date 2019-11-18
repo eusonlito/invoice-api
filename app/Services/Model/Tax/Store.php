@@ -2,6 +2,7 @@
 
 namespace App\Services\Model\Tax;
 
+use App\Exceptions;
 use App\Models\Tax as Model;
 use App\Services\Model\StoreAbstract;
 
@@ -44,5 +45,27 @@ class Store extends StoreAbstract
         service()->log('tax', 'update', $this->user->id, ['tax_id' => $row->id]);
 
         return $row;
+    }
+
+    /**
+     * @param \App\Models\Tax $row
+     *
+     * @return void
+     */
+    public function delete(Model $row): void
+    {
+        if ($row->clients()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-clients'));
+        }
+
+        if ($row->invoices()->count()) {
+            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
+        }
+
+        $row->delete();
+
+        $this->cacheFlush('Tax');
+
+        service()->log('tax', 'delete', $this->user->id);
     }
 }

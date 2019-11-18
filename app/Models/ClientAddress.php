@@ -35,6 +35,22 @@ class ClientAddress extends ModelAbstract
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoicesBilling(): Relations\HasMany
+    {
+        return $this->hasMany(Invoice::class, 'client_address_billing_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoicesShipping(): Relations\HasMany
+    {
+        return $this->hasMany(Invoice::class, 'client_address_shipping_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): Relations\BelongsTo

@@ -50,24 +50,35 @@ class ClientAddress extends ControllerAbstract
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function clientCreate(int $client_id): JsonResponse
+    public function create(int $client_id): JsonResponse
     {
-        return $this->json($this->request()->clientCreate($client_id));
+        return $this->json($this->request()->create($client_id));
     }
 
     /**
-     * POST /client-address/{client_id}/{id}
+     * POST /client-address/{id}
      *
-     * @param int $client_id
      * @param int $id
      *
      * @uses POST array
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function clientUpdate(int $client_id, int $id): JsonResponse
+    public function update(int $id): JsonResponse
     {
-        return $this->json($this->request()->clientUpdate($client_id, $id));
+        return $this->json($this->request()->update($id));
+    }
+
+    /**
+     * DELETE /client-address/{id}
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->json($this->request()->delete($id));
     }
 
     /**
