@@ -48,7 +48,7 @@ class Database
         static::$file = preg_replace('/[^a-z0-9]+/i', '-', Request::path()).'.log';
         static::$file = storage_path('logs/query/'.date('Y-m-d').'/'.static::$file);
 
-        if (!is_dir($dir = dirname(static::$file))) {
+        if (is_dir($dir = dirname(static::$file)) === false) {
             mkdir($dir, 0755, true);
         }
     }

@@ -29,14 +29,6 @@ class Language extends SeederAbstract
                 'order' => 0,
                 'default' => true,
                 'enabled' => true
-            ],
-            [
-                'name' => 'English',
-                'iso' => 'en',
-                'locale' => 'en_US',
-                'order' => 1,
-                'default' => false,
-                'enabled' => true
             ]
         ]);
     }

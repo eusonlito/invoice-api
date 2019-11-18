@@ -26,14 +26,6 @@ class Country extends ModelAbstract
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function states(): Relations\HasMany
-    {
-        return $this->hasMany(State::class, static::$foreign);
-    }
-
-    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void

@@ -96,15 +96,16 @@ class Base extends Migration
 
             $table->string('name');
             $table->string('address');
-            $table->string('city');
             $table->string('postal_code');
+            $table->string('city');
+            $table->string('state');
             $table->string('tax_number');
             $table->string('email');
             $table->string('phone');
 
             $this->timestamps($table);
 
-            $table->unsignedBigInteger('state_id');
+            $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('user_id');
         });
 
@@ -410,16 +411,6 @@ class Base extends Migration
             $table->unsignedBigInteger('user_id');
         });
 
-        Schema::create('state', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
-            $table->string('name');
-
-            $this->timestamps($table);
-
-            $table->unsignedBigInteger('country_id');
-        });
-
         Schema::create('tax', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -543,8 +534,8 @@ class Base extends Migration
         });
 
         Schema::table('company', function (Blueprint $table) {
-            $table->foreign('state_id')
-                ->references('id')->on('state')
+            $table->foreign('country_id')
+                ->references('id')->on('country')
                 ->onDelete('CASCADE');
 
             $table->foreign('user_id')
@@ -741,12 +732,6 @@ class Base extends Migration
 
             $table->foreign('user_id')
                 ->references('id')->on('user')
-                ->onDelete('CASCADE');
-        });
-
-        Schema::table('state', function (Blueprint $table) {
-            $table->foreign('country_id')
-                ->references('id')->on('country')
                 ->onDelete('CASCADE');
         });
 

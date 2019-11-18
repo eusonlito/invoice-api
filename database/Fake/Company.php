@@ -19,12 +19,13 @@ class Company extends FakeAbstract
             'name' => $faker->company,
             'address' => $faker->streetAddress,
             'city' => $faker->city,
+            'state' => $faker->state,
             'postal_code' => $faker->postcode,
             'tax_number' => $faker->vat,
             'email' => $faker->email,
             'phone' => $faker->phoneNumber,
 
-            'state_id' => Models\Country::where('default', true)->first()->states()->inRandomOrder()->first()->id,
+            'country_id' => 68,
             'user_id' => 1
         ]);
     }

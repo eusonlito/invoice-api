@@ -99,7 +99,7 @@ class Only extends TranslationAbstract
      */
     protected function checkLang(string $lang, string $name, array $keys): ?string
     {
-        if (!($current = $this->file($lang, $name))) {
+        if (empty($current = $this->file($lang, $name))) {
             return sprintf('File %s not exists for language "%s"', $name, $lang);
         }
 

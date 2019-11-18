@@ -10,7 +10,6 @@ Route::post('/user/password/reset', 'User@PasswordResetStart')->name('user.passw
 Route::post('/user/password/reset/{hash}', 'User@PasswordResetFinish')->name('user.password.reset.finish');
 
 Route::get('/country', 'Country@index')->name('country.index');
-Route::get('/state/{country_id}', 'State@index')->name('state.index');
 
 Route::group(['middleware' => 'user.refresh'], static function () {
     Route::get('/user/auth/refresh', 'User@authRefresh')->name('user.auth.refresh');

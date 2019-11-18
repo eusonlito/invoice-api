@@ -27,10 +27,10 @@ class Country extends SeederAbstract
      */
     protected function insert()
     {
-        $this->truncate('country', 'state');
+        $this->truncate('country');
 
         foreach ($this->json('country-state') as $iso => $row) {
-            $this->states($this->country($iso, $row), $row['states']);
+            $this->country($iso, $row);
         }
     }
 
@@ -52,42 +52,12 @@ class Country extends SeederAbstract
     }
 
     /**
-     * @param \App\Models\Country $country
-     * @param array $states
-     *
-     * @return void
-     */
-    protected function states(Models\Country $country, array $states)
-    {
-        $country_id = $country->id;
-        $insert = [];
-
-        foreach ($states as $name => $each) {
-            if (empty($each)) {
-                continue;
-            }
-
-            $insert[] = [
-                'name' => $name,
-                'country_id' => $country_id
-            ];
-        }
-
-        $country->states()->insert($insert);
-    }
-
-    /**
      * @return void
      */
     protected function update()
     {
         Models\Country::where('iso', 'es')->update([
             'default' => true,
-            'enabled' => true
-        ]);
-
-        Models\Country::where('iso', 'de')->update([
-            'default' => false,
             'enabled' => true
         ]);
     }

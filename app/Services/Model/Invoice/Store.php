@@ -96,9 +96,9 @@ class Store extends StoreAbstract
         $this->row->company_name = $this->user->company->name;
         $this->row->company_address = $this->user->company->address;
         $this->row->company_city = $this->user->company->city;
-        $this->row->company_state = $this->user->company->state->name;
+        $this->row->company_state = $this->user->company->state;
         $this->row->company_postal_code = $this->user->company->postal_code;
-        $this->row->company_country = $this->user->company->state->country->name;
+        $this->row->company_country = $this->user->company->country->name;
         $this->row->company_tax_number = $this->user->company->tax_number;
         $this->row->company_phone = $this->user->company->phone;
         $this->row->company_email = $this->user->company->email;

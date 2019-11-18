@@ -4,7 +4,7 @@ namespace App\Services\Model\Company;
 
 use App\Models\Company as Model;
 use App\Services\Model\FractalAbstract;
-use App\Services\Model\State\Fractal as State;
+use App\Services\Model\Country\Fractal as Country;
 
 class Fractal extends FractalAbstract
 {
@@ -20,11 +20,12 @@ class Fractal extends FractalAbstract
             'name' => $row->name,
             'address' => $row->address,
             'city' => $row->city,
+            'state' => $row->state,
             'postal_code' => $row->postal_code,
             'tax_number' => $row->tax_number,
             'phone' => $row->phone,
             'email' => $row->email,
-            'state' => State::transform('detail', $row->state),
+            'country' => Country::transform('detail', $row->country),
         ];
     }
 

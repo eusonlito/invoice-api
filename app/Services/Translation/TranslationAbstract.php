@@ -49,7 +49,7 @@ abstract class TranslationAbstract
      */
     protected function read(string $dir): Generator
     {
-        if (!is_dir($dir)) {
+        if (is_dir($dir) === false) {
             return [];
         }
 

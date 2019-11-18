@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-if (!function_exists('uniqidReal')) {
+if (function_exists('uniqidReal') === false) {
     /**
      * @param int $length
      *
@@ -12,7 +12,7 @@ if (!function_exists('uniqidReal')) {
     }
 }
 
-if (!function_exists('number')) {
+if (function_exists('number') === false) {
     /**
      * @param mixed $value
      * @param int $decimals = 2
@@ -25,7 +25,7 @@ if (!function_exists('number')) {
     }
 }
 
-if (!function_exists('money')) {
+if (function_exists('money') === false) {
     /**
      * @param mixed $value
      * @param int $decimals = 2
@@ -38,7 +38,7 @@ if (!function_exists('money')) {
     }
 }
 
-if (!function_exists('routeWeb')) {
+if (function_exists('routeWeb') === false) {
     /**
      * @param string $route
      * @param string|int|array $params
@@ -51,7 +51,7 @@ if (!function_exists('routeWeb')) {
     }
 }
 
-if (!function_exists('service')) {
+if (function_exists('service') === false) {
     /**
      * @return \App\Services\Helper\Service
      */

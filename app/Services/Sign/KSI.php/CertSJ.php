@@ -34,7 +34,7 @@ class CertSJ extends SignAbstract
 
         $dir = dirname($params['out']);
 
-        if (!is_dir($dir)) {
+        if (is_dir($dir) === false) {
             mkdir($dir, 0700, true);
         }
 

@@ -15,14 +15,15 @@ class Validator extends ValidatorAbstract
             'all' => false,
 
             'rules' => [
-                'name' => 'required',
-                'address' => 'required',
-                'city' => 'required',
-                'postal_code' => 'required',
-                'tax_number' => 'required',
+                'name' => 'required|string',
+                'address' => 'required|string',
+                'city' => 'required|string',
+                'state' => 'required|string',
+                'postal_code' => 'required|string',
+                'tax_number' => 'required|string',
                 'phone' => 'required',
                 'email' => 'required|email',
-                'state_id' => 'required|integer|exists:state,id',
+                'country_id' => 'required|integer|exists:country,id',
             ],
 
             'messages' => [
@@ -34,9 +35,9 @@ class Validator extends ValidatorAbstract
                 'phone.required' => __('validator.phone-required'),
                 'email.required' => __('validator.email-required'),
                 'email.email' => __('validator.email-required'),
-                'state_id.required' => __('validator.state_id-required'),
-                'state_id.integer' => __('validator.state_id-required'),
-                'state_id.exists' => __('validator.state_id-required'),
+                'country_id.required' => __('validator.country_id-required'),
+                'country_id.integer' => __('validator.country_id-required'),
+                'country_id.exists' => __('validator.country_id-required'),
             ]
         ];
     }

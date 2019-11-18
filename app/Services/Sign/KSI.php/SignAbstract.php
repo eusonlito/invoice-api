@@ -60,7 +60,7 @@ abstract class SignAbstract
         $cmd = '';
 
         foreach ($options as $option) {
-            if (!array_key_exists($option, $params)) {
+            if (array_key_exists($option, $params) === false) {
                 continue;
             }
 

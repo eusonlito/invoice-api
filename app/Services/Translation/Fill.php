@@ -90,7 +90,7 @@ class Fill extends TranslationAbstract
     {
         $dir = dirname($file);
 
-        if (!is_dir($dir)) {
+        if (is_dir($dir) === false) {
             mkdir($dir, 0755, true);
         }
 

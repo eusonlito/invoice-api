@@ -19,9 +19,9 @@ class Company extends ModelAbstract
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function state(): Relations\BelongsTo
+    public function country(): Relations\BelongsTo
     {
-        return $this->belongsTo(State::class, State::$foreign);
+        return $this->belongsTo(Country::class, Country::$foreign);
     }
 
     /**

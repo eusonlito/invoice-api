@@ -133,7 +133,7 @@ class StoreAuth
      */
     protected static function checkEnabled(Model $user)
     {
-        if (!$user->enabled) {
+        if (empty($user->enabled)) {
             throw new ValidatorException(__('exception.user-disabled'));
         }
     }

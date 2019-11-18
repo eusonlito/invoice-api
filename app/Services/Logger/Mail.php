@@ -26,7 +26,7 @@ class Mail
         $file = storage_path('logs/mails/'.date('Y-m-d/H-i-s').'-'.uniqid().'.log');
         $dir = dirname($file);
 
-        if (!is_dir($dir)) {
+        if (is_dir($dir) === false) {
             mkdir($dir, 0755, true);
         }
 
