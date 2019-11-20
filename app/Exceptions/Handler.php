@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use App\Domain\User\StoreAuth;
 use App\Services;
 
 class Handler extends ExceptionHandler
@@ -115,7 +116,7 @@ class Handler extends ExceptionHandler
             'message' => $e->getMessage(),
         ], $e->getCode());
 
-        if ($token = Services\Model\User\StoreAuth::token()) {
+        if ($token = StoreAuth::token()) {
             $response->header('Authorization', 'Bearer '.$token);
         }
 

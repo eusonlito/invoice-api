@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Services\Model\Payment\Request;
+use App\Domain\Payment\Request;
 
 class Payment extends ControllerAbstract
 {
@@ -78,7 +78,7 @@ class Payment extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\Payment\Request
+     * @return \App\Domain\Payment\Request
      */
     protected function request(): Request
     {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Services\Model\Tax\Request;
+use App\Domain\Tax\Request;
 
 class Tax extends ControllerAbstract
 {
@@ -78,7 +78,7 @@ class Tax extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\Tax\Request
+     * @return \App\Domain\Tax\Request
      */
     protected function request(): Request
     {

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use App\Services\Model\Invoice\Request;
+use App\Domain;
+use App\Domain\Invoice\Request;
 
 class Invoice extends ControllerAbstract
 {
@@ -79,7 +79,48 @@ class Invoice extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\Invoice\Request
+     * GET /invoice/w
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function wCreate(): JsonResponse
+    {
+        return $this->json($this->w());
+    }
+
+    /**
+     * GET /invoice/w/{id}
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function wUpdate(int $id): JsonResponse
+    {
+        return $this->json($this->w() + [
+            'invoice' => $this->request()->detailCached($id)
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function w(): array
+    {
+        return [
+            'client_address' => (new Domain\ClientAddress\Request($this->request, $this->user))->enabledCached(),
+            'discount' => (new Domain\Discount\Request($this->request, $this->user))->enabledCached(),
+            'invoice_serie' => (new Domain\InvoiceSerie\Request($this->request, $this->user))->enabledCached(),
+            'invoice_status' => (new Domain\InvoiceStatus\Request($this->request, $this->user))->enabledCached(),
+            'payment' => (new Domain\Payment\Request($this->request, $this->user))->enabledCached(),
+            'product' => (new Domain\Product\Request($this->request, $this->user))->enabledCached(),
+            'shipping' => (new Domain\Shipping\Request($this->request, $this->user))->enabledCached(),
+            'tax' => (new Domain\Tax\Request($this->request, $this->user))->enabledCached()
+        ];
+    }
+
+    /**
+     * @return \App\Domain\Invoice\Request
      */
     protected function request(): Request
     {

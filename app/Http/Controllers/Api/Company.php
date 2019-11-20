@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Services\Model\Company\Request;
+use App\Domain\Company\Request;
 
 class Company extends ControllerAbstract
 {
@@ -30,7 +30,7 @@ class Company extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\Company\Request
+     * @return \App\Domain\Company\Request
      */
     protected function request(): Request
     {

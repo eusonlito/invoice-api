@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Services\Model\Client\Request;
+use App\Domain;
+use App\Domain\Client\Request;
 
 class Client extends ControllerAbstract
 {
@@ -88,7 +89,44 @@ class Client extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\Client\Request
+     * GET /client/w
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function wCreate(): JsonResponse
+    {
+        return $this->json($this->w());
+    }
+
+    /**
+     * GET /client/w/{id}
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function wUpdate(int $id): JsonResponse
+    {
+        return $this->json($this->w() + [
+            'client' => $this->request()->detailCached($id)
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function w(): array
+    {
+        return [
+            'discount' => (new Domain\Discount\Request($this->request, $this->user))->enabledCached(),
+            'payment' => (new Domain\Payment\Request($this->request, $this->user))->enabledCached(),
+            'shipping' => (new Domain\Shipping\Request($this->request, $this->user))->enabledCached(),
+            'tax' => (new Domain\Tax\Request($this->request, $this->user))->enabledCached()
+        ];
+    }
+
+    /**
+     * @return \App\Domain\Client\Request
      */
     protected function request(): Request
     {

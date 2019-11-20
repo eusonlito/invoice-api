@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use App\Services\Model\InvoiceSerie\Request;
+use App\Domain\InvoiceSerie\Request;
 
 class InvoiceSerie extends ControllerAbstract
 {
@@ -121,7 +121,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\InvoiceSerie\Request
+     * @return \App\Domain\InvoiceSerie\Request
      */
     protected function request(): Request
     {

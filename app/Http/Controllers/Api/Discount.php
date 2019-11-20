@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Services\Model\Discount\Request;
+use App\Domain\Discount\Request;
 
 class Discount extends ControllerAbstract
 {
@@ -78,7 +78,7 @@ class Discount extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\Discount\Request
+     * @return \App\Domain\Discount\Request
      */
     protected function request(): Request
     {

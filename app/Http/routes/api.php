@@ -33,6 +33,8 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/client/enabled', 'Client@enabled')->name('client.enabled');
     Route::get('/client/export', 'Client@export')->name('client.export');
     Route::get('/client/{id}', 'Client@detail')->name('client.detail');
+    Route::get('/client/w', 'Client@wCreate')->name('client.w.create');
+    Route::get('/client/w/{id}', 'Client@wUpdate')->name('client.w.update');
     Route::post('/client', 'Client@create')->name('client.create');
     Route::patch('/client/{id}', 'Client@update')->name('client.update');
     Route::delete('/client/{id}', 'Client@delete')->name('client.delete');
@@ -54,6 +56,8 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/invoice', 'Invoice@index')->name('invoice.index');
     Route::get('/invoice/export', 'Invoice@export')->name('invoice.export');
     Route::get('/invoice/{id}', 'Invoice@detail')->name('invoice.detail');
+    Route::get('/invoice/w', 'Invoice@wCreate')->name('invoice.w.create');
+    Route::get('/invoice/w/{id}', 'Invoice@wUpdate')->name('invoice.w.update');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
     Route::delete('/invoice/{id}', 'Invoice@delete')->name('invoice.delete');
@@ -109,7 +113,4 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::post('/tax', 'Tax@create')->name('tax.create');
     Route::patch('/tax/{id}', 'Tax@update')->name('tax.update');
     Route::delete('/tax/{id}', 'Tax@delete')->name('tax.delete');
-
-    Route::get('/w/invoice', 'W@invoiceCreate')->name('w.invoice.create');
-    Route::get('/w/invoice/{id}', 'W@invoiceUpdate')->name('w.invoice.update');
 });

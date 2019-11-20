@@ -155,6 +155,7 @@ return [
          * Package Service Providers...
          */
         Eusonlito\LaravelPacker\PackerServiceProvider::class,
+        Eusonlito\DisposableEmail\Laravel\DisposableEmailServiceProvider::class,
 
         /*
          * Application Service Providers...

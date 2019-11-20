@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\Services\Model\InvoiceFile\Request;
+use App\Domain\InvoiceFile\Request;
 
 class InvoiceFile extends ControllerAbstract
 {
@@ -71,7 +71,7 @@ class InvoiceFile extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\InvoiceFile\Request
+     * @return \App\Domain\InvoiceFile\Request
      */
     protected function request(): Request
     {

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations;
 
 class InvoiceSerie extends ModelAbstract
 {
+    use Traits\Storage;
+
     /**
      * @var string
      */

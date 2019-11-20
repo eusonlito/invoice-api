@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations;
-use Illuminate\Support\Facades\Storage;
 
 class InvoiceFile extends ModelAbstract
 {
+    use Traits\Storage;
+
     /**
      * @var string
      */
@@ -37,6 +38,6 @@ class InvoiceFile extends ModelAbstract
      */
     public function getFileAbsoluteAttribute(): ?string
     {
-        return $this->file ? Storage::disk('private')->path($this->file) : null;
+        return $this->file ? static::disk()->path($this->file) : null;
     }
 }

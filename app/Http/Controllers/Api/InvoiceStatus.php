@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Services\Model\InvoiceStatus\Request;
+use App\Domain\InvoiceStatus\Request;
 
 class InvoiceStatus extends ControllerAbstract
 {
@@ -78,7 +78,7 @@ class InvoiceStatus extends ControllerAbstract
     }
 
     /**
-     * @return \App\Services\Model\InvoiceStatus\Request
+     * @return \App\Domain\InvoiceStatus\Request
      */
     protected function request(): Request
     {
