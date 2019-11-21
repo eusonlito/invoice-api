@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain;
-use App\Domain\Invoice\Request;
+use App\Domains;
+use App\Domains\Invoice\Request;
 
 class Invoice extends ControllerAbstract
 {
@@ -108,19 +108,19 @@ class Invoice extends ControllerAbstract
     protected function w(): array
     {
         return [
-            'client_address' => (new Domain\ClientAddress\Request($this->request, $this->user))->enabledCached(),
-            'discount' => (new Domain\Discount\Request($this->request, $this->user))->enabledCached(),
-            'invoice_serie' => (new Domain\InvoiceSerie\Request($this->request, $this->user))->enabledCached(),
-            'invoice_status' => (new Domain\InvoiceStatus\Request($this->request, $this->user))->enabledCached(),
-            'payment' => (new Domain\Payment\Request($this->request, $this->user))->enabledCached(),
-            'product' => (new Domain\Product\Request($this->request, $this->user))->enabledCached(),
-            'shipping' => (new Domain\Shipping\Request($this->request, $this->user))->enabledCached(),
-            'tax' => (new Domain\Tax\Request($this->request, $this->user))->enabledCached()
+            'client_address' => (new Domains\ClientAddress\Request($this->request, $this->user))->enabledCached(),
+            'discount' => (new Domains\Discount\Request($this->request, $this->user))->enabledCached(),
+            'invoice_serie' => (new Domains\InvoiceSerie\Request($this->request, $this->user))->enabledCached(),
+            'invoice_status' => (new Domains\InvoiceStatus\Request($this->request, $this->user))->enabledCached(),
+            'payment' => (new Domains\Payment\Request($this->request, $this->user))->enabledCached(),
+            'product' => (new Domains\Product\Request($this->request, $this->user))->enabledCached(),
+            'shipping' => (new Domains\Shipping\Request($this->request, $this->user))->enabledCached(),
+            'tax' => (new Domains\Tax\Request($this->request, $this->user))->enabledCached()
         ];
     }
 
     /**
-     * @return \App\Domain\Invoice\Request
+     * @return \App\Domains\Invoice\Request
      */
     protected function request(): Request
     {

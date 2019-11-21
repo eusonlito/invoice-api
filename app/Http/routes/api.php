@@ -40,6 +40,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::delete('/client/{id}', 'Client@delete')->name('client.delete');
 
     Route::get('/client-address/enabled', 'ClientAddress@enabled')->name('client-address.enabled');
+    Route::get('/client/export', 'Client@export')->name('client.export');
     Route::get('/client-address/{client_id}', 'ClientAddress@client')->name('client-address.client');
     Route::get('/client-address/{client_id}/enabled', 'ClientAddress@clientEnabled')->name('client-address.client-enabled');
     Route::post('/client-address/{client_id}', 'ClientAddress@create')->name('client-address.create');
@@ -48,6 +49,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/discount', 'Discount@index')->name('discount.index');
     Route::get('/discount/enabled', 'Discount@enabled')->name('discount.enabled');
+    Route::get('/discount/export', 'Discount@export')->name('discount.export');
     Route::get('/discount/{id}', 'Discount@detail')->name('discount.detail');
     Route::post('/discount', 'Discount@create')->name('discount.create');
     Route::patch('/discount/{id}', 'Discount@update')->name('discount.update');
@@ -70,6 +72,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/invoice-serie', 'InvoiceSerie@index')->name('invoice-serie.index');
     Route::get('/invoice-serie/enabled', 'InvoiceSerie@enabled')->name('invoice-serie.enabled');
+    Route::get('/invoice-serie/export', 'InvoiceSerie@export')->name('invoice-serie.export');
     Route::get('/invoice-serie/{id}', 'InvoiceSerie@detail')->name('invoice-serie.detail');
     Route::get('/invoice-serie/{id}/css', 'InvoiceSerie@css')->name('invoice-serie.css');
     Route::post('/invoice-serie', 'InvoiceSerie@create')->name('invoice-serie.create');
@@ -80,6 +83,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/invoice-status', 'InvoiceStatus@index')->name('invoice-status.index');
     Route::get('/invoice-status/enabled', 'InvoiceStatus@enabled')->name('invoice-status.enabled');
+    Route::get('/invoice-status/export', 'InvoiceStatus@export')->name('invoice-status.export');
     Route::get('/invoice-status/{id}', 'InvoiceStatus@detail')->name('invoice-status.detail');
     Route::post('/invoice-status', 'InvoiceStatus@create')->name('invoice-status.create');
     Route::patch('/invoice-status/{id}', 'InvoiceStatus@update')->name('invoice-status.update');
@@ -87,6 +91,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/payment', 'Payment@index')->name('payment.index');
     Route::get('/payment/enabled', 'Payment@enabled')->name('payment.enabled');
+    Route::get('/payment/export', 'Payment@export')->name('payment.export');
     Route::get('/payment/{id}', 'Payment@detail')->name('payment.detail');
     Route::post('/payment', 'Payment@create')->name('payment.create');
     Route::patch('/payment/{id}', 'Payment@update')->name('payment.update');
@@ -102,6 +107,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/shipping', 'Shipping@index')->name('shipping.index');
     Route::get('/shipping/enabled', 'Shipping@enabled')->name('shipping.enabled');
+    Route::get('/shipping/export', 'Shipping@export')->name('shipping.export');
     Route::get('/shipping/{id}', 'Shipping@detail')->name('shipping.detail');
     Route::post('/shipping', 'Shipping@create')->name('shipping.create');
     Route::patch('/shipping/{id}', 'Shipping@update')->name('shipping.update');
@@ -109,6 +115,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/tax', 'Tax@index')->name('tax.index');
     Route::get('/tax/enabled', 'Tax@enabled')->name('tax.enabled');
+    Route::get('/tax/export', 'Tax@export')->name('tax.export');
     Route::get('/tax/{id}', 'Tax@detail')->name('tax.detail');
     Route::post('/tax', 'Tax@create')->name('tax.create');
     Route::patch('/tax/{id}', 'Tax@update')->name('tax.update');

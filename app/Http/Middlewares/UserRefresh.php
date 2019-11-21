@@ -4,7 +4,7 @@ namespace App\Http\Middlewares;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Domain\User\StoreAuth;
+use App\Domains\User\StoreAuth;
 
 class UserRefresh
 {

@@ -3,7 +3,7 @@
 namespace App\Services\Request;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\User\StoreAuth;
+use App\Domains\User\StoreAuth;
 
 class Auth
 {

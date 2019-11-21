@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use App\Domain\InvoiceSerie\Request;
+use App\Domains\InvoiceSerie\Request;
 
 class InvoiceSerie extends ControllerAbstract
 {
@@ -26,6 +26,16 @@ class InvoiceSerie extends ControllerAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->request()->enabledCached());
+    }
+
+    /**
+     * GET /invoice-serie/export
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(): JsonResponse
+    {
+        return $this->json($this->request()->exportCached());
     }
 
     /**
@@ -121,7 +131,7 @@ class InvoiceSerie extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\InvoiceSerie\Request
+     * @return \App\Domains\InvoiceSerie\Request
      */
     protected function request(): Request
     {

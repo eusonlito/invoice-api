@@ -50,4 +50,14 @@ class Payment extends ModelAbstract
     {
         $q->orderBy('name', 'ASC');
     }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     *
+     * @return void
+     */
+    public function scopeExport(Builder $q)
+    {
+        $q->orderBy('id', 'ASC');
+    }
 }

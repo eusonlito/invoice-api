@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\Tax\Request;
+use App\Domains\Tax\Request;
 
 class Tax extends ControllerAbstract
 {
@@ -25,6 +25,16 @@ class Tax extends ControllerAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->request()->enabledCached());
+    }
+
+    /**
+     * GET /tax/export
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(): JsonResponse
+    {
+        return $this->json($this->request()->exportCached());
     }
 
     /**
@@ -78,7 +88,7 @@ class Tax extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\Tax\Request
+     * @return \App\Domains\Tax\Request
      */
     protected function request(): Request
     {

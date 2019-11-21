@@ -6,7 +6,7 @@ use DateInterval;
 use DateTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use App\Domain\InvoiceSerie\StoreNumber;
+use App\Domains\InvoiceSerie\StoreNumber;
 use App\Models;
 use App\Models\Invoice as Model;
 

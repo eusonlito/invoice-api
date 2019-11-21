@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\Discount\Request;
+use App\Domains\Discount\Request;
 
 class Discount extends ControllerAbstract
 {
@@ -25,6 +25,16 @@ class Discount extends ControllerAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->request()->enabledCached());
+    }
+
+    /**
+     * GET /discount/export
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(): JsonResponse
+    {
+        return $this->json($this->request()->exportCached());
     }
 
     /**
@@ -78,7 +88,7 @@ class Discount extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\Discount\Request
+     * @return \App\Domains\Discount\Request
      */
     protected function request(): Request
     {

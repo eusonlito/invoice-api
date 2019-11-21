@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
-use App\Domain\User\StoreAuth;
+use App\Domains\User\StoreAuth;
 use App\Services;
 
 class Handler extends ExceptionHandler

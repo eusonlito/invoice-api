@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\ClientAddress\Request;
+use App\Domains\ClientAddress\Request;
 
 class ClientAddress extends ControllerAbstract
 {
@@ -82,7 +82,7 @@ class ClientAddress extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\ClientAddress\Request
+     * @return \App\Domains\ClientAddress\Request
      */
     protected function request(): Request
     {

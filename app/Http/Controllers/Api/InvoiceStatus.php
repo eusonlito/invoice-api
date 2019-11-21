@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\InvoiceStatus\Request;
+use App\Domains\InvoiceStatus\Request;
 
 class InvoiceStatus extends ControllerAbstract
 {
@@ -25,6 +25,16 @@ class InvoiceStatus extends ControllerAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->request()->enabledCached());
+    }
+
+    /**
+     * GET /invoice-status/export
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(): JsonResponse
+    {
+        return $this->json($this->request()->exportCached());
     }
 
     /**
@@ -78,7 +88,7 @@ class InvoiceStatus extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\InvoiceStatus\Request
+     * @return \App\Domains\InvoiceStatus\Request
      */
     protected function request(): Request
     {

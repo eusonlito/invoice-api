@@ -108,6 +108,6 @@ class Client extends ModelAbstract
      */
     public function scopeExport(Builder $q)
     {
-        $q->detail()->with(['addresses']);
+        $q->detail()->with(['addresses'])->orderBy('id', 'ASC');
     }
 }

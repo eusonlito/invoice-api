@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\Product\Request;
+use App\Domains\Product\Request;
 
 class Product extends ControllerAbstract
 {
@@ -88,7 +88,7 @@ class Product extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\Product\Request
+     * @return \App\Domains\Product\Request
      */
     protected function request(): Request
     {

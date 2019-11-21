@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\Payment\Request;
+use App\Domains\Payment\Request;
 
 class Payment extends ControllerAbstract
 {
@@ -25,6 +25,16 @@ class Payment extends ControllerAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->request()->enabledCached());
+    }
+
+    /**
+     * GET /payment/export
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(): JsonResponse
+    {
+        return $this->json($this->request()->exportCached());
     }
 
     /**
@@ -78,7 +88,7 @@ class Payment extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\Payment\Request
+     * @return \App\Domains\Payment\Request
      */
     protected function request(): Request
     {

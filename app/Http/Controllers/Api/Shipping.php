@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\Shipping\Request;
+use App\Domains\Shipping\Request;
 
 class Shipping extends ControllerAbstract
 {
@@ -25,6 +25,16 @@ class Shipping extends ControllerAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->request()->enabledCached());
+    }
+
+    /**
+     * GET /shipping/export
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(): JsonResponse
+    {
+        return $this->json($this->request()->exportCached());
     }
 
     /**
@@ -78,7 +88,7 @@ class Shipping extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\Shipping\Request
+     * @return \App\Domains\Shipping\Request
      */
     protected function request(): Request
     {

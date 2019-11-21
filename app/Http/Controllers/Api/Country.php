@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use App\Domain\Country\Request;
+use App\Domains\Country\Request;
 
 class Country extends ControllerAbstract
 {
@@ -18,7 +18,7 @@ class Country extends ControllerAbstract
     }
 
     /**
-     * @return \App\Domain\Country\Request
+     * @return \App\Domains\Country\Request
      */
     protected function request(): Request
     {

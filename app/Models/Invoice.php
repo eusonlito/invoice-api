@@ -171,7 +171,7 @@ class Invoice extends ModelAbstract
     {
         $q->detail()->with(['client', 'items' => static function ($q) {
             $q->with(['product']);
-        }]);
+        }])->orderBy('id', 'ASC');
     }
 
     /**
