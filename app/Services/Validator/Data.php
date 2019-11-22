@@ -102,7 +102,7 @@ class Data
         $value = $data[$key] ?? null;
 
         if (is_array($rule)) {
-            $value = $this->castRules(is_array($value) ? $value: [], $rule);
+            $value = $this->castRules(is_array($value) ? $value : [], $rule);
         } else {
             $value = $this->cast($value, $rule);
         }

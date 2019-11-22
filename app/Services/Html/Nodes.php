@@ -15,7 +15,7 @@ class Nodes
     {
         libxml_use_internal_errors(true);
 
-        $DOM = new DOMDocument;
+        $DOM = new DOMDocument();
         $DOM->recover = true;
         $DOM->preserveWhiteSpace = false;
         $DOM->substituteEntities = false;

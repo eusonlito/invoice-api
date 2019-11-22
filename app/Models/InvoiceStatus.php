@@ -44,14 +44,4 @@ class InvoiceStatus extends ModelAbstract
     {
         $q->orderBy('order', 'ASC');
     }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $q
-     *
-     * @return void
-     */
-    public function scopeExport(Builder $q)
-    {
-        $q->orderBy('id', 'ASC');
-    }
 }

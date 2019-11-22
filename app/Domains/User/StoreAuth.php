@@ -121,7 +121,7 @@ class StoreAuth
             (int)config('auth.lock.check')
         );
 
-        throw new AuthenticationException;
+        throw new AuthenticationException();
     }
 
     /**

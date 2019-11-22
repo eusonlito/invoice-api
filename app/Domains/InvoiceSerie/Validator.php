@@ -26,8 +26,8 @@ class Validator extends ValidatorAbstract
             'messages' => [
                 'name.required' => __('validator.name-required'),
                 'number_prefix.required' => __('validator.number_prefix-required'),
-                'number_fill.required' => __('validator.number_fill-required'),
-                'number_next.required' => __('validator.number_next-required'),
+                'number_fill.integer' => __('validator.number_fill-integer'),
+                'number_next.integer' => __('validator.number_next-integer'),
                 'default.boolean' => __('validator.default-boolean'),
                 'enabled.boolean' => __('validator.enabled-boolean'),
             ]

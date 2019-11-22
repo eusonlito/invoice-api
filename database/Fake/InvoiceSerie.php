@@ -11,47 +11,36 @@ class InvoiceSerie extends FakeAbstract
      */
     public function run()
     {
-        Model::insert([
-            [
-                'name' => 'Factura',
-                'number_prefix' => date('Y-'),
-                'number_fill' => 3,
-                'number_next' => 1,
-                'default' => true,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
-            [
-                'name' => 'Presupuesto',
-                'number_prefix' => ('PRE-'.date('Y-')),
-                'number_fill' => 3,
-                'number_next' => 1,
-                'default' => false,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
-            [
-                'name' => 'Proforma',
-                'number_prefix' => ('PRO-'.date('Y-')),
-                'number_fill' => 3,
-                'number_next' => 1,
-                'default' => false,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
-            [
-                'name' => 'Rectificativa',
-                'number_prefix' => ('REC-'.date('Y-')),
-                'number_fill' => 3,
-                'number_next' => 1,
-                'default' => false,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
+        factory(Model::class)->create([
+            'name' => 'Factura',
+            'number_prefix' => date('Y-'),
+            'default' => true,
+            'company_id' => 1,
+            'user_id' => 1,
+        ]);
+
+        factory(Model::class)->create([
+            'name' => 'Presupuesto',
+            'number_prefix' => ('PRE-'.date('Y-')),
+            'default' => false,
+            'company_id' => 1,
+            'user_id' => 1,
+        ]);
+
+        factory(Model::class)->create([
+            'name' => 'Proforma',
+            'number_prefix' => ('PRO-'.date('Y-')),
+            'default' => false,
+            'company_id' => 1,
+            'user_id' => 1,
+        ]);
+
+        factory(Model::class)->create([
+            'name' => 'Rectificativa',
+            'number_prefix' => ('REC-'.date('Y-')),
+            'default' => false,
+            'company_id' => 1,
+            'user_id' => 1,
         ]);
     }
 }

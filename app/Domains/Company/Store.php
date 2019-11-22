@@ -13,7 +13,7 @@ class Store extends StoreAbstract
      */
     public function update(): Model
     {
-        $this->row = $this->user->company ?: (new Model);
+        $this->row = $this->user->company ?: (new Model());
 
         $this->row->name = $this->data['name'];
         $this->row->address = $this->data['address'];

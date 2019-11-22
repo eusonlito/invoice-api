@@ -30,6 +30,7 @@ class Validator extends ValidatorAbstract
                 'name.required' => __('validator.name-required'),
                 'address.required' => __('validator.address-required'),
                 'city.required' => __('validator.city-required'),
+                'state.required' => __('validator.state-required'),
                 'postal_code.required' => __('validator.postal_code-required'),
                 'tax_number.required' => __('validator.tax_number-required'),
                 'phone.required' => __('validator.phone-required'),

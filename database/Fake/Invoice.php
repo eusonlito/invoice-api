@@ -5,7 +5,6 @@ namespace Database\Fake;
 use DateInterval;
 use DateTime;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 use App\Domains\InvoiceSerie\StoreNumber;
 use App\Models;
 use App\Models\Invoice as Model;
@@ -101,7 +100,7 @@ class Invoice extends FakeAbstract
         $shipping = $client->addresses->random();
         $tax = $this->tax->random();
 
-        $row = Model::create([
+        $row = factory(Model::class)->create([
             'number' => $this->number($invoiceSerie),
 
             'company_name' => $this->user->company->name,
@@ -178,7 +177,7 @@ class Invoice extends FakeAbstract
         $amount_subtotal -= $amount_discount;
         $amount_tax = $amount_subtotal * $tax->value / 100;
 
-        return Models\InvoiceItem::create([
+        return factory(Models\InvoiceItem::class)->create([
             'line' => $line,
 
             'reference' => $product->reference,

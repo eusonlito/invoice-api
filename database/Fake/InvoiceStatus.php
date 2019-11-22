@@ -11,46 +11,40 @@ class InvoiceStatus extends FakeAbstract
      */
     public function run()
     {
-        Model::insert([
-            [
-                'name' => 'Creada',
-                'order' => 1,
-                'paid' => false,
-                'default' => true,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
+        factory(Model::class)->create([
+            'name' => 'Creada',
+            'order' => 1,
+            'paid' => false,
+            'default' => true,
+            'company_id' => 1,
+            'user_id' => 1,
+        ]);
 
-            [
-                'name' => 'Enviada',
-                'order' => 2,
-                'paid' => false,
-                'default' => false,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
+        factory(Model::class)->create([
+            'name' => 'Enviada',
+            'order' => 2,
+            'paid' => false,
+            'default' => false,
+            'company_id' => 1,
+            'user_id' => 1,
+        ]);
 
-            [
-                'name' => 'Pagada',
-                'order' => 3,
-                'paid' => true,
-                'default' => false,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ],
+        factory(Model::class)->create([
+            'name' => 'Pagada',
+            'order' => 3,
+            'paid' => true,
+            'default' => false,
+            'company_id' => 1,
+            'user_id' => 1,
+        ]);
 
-            [
-                'name' => 'Rechazada',
-                'order' => 4,
-                'paid' => false,
-                'default' => false,
-                'enabled' => true,
-                'company_id' => 1,
-                'user_id' => 1,
-            ]
+        factory(Model::class)->create([
+            'name' => 'Rechazada',
+            'order' => 4,
+            'paid' => false,
+            'default' => false,
+            'company_id' => 1,
+            'user_id' => 1,
         ]);
     }
 }

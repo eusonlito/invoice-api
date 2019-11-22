@@ -30,7 +30,7 @@ class Database
                 if ($binding instanceof DateTime) {
                     $sql->bindings[$i] = $binding->format('Y-m-d H:i:s');
                 } elseif (is_string($binding)) {
-                    $sql->bindings[$i] = "'$binding'";
+                    $sql->bindings[$i] = "'${binding}'";
                 } elseif (is_bool($binding)) {
                     $sql->bindings[$i] = $binding ? 'true' : 'false';
                 }

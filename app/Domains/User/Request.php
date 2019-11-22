@@ -29,8 +29,10 @@ class Request extends RequestAbstract
      */
     public function signup(): array
     {
+        $user = $this->store($this->validator('signup'))->signup();
+
         return [
-            'user' => $this->fractal('detail', $this->store($this->validator('signup'))->signup()),
+            'user' => $this->fractal('detail', $user),
             'token' => $this->store()->authToken()
         ];
     }
@@ -58,8 +60,10 @@ class Request extends RequestAbstract
      */
     public function authCredentials(): array
     {
+        $user = $this->store($this->validator('authCredentials'))->authCredentials();
+
         return [
-            'user' => $this->fractal('detail', $this->store($this->validator('authCredentials'))->authCredentials()),
+            'user' => $this->fractal('detail', $user),
             'token' => $this->store()->authToken()
         ];
     }

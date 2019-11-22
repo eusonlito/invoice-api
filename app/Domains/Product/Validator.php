@@ -22,6 +22,7 @@ class Validator extends ValidatorAbstract
             ],
 
             'messages' => [
+                'reference.string' => __('validator.reference-string'),
                 'name.required' => __('validator.name-required'),
                 'price.required' => __('validator.price-required'),
                 'price.numeric' => __('validator.price-numeric'),
