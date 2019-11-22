@@ -7,11 +7,22 @@ use App\Models\Product as Model;
 class ProductTest extends TestAbstract
 {
     /**
+     * @var string
+     */
+    protected string $route = 'product';
+
+    /**
+     * @var int
+     */
+    protected int $count = 0;
+
+    /**
      * @return void
      */
     public function testIndexNoAuthFail(): void
     {
-        $this->json('GET', route('product.index'))->assertStatus(401);
+        $this->json('GET', $this->route('index'))
+            ->assertStatus(401);
     }
 
     /**
@@ -19,9 +30,28 @@ class ProductTest extends TestAbstract
      */
     public function testIndexSuccess(): void
     {
-        $this->auth()->json('GET', route('product.index'))
+        $this->auth()->json('GET', $this->route('index'))
             ->assertStatus(200)
-            ->assertJsonCount(0);
+            ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEnabledNoAuthFail(): void
+    {
+        $this->json('GET', $this->route('enabled'))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEnabledSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('enabled'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count);
     }
 
     /**
@@ -29,7 +59,8 @@ class ProductTest extends TestAbstract
      */
     public function testExportNoAuthFail(): void
     {
-        $this->json('GET', route('product.export'))->assertStatus(401);
+        $this->json('GET', $this->route('export'))
+            ->assertStatus(401);
     }
 
     /**
@@ -37,9 +68,9 @@ class ProductTest extends TestAbstract
      */
     public function testExportSuccess(): void
     {
-        $this->auth()->json('GET', route('product.export'))
+        $this->auth()->json('GET', $this->route('export'))
             ->assertStatus(200)
-            ->assertJsonCount(0);
+            ->assertJsonCount($this->count);
     }
 
     /**
@@ -58,7 +89,7 @@ class ProductTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', route('product.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.');
@@ -71,7 +102,7 @@ class ProductTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', route('product.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('referencia');
     }
@@ -83,7 +114,7 @@ class ProductTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['name' => '']);
 
-        $this->auth()->json('POST', route('product.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('nombre');
     }
@@ -95,7 +126,7 @@ class ProductTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', route('product.create'), ['price' => '' ] + $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), ['price' => '' ] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('precio');
     }
@@ -107,7 +138,7 @@ class ProductTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', route('product.create'), ['price' => 'f'] + $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), ['price' => 'f'] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('precio');
     }
@@ -119,7 +150,7 @@ class ProductTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->json('POST', route('product.create'), $row->toArray())
+        $this->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(401);
     }
 
@@ -134,7 +165,7 @@ class ProductTest extends TestAbstract
         $row->price = 10;
         $row->enabled = true;
 
-        $this->auth()->json('POST', route('product.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -142,9 +173,18 @@ class ProductTest extends TestAbstract
     /**
      * @return void
      */
-    public function testDetailFail(): void
+    public function testDetailNoAuthFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', route('product.detail', $this->row()->id))
+        $this->json('GET', $this->route('detail', $this->row()->id))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDetailNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -153,7 +193,7 @@ class ProductTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', route('product.detail', $this->row()->id))
+        $this->auth()->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -163,7 +203,7 @@ class ProductTest extends TestAbstract
      */
     public function testUpdateFail(): void
     {
-        $this->auth()->json('PATCH', route('product.update', $this->row()->id))
+        $this->auth()->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.');
@@ -176,7 +216,7 @@ class ProductTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', route('product.update', $row->id), ['reference' => null] + $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), ['reference' => null] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('referencia');
     }
@@ -189,7 +229,7 @@ class ProductTest extends TestAbstract
         $row = $this->row();
         $row->name = '';
 
-        $this->auth()->json('PATCH', route('product.update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(422)
             ->assertSee('nombre');
     }
@@ -201,7 +241,7 @@ class ProductTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', route('product.update', $row->id), ['price' => ''] + $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), ['price' => ''] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('precio');
     }
@@ -213,7 +253,7 @@ class ProductTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', route('product.update', $row->id), ['price' => 'f'] + $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), ['price' => 'f'] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('precio');
     }
@@ -225,7 +265,7 @@ class ProductTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->json('PATCH', route('product.update', $row->id), $row->toArray())
+        $this->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(401);
     }
 
@@ -237,7 +277,7 @@ class ProductTest extends TestAbstract
         $row = $this->row();
 
         $this->auth($this->userFirst())
-            ->json('PATCH', route('product.update', $row->id), $row->toArray())
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -248,9 +288,39 @@ class ProductTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', route('product.update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
+    }
+
+    /**
+     * @return void
+     */
+    public function testIndexAfterSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('index'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEnabledAfterSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('enabled'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testExportAfterSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('export'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
     }
 
     /**

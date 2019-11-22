@@ -30,7 +30,6 @@ Route::group(['middleware' => ['user', 'user.confirm']], static function () {
 
 Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static function () {
     Route::get('/client', 'Client@index')->name('client.index');
-    Route::get('/client/enabled', 'Client@enabled')->name('client.enabled');
     Route::get('/client/export', 'Client@export')->name('client.export');
     Route::get('/client/{id}', 'Client@detail')->name('client.detail');
     Route::get('/client/w', 'Client@wCreate')->name('client.w.create');
@@ -40,9 +39,8 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::delete('/client/{id}', 'Client@delete')->name('client.delete');
 
     Route::get('/client-address/enabled', 'ClientAddress@enabled')->name('client-address.enabled');
-    Route::get('/client/export', 'Client@export')->name('client.export');
     Route::get('/client-address/{client_id}', 'ClientAddress@client')->name('client-address.client');
-    Route::get('/client-address/{client_id}/enabled', 'ClientAddress@clientEnabled')->name('client-address.client-enabled');
+    Route::get('/client-address/{client_id}/enabled', 'ClientAddress@clientEnabled')->name('client-address.client.enabled');
     Route::post('/client-address/{client_id}', 'ClientAddress@create')->name('client-address.create');
     Route::patch('/client-address/{id}', 'ClientAddress@update')->name('client-address.update');
     Route::delete('/client-address/{id}', 'ClientAddress@delete')->name('client-address.delete');

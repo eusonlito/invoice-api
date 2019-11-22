@@ -14,13 +14,25 @@
         <testsuite name="Unit">
             <file>./tests/Unit/UserTest.php</file>
             <file>./tests/Unit/CompanyTest.php</file>
-            <file>./tests/Unit/InvoiceStatusTest.php</file>
             <file>./tests/Unit/InvoiceSerieTest.php</file>
+            <file>./tests/Unit/InvoiceStatusTest.php</file>
             <file>./tests/Unit/DiscountTest.php</file>
             <file>./tests/Unit/PaymentTest.php</file>
             <file>./tests/Unit/ProductTest.php</file>
             <file>./tests/Unit/ShippingTest.php</file>
             <file>./tests/Unit/TaxTest.php</file>
+            <file>./tests/Unit/ClientTest.php</file>
+            <file>./tests/Unit/ClientAddressTest.php</file>
+
+            <file>./tests/Unit/ClientAddressFinishTest.php</file>
+            <file>./tests/Unit/ClientFinishTest.php</file>
+            <file>./tests/Unit/TaxFinishTest.php</file>
+            <file>./tests/Unit/ShippingFinishTest.php</file>
+            <file>./tests/Unit/ProductFinishTest.php</file>
+            <file>./tests/Unit/PaymentFinishTest.php</file>
+            <file>./tests/Unit/DiscountFinishTest.php</file>
+            <file>./tests/Unit/InvoiceStatusFinishTest.php</file>
+            <file>./tests/Unit/InvoiceSerieFinishTest.php</file>
         </testsuite>
     </testsuites>
 

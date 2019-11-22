@@ -11,6 +11,17 @@ abstract class TestAbstract extends BaseTestAbstract
 {
    /**
      * @param \Illuminate\Contracts\Auth\Authenticatable $user = null
+     * @param mixed ...$params
+     *
+     * @return self
+     */
+    public function route(string $name, ...$params): string
+    {
+        return (string)route($this->route.'.'.$name, $params);
+    }
+
+   /**
+     * @param \Illuminate\Contracts\Auth\Authenticatable $user = null
      *
      * @return self
      */

@@ -17,8 +17,8 @@ $factory->define(Model::class, static function (Generator $faker): array {
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
 
-        'billing' => null,
-        'shipping' => null,
+        'billing' => true,
+        'shipping' => true,
         'enabled' => true,
 
         'client_id' => null,

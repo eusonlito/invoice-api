@@ -19,16 +19,6 @@ class Client extends ControllerAbstract
     }
 
     /**
-     * GET /client/enabled
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function enabled(): JsonResponse
-    {
-        return $this->json($this->request()->enabledCached());
-    }
-
-    /**
      * GET /client/export
      *
      * @return \Illuminate\Http\JsonResponse

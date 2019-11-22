@@ -7,11 +7,22 @@ use App\Models\Tax as Model;
 class TaxTest extends TestAbstract
 {
     /**
+     * @var string
+     */
+    protected string $route = 'tax';
+
+    /**
+     * @var int
+     */
+    protected int $count = 1;
+
+    /**
      * @return void
      */
-    public function testIndexNoAuthFail(): void
+    public function testIndexNotAllowedFail(): void
     {
-        $this->json('GET', route('tax.index'))->assertStatus(401);
+        $this->json('GET', $this->route('index'))
+            ->assertStatus(401);
     }
 
     /**
@@ -19,17 +30,37 @@ class TaxTest extends TestAbstract
      */
     public function testIndexSuccess(): void
     {
-        $this->auth()->json('GET', route('tax.index'))
+        $this->auth()->json('GET', $this->route('index'))
             ->assertStatus(200)
-            ->assertJsonCount(1);
+            ->assertJsonCount($this->count);
     }
 
     /**
      * @return void
      */
-    public function testExportNoAuthFail(): void
+    public function testEnabledNoAuthFail(): void
     {
-        $this->json('GET', route('tax.export'))->assertStatus(401);
+        $this->json('GET', $this->route('enabled'))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEnabledSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('enabled'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return void
+     */
+    public function testExportNotAllowedFail(): void
+    {
+        $this->json('GET', $this->route('export'))
+            ->assertStatus(401);
     }
 
     /**
@@ -37,9 +68,9 @@ class TaxTest extends TestAbstract
      */
     public function testExportSuccess(): void
     {
-        $this->auth()->json('GET', route('tax.export'))
+        $this->auth()->json('GET', $this->route('export'))
             ->assertStatus(200)
-            ->assertJsonCount(1);
+            ->assertJsonCount($this->count);
     }
 
     /**
@@ -59,7 +90,7 @@ class TaxTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', route('tax.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.');
@@ -72,7 +103,7 @@ class TaxTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['name' => '']);
 
-        $this->auth()->json('POST', route('tax.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('nombre');
     }
@@ -84,7 +115,7 @@ class TaxTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', route('tax.create'), ['value' => 'f'] + $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), ['value' => 'f'] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('valor');
     }
@@ -92,11 +123,11 @@ class TaxTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreateNoAuthFail(): void
+    public function testCreateNotAllowedFail(): void
     {
         $row = factory(Model::class)->make();
 
-        $this->json('POST', route('tax.create'), $row->toArray())
+        $this->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(401);
     }
 
@@ -112,7 +143,7 @@ class TaxTest extends TestAbstract
         $row->default = true;
         $row->enabled = true;
 
-        $this->auth()->json('POST', route('tax.create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -120,9 +151,18 @@ class TaxTest extends TestAbstract
     /**
      * @return void
      */
-    public function testDetailFail(): void
+    public function testDetailNoAuthFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', route('tax.detail', $this->row()->id))
+        $this->json('GET', $this->route('detail', $this->row()->id))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDetailNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -131,7 +171,7 @@ class TaxTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', route('tax.detail', $this->row()->id))
+        $this->auth()->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -141,7 +181,7 @@ class TaxTest extends TestAbstract
      */
     public function testUpdateFail(): void
     {
-        $this->auth()->json('PATCH', route('tax.update', $this->row()->id))
+        $this->auth()->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.');
@@ -155,7 +195,7 @@ class TaxTest extends TestAbstract
         $row = $this->row();
         $row->name = '';
 
-        $this->auth()->json('PATCH', route('tax.update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(422)
             ->assertSee('nombre');
     }
@@ -167,7 +207,7 @@ class TaxTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', route('tax.update', $row->id), ['value' => 'f'] + $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), ['value' => 'f'] + $row->toArray())
             ->assertStatus(422)
             ->assertSee('valor');
     }
@@ -179,7 +219,7 @@ class TaxTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->json('PATCH', route('tax.update', $row->id), $row->toArray())
+        $this->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(401);
     }
 
@@ -191,7 +231,7 @@ class TaxTest extends TestAbstract
         $row = $this->row();
 
         $this->auth($this->userFirst())
-            ->json('PATCH', route('tax.update', $row->id), $row->toArray())
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -202,9 +242,39 @@ class TaxTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', route('tax.update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
+    }
+
+    /**
+     * @return void
+     */
+    public function testIndexAfterSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('index'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEnabledAfterSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('enabled'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testExportAfterSuccess(): void
+    {
+        $this->auth()->json('GET', $this->route('export'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
     }
 
     /**

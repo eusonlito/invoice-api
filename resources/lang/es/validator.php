@@ -11,7 +11,7 @@
     'comment_private-string' => 'El comentario privado no es válido.',
     'comment_public-string' => 'El comentario público no es válido.',
     'conditions-required' => 'Es necesario que aceptes las condiciones.',
-    'contact_email-email' => 'El email de contacto no es válido.',
+    'contact_email-email' => 'El correo electrónico de contacto no es válido.',
     'country-required' => 'El país es obligatorio.',
     'country_id-required' => 'El país es obligatorio.',
     'date_at-date' => 'La fecha no es correcta.',

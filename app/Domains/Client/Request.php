@@ -27,22 +27,6 @@ class Request extends RequestAbstract
     /**
      * @return array
      */
-    public function enabled(): array
-    {
-        return $this->fractal('simple', $this->model()->enabled()->list()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function enabledCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->enabled());
-    }
-
-    /**
-     * @return array
-     */
     public function export(): array
     {
         return $this->fractal('export', $this->model()->export()->get());

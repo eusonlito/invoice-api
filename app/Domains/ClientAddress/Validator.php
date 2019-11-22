@@ -7,19 +7,6 @@ use App\Domains\ValidatorAbstract;
 class Validator extends ValidatorAbstract
 {
     /**
-     * @param string $name
-     *
-     * @return array
-     */
-    protected static function config(string $name): array
-    {
-        return [
-            'create' => static::configCreate(),
-            'update' => static::configUpdate()
-        ][$name];
-    }
-
-    /**
      * @return array
      */
     protected static function configCreate(): array

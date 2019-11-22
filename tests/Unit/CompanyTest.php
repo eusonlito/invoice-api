@@ -8,11 +8,17 @@ use App\Models\Company as Model;
 class CompanyTest extends TestAbstract
 {
     /**
+     * @var string
+     */
+    protected string $route = 'company';
+
+    /**
      * @return void
      */
     public function testDetailNoExistsFail(): void
     {
-        $this->auth()->json('GET', route('company.detail'))->assertStatus(404);
+        $this->auth()->json('GET', $this->route('detail'))
+            ->assertStatus(404);
     }
 
     /**
@@ -34,7 +40,7 @@ class CompanyTest extends TestAbstract
      */
     public function testUpdateFail(): void
     {
-        $this->auth()->json('PATCH', route('company.update'))
+        $this->auth()->json('PATCH', $this->route('update'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.');
@@ -47,7 +53,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['name' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('nombre');
     }
@@ -59,7 +65,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['address' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('direcci\u00f3n');
     }
@@ -71,7 +77,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['city' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('ciudad');
     }
@@ -83,7 +89,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['state' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('provincia');
     }
@@ -95,7 +101,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['postal_code' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('c\u00f3digo postal');
     }
@@ -107,7 +113,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['tax_number' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('NIF');
     }
@@ -119,7 +125,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['phone' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('tel\u00e9fono');
     }
@@ -131,7 +137,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['email' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('correo electr\u00f3nico');
     }
@@ -143,7 +149,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['email' => 'email']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('correo electr\u00f3nico');
     }
@@ -155,7 +161,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['country_id' => '']);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('pa\u00eds');
     }
@@ -167,7 +173,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['country_id' => 99999]);
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(422)
             ->assertSee('pa\u00eds');
     }
@@ -179,7 +185,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->json('PATCH', route('company.update'), $row->toArray())
+        $this->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(401);
     }
 
@@ -190,7 +196,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth($this->userFirst())->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth($this->userFirst())->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -202,7 +208,7 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('PATCH', route('company.update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -212,7 +218,7 @@ class CompanyTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', route('company.detail'))
+        $this->auth()->json('GET', $this->route('detail'))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }

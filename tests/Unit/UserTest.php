@@ -8,6 +8,11 @@ use App\Models\User as Model;
 class UserTest extends TestAbstract
 {
     /**
+     * @var string
+     */
+    protected string $route = 'user';
+
+    /**
      * @return void
      */
     public function setup(): void
@@ -33,7 +38,8 @@ class UserTest extends TestAbstract
      */
     public function testSignupEmptyFail(): void
     {
-        $this->json('POST', route('user.signup'))->assertStatus(422);
+        $this->json('POST', $this->route('signup'))
+            ->assertStatus(422);
     }
 
     /**
@@ -45,7 +51,7 @@ class UserTest extends TestAbstract
         $row['name'] = '';
         $row['conditions'] = true;
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(422)
             ->assertSee('nombre');
     }
@@ -59,7 +65,7 @@ class UserTest extends TestAbstract
         $row['user'] = 'fail';
         $row['conditions'] = true;
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(422)
             ->assertSee('correo electr\u00f3nico');
     }
@@ -73,7 +79,7 @@ class UserTest extends TestAbstract
         $row['password'] = 'fail';
         $row['conditions'] = true;
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(422)
             ->assertSee('6 caracteres');
     }
@@ -88,7 +94,7 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = 'failfail';
         $row['conditions'] = true;
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(422)
             ->assertSee('no coincide');
     }
@@ -102,7 +108,7 @@ class UserTest extends TestAbstract
         $row['password'] = $row['user'];
         $row['password_repeat'] = $row['user'];
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(422)
             ->assertSee('condiciones');
     }
@@ -112,7 +118,7 @@ class UserTest extends TestAbstract
      */
     public function testSignupConfirmEmptyFail(): void
     {
-        $this->json('POST', route('user.confirm.start'))
+        $this->json('POST', $this->route('confirm.start'))
             ->assertStatus(422)
             ->assertSee('correo electr\u00f3nico');
     }
@@ -122,9 +128,9 @@ class UserTest extends TestAbstract
      */
     public function testSignupConfirmNoUserFail(): void
     {
-        $this->json('POST', route('user.confirm.start'), [
-            'user' => 'fail'
-        ])->assertStatus(422)->assertSee('correo electr\u00f3nico');
+        $this->json('POST', $this->route('confirm.start'), ['user' => 'fail'])
+            ->assertStatus(422)
+            ->assertSee('correo electr\u00f3nico');
     }
 
     /**
@@ -132,9 +138,8 @@ class UserTest extends TestAbstract
      */
     public function testSignupConfirmNoExistsFail(): void
     {
-        $this->json('POST', route('user.confirm.start'), [
-            'user' => 'fail@fail.com'
-        ])->assertStatus(404);
+        $this->json('POST', $this->route('confirm.start'), ['user' => 'fail@fail.com'])
+            ->assertStatus(404);
     }
 
     /**
@@ -142,7 +147,7 @@ class UserTest extends TestAbstract
      */
     public function testSignupPasswordResetEmptyFail(): void
     {
-        $this->json('POST', route('user.password.reset.start'))
+        $this->json('POST', $this->route('password.reset.start'))
             ->assertStatus(422)
             ->assertSee('correo electr\u00f3nico');
     }
@@ -152,7 +157,7 @@ class UserTest extends TestAbstract
      */
     public function testSignupPasswordResetNoUserFail(): void
     {
-        $this->json('POST', route('user.password.reset.start'), [
+        $this->json('POST', $this->route('password.reset.start'), [
             'user' => 'fail'
         ])->assertStatus(422)->assertSee('correo electr\u00f3nico');
     }
@@ -164,9 +169,8 @@ class UserTest extends TestAbstract
      */
     public function testSignupPasswordResetNoExistsFail(): void
     {
-        $this->json('POST', route('user.password.reset.start'), [
-            'user' => 'fail@fail.com'
-        ])->assertStatus(200);
+        $this->json('POST', $this->route('password.reset.start'), ['user' => 'fail@fail.com'])
+            ->assertStatus(200);
     }
 
     /**
@@ -179,7 +183,7 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = $row['user'];
         $row['conditions'] = true;
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -194,7 +198,7 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = $row['user'];
         $row['conditions'] = true;
 
-        $this->json('POST', route('user.signup'), $row)
+        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(200)
             ->assertJsonStructure($this->structure());
     }
@@ -206,13 +210,13 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->json('POST', route('user.confirm.start'), [
-            'user' => $row->user
-        ])->assertStatus(200);
+        $this->json('POST', $this->route('confirm.start'), ['user' => $row->user])
+            ->assertStatus(200);
 
         $hash = encrypt($row->id.'|'.microtime(true));
 
-        $this->json('POST', route('user.confirm.finish', $hash))->assertStatus(200);
+        $this->json('POST', $this->route('confirm.finish', $hash))
+            ->assertStatus(200);
     }
 
     /**
@@ -222,13 +226,12 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->json('POST', route('user.password.reset.start'), [
-            'user' => $row->user
-        ])->assertStatus(200);
+        $this->json('POST', $this->route('password.reset.start'), ['user' => $row->user])
+            ->assertStatus(200);
 
         $hash = Models\UserPasswordReset::orderBy('id', 'DESC')->first()->hash;
 
-        $this->json('POST', route('user.password.reset.finish', $hash), [
+        $this->json('POST', $this->route('password.reset.finish', $hash), [
             'password' => $row->user,
             'password_repeat' => $row->user,
         ])->assertStatus(200);
@@ -241,7 +244,7 @@ class UserTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->json('POST', route('user.auth.credentials'), [
+        $this->json('POST', $this->route('auth.credentials'), [
             'user' => $row->user,
             'password' => $row->user
         ])->assertStatus(401);
@@ -254,7 +257,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->json('POST', route('user.auth.credentials'), [
+        $this->json('POST', $this->route('auth.credentials'), [
             'user' => $row->user,
             'password' => $row->user
         ])->assertStatus(200)->assertJsonStructure($this->structure());
@@ -267,7 +270,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->json('PATCH', route('user.update.profile'), [
+        $this->json('PATCH', $this->route('update.profile'), [
             'name' => $row->name,
             'user' => $row->user,
             'password_current' => $row->user
@@ -281,7 +284,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.profile'), [
+        $this->auth()->json('PATCH', $this->route('update.profile'), [
             'name' => '',
             'user' => $row->user,
             'password_current' => $row->user
@@ -295,7 +298,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.profile'), [
+        $this->auth()->json('PATCH', $this->route('update.profile'), [
             'name' => $row->name,
             'user' => '',
             'password_current' => $row->user
@@ -309,7 +312,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.profile'), [
+        $this->auth()->json('PATCH', $this->route('update.profile'), [
             'name' => $row->name,
             'user' => $row->user,
             'password_current' => $row->user.'1'
@@ -323,7 +326,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.profile'), [
+        $this->auth()->json('PATCH', $this->route('update.profile'), [
             'name' => $row->name,
             'user' => $row->user,
             'password' => $row->user,
@@ -338,7 +341,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->json('PATCH', route('user.update.password'), [
+        $this->json('PATCH', $this->route('update.password'), [
             'password' => $row->user,
             'password_repeat' => $row->user,
             'password_current' => $row->user,
@@ -352,7 +355,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.password'), [
+        $this->auth()->json('PATCH', $this->route('update.password'), [
             'password' => 'fail',
             'password_repeat' => 'fail',
             'password_current' => $row->user,
@@ -366,7 +369,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.password'), [
+        $this->auth()->json('PATCH', $this->route('update.password'), [
             'password' => $row->user,
             'password_repeat' => $row->user.'1',
             'password_current' => $row->user,
@@ -380,7 +383,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.password'), [
+        $this->auth()->json('PATCH', $this->route('update.password'), [
             'password' => $row->user,
             'password_repeat' => $row->user,
             'password_current' => $row->user.'1',
@@ -394,7 +397,7 @@ class UserTest extends TestAbstract
     {
         $row = $this->user();
 
-        $this->auth()->json('PATCH', route('user.update.password'), [
+        $this->auth()->json('PATCH', $this->route('update.password'), [
             'password' => $row->user,
             'password_repeat' => $row->user,
             'password_current' => $row->user,
