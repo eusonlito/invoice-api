@@ -35,7 +35,7 @@ class Validator extends ValidatorAbstract
                 'tax_number.required' => __('validator.tax_number-required'),
                 'phone.required' => __('validator.phone-required'),
                 'email.required' => __('validator.email-required'),
-                'email.email' => __('validator.email-required'),
+                'email.email' => __('validator.email-email'),
                 'country_id.required' => __('validator.country_id-required'),
                 'country_id.integer' => __('validator.country_id-required'),
                 'country_id.exists' => __('validator.country_id-required'),

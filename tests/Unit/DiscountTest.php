@@ -17,6 +17,11 @@ class DiscountTest extends TestAbstract
     protected int $count = 2;
 
     /**
+     * @var array
+     */
+    protected array $structure = ['id', 'name', 'type', 'value', 'description', 'default', 'enabled'];
+
+    /**
      * @return void
      */
     public function testIndexNoAuthFail(): void
@@ -74,6 +79,15 @@ class DiscountTest extends TestAbstract
     }
 
     /**
+     * @return void
+     */
+    public function testCreateNoAuthFail(): void
+    {
+        $this->json('POST', $this->route('create'))
+            ->assertStatus(401);
+    }
+
+    /**
      * Rules:
      *
      * 'name' => 'required|string',
@@ -87,73 +101,36 @@ class DiscountTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreateFail(): void
+    public function testCreateEmptyFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' type ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.type-required'));
     }
 
     /**
      * @return void
      */
-    public function testCreateNameFail(): void
+    public function testCreateInvalidFail(): void
     {
-        $row = factory(Model::class)->make(['name' => '']);
+        $fail = [
+            'type' => 'fail',
+            'value' => 'fail'
+        ];
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateTypeEmptyFail(): void
-    {
-        $row = factory(Model::class)->make(['type' => '']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('tipo');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateTypeInvalidFail(): void
-    {
-        $row = factory(Model::class)->make(['type' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('tipo');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateValueFail(): void
-    {
-        $row = factory(Model::class)->make();
-
-        $this->auth()->json('POST', $this->route('create'), ['value' => 'f'] + $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('valor');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateNoAuthFail(): void
-    {
-        $row = factory(Model::class)->make();
-
-        $this->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(401);
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' type ')
+            ->assertDontSee(' value ')
+            ->assertSee($this->t('validator.type-in'))
+            ->assertSee($this->t('validator.value-numeric'));
     }
 
     /**
@@ -162,16 +139,16 @@ class DiscountTest extends TestAbstract
     public function testCreateFirstSuccess(): void
     {
         $row = factory(Model::class)->make();
-        $row->name = 'Test';
+        $row->name = 'Test 17';
         $row->type = 'percent';
-        $row->value = 10;
+        $row->value = 17;
         $row->description = 'Test Description';
         $row->default = true;
-        $row->enabled = true;
 
         $this->auth($this->userFirst())->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure)
+            ->assertJson(['value' => 17]);
     }
 
     /**
@@ -180,16 +157,16 @@ class DiscountTest extends TestAbstract
     public function testCreateSuccess(): void
     {
         $row = factory(Model::class)->make();
-        $row->name = 'Test';
+        $row->name = 'Test 19';
         $row->type = 'percent';
-        $row->value = 10;
+        $row->value = 19;
         $row->description = 'Test Description';
         $row->default = true;
-        $row->enabled = true;
 
         $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure)
+            ->assertJson(['value' => 19]);
     }
 
     /**
@@ -217,69 +194,43 @@ class DiscountTest extends TestAbstract
     {
         $this->auth()->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
      * @return void
      */
-    public function testUpdateFail(): void
+    public function testUpdatEmptyFail(): void
     {
         $this->auth()->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' type ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.type-required'));
     }
 
     /**
      * @return void
      */
-    public function testUpdateNameFail(): void
+    public function testUpdateInvalidFail(): void
     {
         $row = $this->row();
-        $row->name = '';
+        $fail = [
+            'type' => 'fail',
+            'value' => 'fail'
+        ];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateTypeEmptyFail(): void
-    {
-        $row = $this->row();
-        $row->type = '';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('tipo');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateTypeInvalidFail(): void
-    {
-        $row = $this->row();
-        $row->type = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('tipo');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateValueFail(): void
-    {
-        $row = $this->row();
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), ['value' => 'f'] + $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('valor');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' type ')
+            ->assertDontSee(' value ')
+            ->assertSee($this->t('validator.type-in'))
+            ->assertSee($this->t('validator.value-numeric'));
     }
 
     /**
@@ -289,7 +240,7 @@ class DiscountTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->json('PATCH', $this->route('update', $row->id))
             ->assertStatus(401);
     }
 
@@ -311,10 +262,13 @@ class DiscountTest extends TestAbstract
     public function testUpdateSuccess(): void
     {
         $row = $this->row();
+        $row->name = 'Test 15';
+        $row->value = 15;
 
         $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure)
+            ->assertJson(['value' => 15]);
     }
 
     /**
@@ -353,13 +307,5 @@ class DiscountTest extends TestAbstract
     protected function row(): Model
     {
         return Model::orderBy('id', 'DESC')->first();
-    }
-
-    /**
-     * @return array
-     */
-    protected function structure(): array
-    {
-        return ['id', 'name', 'type', 'value', 'description', 'default', 'enabled'];
     }
 }

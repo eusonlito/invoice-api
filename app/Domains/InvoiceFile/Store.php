@@ -43,8 +43,7 @@ class Store extends StoreAbstract
             Model::disk()->delete($previous);
         }
 
-        $this->cacheFlush('Invoice');
-        $this->cacheFlush('InvoiceFile');
+        $this->cacheFlush('InvoiceFile', 'Invoice');
 
         service()->log('invoice_file', 'update', $this->user->id, ['invoice_file_id' => $row->id]);
 
@@ -62,8 +61,7 @@ class Store extends StoreAbstract
 
         Model::disk()->delete($row->file);
 
-        $this->cacheFlush('Invoice');
-        $this->cacheFlush('InvoiceFile');
+        $this->cacheFlush('InvoiceFile', 'Invoice');
 
         service()->log('invoice_file', 'delete', $this->user->id);
     }

@@ -18,6 +18,15 @@ class ClientAddressTest extends TestAbstract
     protected int $count = 0;
 
     /**
+     * @var array
+     */
+    protected array $structure = [
+        'id' , 'name', 'address', 'city', 'state', 'postal_code', 'country', 'phone',
+        'email', 'comment', 'tax_number', 'billing', 'shipping', 'enabled',
+        'client' => ['id']
+    ];
+
+    /**
      * @return void
      */
     public function testEnabledNoAuthFail(): void
@@ -95,79 +104,58 @@ class ClientAddressTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreateFail(): void
+    public function testCreateEmptyFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $row->name = '';
-        $row->address = '';
-        $row->city = '';
-        $row->state = '';
-        $row->postal_code = '';
-        $row->country = '';
-        $row->phone = '';
-        $row->email = '';
-        $row->comment = '';
-        $row->tax_number = '';
-        $row->billing = '';
-        $row->shipping = '';
-        $row->enabled = '';
-
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
+        $this->auth()->json('POST', $this->route('create', $this->client()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' address ')
+            ->assertDontSee(' city ')
+            ->assertDontSee(' state ')
+            ->assertDontSee(' postal code ')
+            ->assertDontSee(' country ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.address-required'))
+            ->assertSee($this->t('validator.city-required'))
+            ->assertSee($this->t('validator.state-required'))
+            ->assertSee($this->t('validator.postal_code-required'))
+            ->assertSee($this->t('validator.country-required'));
     }
 
     /**
      * @return void
      */
-    public function testCreateRequiredFail(): void
+    public function testCreateInvalidFail(): void
     {
-        $row = factory(Model::class)->make();
+        $fail = ['email' => 'fail'];
 
-        $row->name = '';
-        $row->address = '';
-        $row->city = '';
-        $row->state = '';
-        $row->postal_code = '';
-        $row->country = '';
-        $row->tax_number = '';
-
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
+        $this->auth()->json('POST', $this->route('create', $this->client()->id), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre')
-            ->assertSee('direcci\u00f3n')
-            ->assertSee('ciudad')
-            ->assertSee('provincia')
-            ->assertSee('c\u00f3digo postal')
-            ->assertSee('pa\u00eds')
-            ->assertSee('NIF');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' email ')
+            ->assertSee($this->t('validator.email-email'));
     }
 
     /**
      * @return void
      */
-    public function testCreateEmailFail(): void
+    public function testCreateBillingNifFail(): void
     {
-        $row = factory(Model::class)->make();
-        $row->email = 'fail';
+        $fail = [
+            'billing' => true,
+            'tax_number' => ''
+        ];
 
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
+        $this->auth()->json('POST', $this->route('create', $this->client()->id), $fail)
             ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateTaxNumberFail(): void
-    {
-        $row = factory(Model::class)->make(['tax_number' => '']);
-
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('NIF');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' billing ')
+            ->assertDontSee(' tax number ')
+            ->assertSee($this->t('validator.tax_number-required'));
     }
 
     /**
@@ -175,9 +163,7 @@ class ClientAddressTest extends TestAbstract
      */
     public function testCreateNoAuthFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $this->json('POST', $this->route('create', $this->client()->id), $row->toArray())
+        $this->json('POST', $this->route('create', $this->client()->id))
             ->assertStatus(401);
     }
 
@@ -191,7 +177,7 @@ class ClientAddressTest extends TestAbstract
 
         $this->auth($user)->json('POST', $this->route('create', $this->clientByUser($user)->id), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -204,7 +190,7 @@ class ClientAddressTest extends TestAbstract
 
         $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -214,23 +200,22 @@ class ClientAddressTest extends TestAbstract
     {
         $row = $this->row();
 
-        $row->name = '';
-        $row->address = '';
-        $row->city = '';
-        $row->state = '';
-        $row->postal_code = '';
-        $row->country = '';
-        $row->tax_number = '';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id))
             ->assertStatus(422)
-            ->assertSee('nombre')
-            ->assertSee('direcci\u00f3n')
-            ->assertSee('ciudad')
-            ->assertSee('provincia')
-            ->assertSee('c\u00f3digo postal')
-            ->assertSee('pa\u00eds')
-            ->assertSee('NIF');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' address ')
+            ->assertDontSee(' city ')
+            ->assertDontSee(' state ')
+            ->assertDontSee(' postal code ')
+            ->assertDontSee(' country ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.address-required'))
+            ->assertSee($this->t('validator.city-required'))
+            ->assertSee($this->t('validator.state-required'))
+            ->assertSee($this->t('validator.postal_code-required'))
+            ->assertSee($this->t('validator.country-required'));
     }
 
     /**
@@ -239,24 +224,34 @@ class ClientAddressTest extends TestAbstract
     public function testUpdateEmailFail(): void
     {
         $row = $this->row();
-        $row->email = 'fail';
+        $fail = ['email' => 'fail'];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
             ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' email ')
+            ->assertSee($this->t('validator.email-email'));
     }
 
     /**
      * @return void
      */
-    public function testUpdateTaxNumberFail(): void
+    public function testUpdateBillingNifFail(): void
     {
         $row = $this->row();
-        $row->tax_number = '';
+        $fail = [
+            'billing' => true,
+            'tax_number' => ''
+        ];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
             ->assertStatus(422)
-            ->assertSee('NIF');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' billing ')
+            ->assertDontSee(' tax number ')
+            ->assertSee($this->t('validator.tax_number-required'));
     }
 
     /**
@@ -266,7 +261,7 @@ class ClientAddressTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->json('PATCH', $this->route('update', $row->id))
             ->assertStatus(401);
     }
 
@@ -290,7 +285,7 @@ class ClientAddressTest extends TestAbstract
 
         $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -347,17 +342,5 @@ class ClientAddressTest extends TestAbstract
     protected function row(): Model
     {
         return Model::orderBy('id', 'DESC')->first();
-    }
-
-    /**
-     * @return array
-     */
-    protected function structure(): array
-    {
-        return [
-            'id' , 'name', 'address', 'city', 'state', 'postal_code', 'country', 'phone',
-            'email', 'comment', 'tax_number', 'billing', 'shipping', 'enabled',
-            'client' => ['id']
-        ];
     }
 }

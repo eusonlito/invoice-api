@@ -262,6 +262,8 @@ class Store extends StoreAbstract
 
             $this->item($i, $item->fill($data), $products->get($data['reference']));
         }
+
+        $this->row->quantity = $this->row->items->sum('quantity');
     }
 
     /**

@@ -39,7 +39,7 @@ class Store extends StoreAbstract
 
         $row->save();
 
-        $this->cacheFlush('product');
+        $this->cacheFlush('Product', 'Invoice');
 
         service()->log('product', 'update', $this->user->id, ['product_id' => $row->id]);
 
@@ -74,7 +74,7 @@ class Store extends StoreAbstract
     {
         $row->delete();
 
-        $this->cacheFlush('Product');
+        $this->cacheFlush('Product', 'Invoice');
 
         service()->log('product', 'delete', $this->user->id);
     }

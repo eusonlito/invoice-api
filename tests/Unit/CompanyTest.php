@@ -13,6 +13,23 @@ class CompanyTest extends TestAbstract
     protected string $route = 'company';
 
     /**
+     * @var array
+     */
+    protected array $structure = [
+        'id', 'name', 'address', 'city', 'state', 'postal_code', 'tax_number',
+        'phone', 'email', 'country' => ['id', 'name']
+    ];
+
+    /**
+     * @return void
+     */
+    public function testDetailNoAuthFail(): void
+    {
+        $this->json('GET', $this->route('detail'))
+            ->assertStatus(401);
+    }
+
+    /**
      * @return void
      */
     public function testDetailNoExistsFail(): void
@@ -38,144 +55,50 @@ class CompanyTest extends TestAbstract
     /**
      * @return void
      */
-    public function testUpdateFail(): void
+    public function testUpdateEmptyFail(): void
     {
         $this->auth()->json('PATCH', $this->route('update'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' address ')
+            ->assertDontSee(' city ')
+            ->assertDontSee(' state ')
+            ->assertDontSee(' postal code ')
+            ->assertDontSee(' tax number ')
+            ->assertDontSee(' phone ')
+            ->assertDontSee(' email ')
+            ->assertDontSee(' country id ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.address-required'))
+            ->assertSee($this->t('validator.city-required'))
+            ->assertSee($this->t('validator.state-required'))
+            ->assertSee($this->t('validator.postal_code-required'))
+            ->assertSee($this->t('validator.tax_number-required'))
+            ->assertSee($this->t('validator.phone-required'))
+            ->assertSee($this->t('validator.email-required'))
+            ->assertSee($this->t('validator.country_id-required'));
     }
 
     /**
      * @return void
      */
-    public function testUpdateNameFail(): void
+    public function testUpdateInvalidFail(): void
     {
-        $row = factory(Model::class)->make(['name' => '']);
+        $fail = [
+            'email' => 'fail',
+            'country_id' => 99999
+        ];
 
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update'), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateAddressFail(): void
-    {
-        $row = factory(Model::class)->make(['address' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('direcci\u00f3n');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateCityFail(): void
-    {
-        $row = factory(Model::class)->make(['city' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('ciudad');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateStateFail(): void
-    {
-        $row = factory(Model::class)->make(['state' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('provincia');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdatePostalCodeFail(): void
-    {
-        $row = factory(Model::class)->make(['postal_code' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('c\u00f3digo postal');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateTaxNumberFail(): void
-    {
-        $row = factory(Model::class)->make(['tax_number' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('NIF');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdatePhoneFail(): void
-    {
-        $row = factory(Model::class)->make(['phone' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('tel\u00e9fono');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateEmailEmptyFail(): void
-    {
-        $row = factory(Model::class)->make(['email' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateEmailNoValidFail(): void
-    {
-        $row = factory(Model::class)->make(['email' => 'email']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateCountryEmptyFail(): void
-    {
-        $row = factory(Model::class)->make(['country_id' => '']);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('pa\u00eds');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateCountryNoExistsFail(): void
-    {
-        $row = factory(Model::class)->make(['country_id' => 99999]);
-
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('pa\u00eds');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' email ')
+            ->assertDontSee(' country id ')
+            ->assertSee($this->t('validator.email-email'))
+            ->assertSee($this->t('validator.country_id-required'));
     }
 
     /**
@@ -183,9 +106,7 @@ class CompanyTest extends TestAbstract
      */
     public function testUpdateNoAuthFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $this->json('PATCH', $this->route('update'), $row->toArray())
+        $this->json('PATCH', $this->route('update'))
             ->assertStatus(401);
     }
 
@@ -198,7 +119,7 @@ class CompanyTest extends TestAbstract
 
         $this->auth($this->userFirst())->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -210,7 +131,7 @@ class CompanyTest extends TestAbstract
 
         $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -220,17 +141,6 @@ class CompanyTest extends TestAbstract
     {
         $this->auth()->json('GET', $this->route('detail'))
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
-    }
-
-    /**
-     * @return array
-     */
-    protected function structure(): array
-    {
-        return [
-            'id', 'name', 'address', 'city', 'state', 'postal_code', 'tax_number', 'phone', 'email',
-            'country' => ['id', 'name']
-        ];
+            ->assertJsonStructure($this->structure);
     }
 }

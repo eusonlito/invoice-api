@@ -17,6 +17,13 @@ class InvoiceSerieTest extends TestAbstract
     protected int $count = 4;
 
     /**
+     * @var array
+     */
+    protected array $structure = [
+        'id', 'name', 'number_prefix', 'number_fill', 'number_next', 'default', 'enabled'
+    ];
+
+    /**
      * @return void
      */
     public function testIndexNoAuthFail(): void
@@ -74,6 +81,15 @@ class InvoiceSerieTest extends TestAbstract
     }
 
     /**
+     * @return void
+     */
+    public function testCreateNoAuthFail(): void
+    {
+        $this->json('POST', $this->route('create'))
+            ->assertStatus(401);
+    }
+
+    /**
      * Rules:
      *
      * 'name' => 'required',
@@ -87,73 +103,51 @@ class InvoiceSerieTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreateFail(): void
+    public function testCreateEmptyFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' number prefix ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.number_prefix-required'));
     }
 
     /**
      * @return void
      */
-    public function testCreateNameFail(): void
+    public function testCreateInvalidFail(): void
     {
-        $row = factory(Model::class)->make(['name' => '']);
+        $fail = [
+            'number_fill' => 'fail',
+            'number_next' => 'fail'
+        ];
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' number fill ')
+            ->assertDontSee(' number next ')
+            ->assertSee($this->t('validator.number_fill-integer'))
+            ->assertSee($this->t('validator.number_next-integer'));
     }
 
     /**
      * @return void
      */
-    public function testCreatePrefixFail(): void
-    {
-        $row = factory(Model::class)->make(['number_prefix' => '']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('prefijo');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateFillFail(): void
-    {
-        $row = factory(Model::class)->make(['number_fill' => 'f']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('relleno');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateNextFail(): void
-    {
-        $row = factory(Model::class)->make(['number_next' => 'f']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('siguiente');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateNoAuthFail(): void
+    public function testCreateFirstSuccess(): void
     {
         $row = factory(Model::class)->make();
+        $row->name = 'Test';
+        $row->number_prefix = 'T';
+        $row->default = true;
 
-        $this->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(401);
+        $this->auth($this->userFirst())->json('POST', $this->route('create'), $row->toArray())
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -165,11 +159,10 @@ class InvoiceSerieTest extends TestAbstract
         $row->name = 'Test';
         $row->number_prefix = 'T';
         $row->default = true;
-        $row->enabled = true;
 
         $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -197,70 +190,43 @@ class InvoiceSerieTest extends TestAbstract
     {
         $this->auth()->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
      * @return void
      */
-    public function testUpdateFail(): void
+    public function testUpdatEmptyFail(): void
     {
         $this->auth()->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' number prefix ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.number_prefix-required'));
     }
 
     /**
      * @return void
      */
-    public function testUpdateNameFail(): void
+    public function testUpdateInvalidFail(): void
     {
         $row = $this->row();
-        $row->name = '';
+        $fail = [
+            'number_fill' => 'fail',
+            'number_next' => 'fail'
+        ];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdatePrefixFail(): void
-    {
-        $row = $this->row();
-        $row->number_prefix = '';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('prefijo');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateFillFail(): void
-    {
-        $row = $this->row();
-        $row->number_fill = 'f';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('relleno');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateNextFail(): void
-    {
-        $row = $this->row();
-        $row->number_next = 'f';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('siguiente');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' number fill ')
+            ->assertDontSee(' number next ')
+            ->assertSee($this->t('validator.number_fill-integer'))
+            ->assertSee($this->t('validator.number_next-integer'));
     }
 
     /**
@@ -270,7 +236,7 @@ class InvoiceSerieTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->json('PATCH', $this->route('update', $row->id))
             ->assertStatus(401);
     }
 
@@ -295,7 +261,7 @@ class InvoiceSerieTest extends TestAbstract
 
         $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -334,13 +300,5 @@ class InvoiceSerieTest extends TestAbstract
     protected function row(): Model
     {
         return Model::orderBy('id', 'DESC')->first();
-    }
-
-    /**
-     * @return array
-     */
-    protected function structure(): array
-    {
-        return ['id', 'name', 'number_prefix', 'number_fill', 'number_next', 'default', 'enabled'];
     }
 }

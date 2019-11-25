@@ -15,7 +15,7 @@ abstract class TestAbstract extends BaseTestAbstract
      *
      * @return self
      */
-    public function route(string $name, ...$params): string
+    protected function route(string $name, ...$params): string
     {
         return (string)route($this->route.'.'.$name, $params);
     }
@@ -25,7 +25,7 @@ abstract class TestAbstract extends BaseTestAbstract
      *
      * @return self
      */
-    public function auth(Authenticatable $user = null)
+    protected function auth(Authenticatable $user = null)
     {
         $user = $user ?: $this->user();
 
@@ -34,6 +34,17 @@ abstract class TestAbstract extends BaseTestAbstract
         parent::actingAs($user);
 
         return $this;
+    }
+
+   /**
+     * @param string $key
+     * @param array $params = []
+     *
+     * @return string
+     */
+    protected function t(string $key, array $params = []): string
+    {
+        return trim(json_encode(__($key, $params)), '"');
     }
 
    /**
@@ -49,6 +60,6 @@ abstract class TestAbstract extends BaseTestAbstract
      */
     protected function userFirst(): Authenticatable
     {
-        return Models\User::orderBy('id', 'ASC')->first();
+        return Models\User::orderBy('id', 'DESC')->skip(1)->first();
     }
 }

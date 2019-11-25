@@ -34,13 +34,13 @@ abstract class StoreAbstract
     }
 
     /**
-     * @param string $name
+     * @param string ...$names
      *
      * @return void
      */
-    protected function cacheFlush(string $name)
+    protected function cacheFlush(string ...$names)
     {
-        cache()->tags($name)->flush();
+        cache()->tags($names)->flush();
     }
 
     /**

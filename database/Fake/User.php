@@ -2,6 +2,7 @@
 
 namespace Database\Fake;
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\User as Model;
 
 class User extends FakeAbstract
@@ -11,6 +12,11 @@ class User extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create(['company_id' => 1]);
+        factory(Model::class)->create([
+            'name' => 'Demo',
+            'user' => 'demo@demo.com',
+            'password' => Hash::make('demo@demo.com'),
+            'company_id' => 1
+        ]);
     }
 }

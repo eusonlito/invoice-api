@@ -41,7 +41,7 @@ class Store extends StoreAbstract
 
         $row->save();
 
-        $this->cacheFlush('Discount');
+        $this->cacheFlush('Discount', 'Invoice');
 
         service()->log('discount', 'update', $this->user->id, ['discount_id' => $row->id]);
 
@@ -65,7 +65,7 @@ class Store extends StoreAbstract
 
         $row->delete();
 
-        $this->cacheFlush('Discount');
+        $this->cacheFlush('Discount', 'Invoice');
 
         service()->log('discount', 'delete', $this->user->id);
     }

@@ -23,7 +23,9 @@
             <file>./tests/Unit/TaxTest.php</file>
             <file>./tests/Unit/ClientTest.php</file>
             <file>./tests/Unit/ClientAddressTest.php</file>
+            <file>./tests/Unit/InvoiceTest.php</file>
 
+            <file>./tests/Unit/InvoiceFinishTest.php</file>
             <file>./tests/Unit/ClientAddressFinishTest.php</file>
             <file>./tests/Unit/ClientFinishTest.php</file>
             <file>./tests/Unit/TaxFinishTest.php</file>

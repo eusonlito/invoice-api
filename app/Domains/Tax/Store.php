@@ -40,7 +40,7 @@ class Store extends StoreAbstract
 
         $row->save();
 
-        $this->cacheFlush('Tax');
+        $this->cacheFlush('Tax', 'Invoice');
 
         service()->log('tax', 'update', $this->user->id, ['tax_id' => $row->id]);
 
@@ -64,7 +64,7 @@ class Store extends StoreAbstract
 
         $row->delete();
 
-        $this->cacheFlush('Tax');
+        $this->cacheFlush('Tax', 'Invoice');
 
         service()->log('tax', 'delete', $this->user->id);
     }

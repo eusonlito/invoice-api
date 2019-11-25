@@ -18,6 +18,15 @@ class ClientTest extends TestAbstract
     protected int $count = 0;
 
     /**
+     * @var array
+     */
+    protected array $structure = [
+        'id', 'name', 'phone', 'email', 'contact_name', 'contact_surname',
+        'created_at', 'web', 'tax_number', 'contact_phone', 'contact_email',
+        'comment', 'discount', 'payment', 'shipping', 'tax'
+    ];
+
+    /**
      * @return void
      */
     public function testIndexNoAuthFail(): void
@@ -77,85 +86,48 @@ class ClientTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreateFail(): void
+    public function testCreateEmptyFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $row->name = '';
-        $row->phone = '';
-        $row->email = '';
-        $row->web = '';
-        $row->tax_number = '';
-
-        $row->contact_name = '';
-        $row->contact_surname = '';
-        $row->contact_phone = '';
-        $row->contact_email = '';
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' tax number ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.tax_number-required'));
     }
 
     /**
      * @return void
      */
-    public function testCreateNameFail(): void
+    public function testCreateInvalidFail(): void
     {
-        $row = factory(Model::class)->make(['name' => '']);
+        $fail = [
+            'email' => 'fail',
+            'contact_email' => 'fail',
+            'discount_id' => 'fail',
+            'payment_id' => 'fail',
+            'shipping_id' => 'fail',
+            'tax_id' => 'fail',
+        ];
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateEmailFail(): void
-    {
-        $row = factory(Model::class)->make(['email' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateTaxNumberFail(): void
-    {
-        $row = factory(Model::class)->make(['tax_number' => '']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('NIF');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateContactEmailFail(): void
-    {
-        $row = factory(Model::class)->make(['contact_email' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico de contacto');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateDiscountInvalidFail(): void
-    {
-        $row = factory(Model::class)->make(['discount_id' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('descuento');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' email ')
+            ->assertDontSee(' contact email ')
+            ->assertDontSee(' discount id ')
+            ->assertDontSee(' payment id ')
+            ->assertDontSee(' shipping id ')
+            ->assertDontSee(' tax id ')
+            ->assertSee($this->t('validator.email-email'))
+            ->assertSee($this->t('validator.contact_email-email'))
+            ->assertSee($this->t('validator.discount_id-integer'))
+            ->assertSee($this->t('validator.payment_id-integer'))
+            ->assertSee($this->t('validator.shipping_id-integer'))
+            ->assertSee($this->t('validator.tax_id-integer'));
     }
 
     /**
@@ -172,18 +144,6 @@ class ClientTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreatePaymentInvalidFail(): void
-    {
-        $row = factory(Model::class)->make(['payment_id' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('pago');
-    }
-
-    /**
-     * @return void
-     */
     public function testCreatePaymentNotAllowedFail(): void
     {
         $row = factory(Model::class)->make(['payment_id' => 1]);
@@ -195,36 +155,12 @@ class ClientTest extends TestAbstract
     /**
      * @return void
      */
-    public function testCreateShippingInvalidFail(): void
-    {
-        $row = factory(Model::class)->make(['shipping_id' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('env\u00edo');
-    }
-
-    /**
-     * @return void
-     */
     public function testCreateShippingNotAllowedFail(): void
     {
         $row = factory(Model::class)->make(['shipping_id' => 1]);
 
         $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(404);
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateTaxInvalidFail(): void
-    {
-        $row = factory(Model::class)->make(['tax_id' => 'fail']);
-
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('impuesto');
     }
 
     /**
@@ -243,9 +179,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreateNoAuthFail(): void
     {
-        $row = factory(Model::class)->make();
-
-        $this->json('POST', $this->route('create'), $row->toArray())
+        $this->json('POST', $this->route('create'))
             ->assertStatus(401);
     }
 
@@ -259,7 +193,7 @@ class ClientTest extends TestAbstract
 
         $this->auth($user)->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -272,7 +206,7 @@ class ClientTest extends TestAbstract
 
         $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -300,96 +234,57 @@ class ClientTest extends TestAbstract
     {
         $this->auth()->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
      * @return void
      */
-    public function testUpdateFail(): void
+    public function testUpdateEmptyFail(): void
     {
         $row = $this->row();
 
-        $row->name = '';
-        $row->phone = '';
-        $row->email = '';
-        $row->web = '';
-        $row->tax_number = '';
-
-        $row->contact_name = '';
-        $row->contact_surname = '';
-        $row->contact_phone = '';
-        $row->contact_email = '';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
-            ->assertDontSee('validation.');
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' tax number ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.tax_number-required'));
     }
 
     /**
      * @return void
      */
-    public function testUpdateNameFail(): void
+    public function testUpdateIvalidFail(): void
     {
         $row = $this->row();
-        $row->name = '';
+        $fail = [
+            'email' => 'fail',
+            'contact_email' => 'fail',
+            'discount_id' => 'fail',
+            'payment_id' => 'fail',
+            'shipping_id' => 'fail',
+            'tax_id' => 'fail',
+        ];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
             ->assertStatus(422)
-            ->assertSee('nombre');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateEmailFail(): void
-    {
-        $row = $this->row();
-        $row->email = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateTaxNumberFail(): void
-    {
-        $row = $this->row();
-        $row->tax_number = '';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('NIF');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateContactEmailFail(): void
-    {
-        $row = $this->row();
-        $row->contact_email = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico de contacto');
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateDiscountInvalidFail(): void
-    {
-        $row = $this->row();
-        $row->discount_id = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('descuento');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' email ')
+            ->assertDontSee(' contact email ')
+            ->assertDontSee(' discount id ')
+            ->assertDontSee(' payment id ')
+            ->assertDontSee(' shipping id ')
+            ->assertDontSee(' tax id ')
+            ->assertSee($this->t('validator.email-email'))
+            ->assertSee($this->t('validator.contact_email-email'))
+            ->assertSee($this->t('validator.discount_id-integer'))
+            ->assertSee($this->t('validator.payment_id-integer'))
+            ->assertSee($this->t('validator.shipping_id-integer'))
+            ->assertSee($this->t('validator.tax_id-integer'));
     }
 
     /**
@@ -407,19 +302,6 @@ class ClientTest extends TestAbstract
     /**
      * @return void
      */
-    public function testUpdatePaymentInvalidFail(): void
-    {
-        $row = $this->row();
-        $row->payment_id = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('pago');
-    }
-
-    /**
-     * @return void
-     */
     public function testUpdatePaymentNotAllowedFail(): void
     {
         $row = $this->row();
@@ -432,19 +314,6 @@ class ClientTest extends TestAbstract
     /**
      * @return void
      */
-    public function testUpdateShippingInvalidFail(): void
-    {
-        $row = $this->row();
-        $row->shipping_id = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('env\u00edo');
-    }
-
-    /**
-     * @return void
-     */
     public function testUpdateShippingNotAllowedFail(): void
     {
         $row = $this->row();
@@ -452,19 +321,6 @@ class ClientTest extends TestAbstract
 
         $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
-    }
-
-    /**
-     * @return void
-     */
-    public function testUpdateTaxInvalidFail(): void
-    {
-        $row = $this->row();
-        $row->tax_id = 'fail';
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
-            ->assertStatus(422)
-            ->assertSee('impuesto');
     }
 
     /**
@@ -516,7 +372,7 @@ class ClientTest extends TestAbstract
 
         $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -545,17 +401,5 @@ class ClientTest extends TestAbstract
     protected function row(): Model
     {
         return Model::orderBy('id', 'DESC')->first();
-    }
-
-    /**
-     * @return array
-     */
-    protected function structure(): array
-    {
-        return [
-            'id', 'name', 'phone', 'email', 'contact_name', 'contact_surname',
-            'created_at', 'web', 'tax_number', 'contact_phone', 'contact_email',
-            'comment', 'discount', 'payment', 'shipping', 'tax'
-        ];
     }
 }

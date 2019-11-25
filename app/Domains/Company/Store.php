@@ -33,8 +33,10 @@ class Store extends StoreAbstract
         $this->user->company_id = $this->row->id;
         $this->user->save();
 
-        $this->cacheFlush('Company');
-        $this->cacheFlush('User');
+        $this->cacheFlush(
+            'Company', 'Discount', 'InvoiceSerie',
+            'InvoiceStatus', 'Payment', 'Tax', 'User'
+        );
 
         service()->log('company', 'update', $this->user->id, ['company_id' => $this->row->id]);
 
@@ -83,8 +85,6 @@ class Store extends StoreAbstract
                 'user_id' => $this->user->id
             ]
         ]);
-
-        $this->cacheFlush('Discount');
     }
 
     /**
@@ -134,8 +134,6 @@ class Store extends StoreAbstract
                 'user_id' => $this->user->id,
             ],
         ]);
-
-        $this->cacheFlush('InvoiceSerie');
     }
 
     /**
@@ -184,8 +182,6 @@ class Store extends StoreAbstract
                 'user_id' => $this->user->id,
             ]
         ]);
-
-        $this->cacheFlush('InvoiceStatus');
     }
 
     /**
@@ -203,8 +199,6 @@ class Store extends StoreAbstract
                 'user_id' => $this->user->id
             ],
         ]);
-
-        $this->cacheFlush('Payment');
     }
 
     /**
@@ -222,7 +216,5 @@ class Store extends StoreAbstract
                 'user_id' => $this->user->id
             ],
         ]);
-
-        $this->cacheFlush('Tax');
     }
 }

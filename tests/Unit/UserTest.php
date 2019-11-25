@@ -13,6 +13,13 @@ class UserTest extends TestAbstract
     protected string $route = 'user';
 
     /**
+     * @var array
+     */
+    protected array $structure = [
+        'token', 'user' => ['confirmed_at', 'id', 'user', 'name', 'language']
+    ];
+
+    /**
      * @return void
      */
     public function setup(): void
@@ -39,127 +46,115 @@ class UserTest extends TestAbstract
     public function testSignupEmptyFail(): void
     {
         $this->json('POST', $this->route('signup'))
-            ->assertStatus(422);
-    }
-
-    /**
-     * @return void
-     */
-    public function testSignupNameFail(): void
-    {
-        $row = factory(Model::class)->make()->toArray();
-        $row['name'] = '';
-        $row['conditions'] = true;
-
-        $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(422)
-            ->assertSee('nombre');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' user ')
+            ->assertDontSee(' password ')
+            ->assertDontSee(' password repeat ')
+            ->assertDontSee(' conditions ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.user-required'))
+            ->assertSee($this->t('validator.password-required'))
+            ->assertSee($this->t('validator.password_repeat-required'))
+            ->assertSee($this->t('validator.conditions-required'));
     }
 
     /**
      * @return void
      */
-    public function testSignupUserFail(): void
+    public function testSignupInvalidFail(): void
     {
-        $row = factory(Model::class)->make()->toArray();
-        $row['user'] = 'fail';
-        $row['conditions'] = true;
+        $fail = [
+            'user' => 'fail',
+            'password' => 'fail',
+            'password_repeat' => 'failfail',
+        ];
 
-        $this->json('POST', $this->route('signup'), $row)
+        $this->json('POST', $this->route('signup'), $fail)
             ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' user ')
+            ->assertDontSee(' password ')
+            ->assertDontSee(' password repeat ')
+            ->assertSee($this->t('validator.user-email'))
+            ->assertSee($this->t('validator.password-min', ['min' => 6]))
+            ->assertSee($this->t('validator.password_repeat-same'));
     }
+
+    /**
+     * Rules:
+     *
+     * 'user' => 'required|email|disposable_email',
+     */
 
     /**
      * @return void
      */
-    public function testSignupPasswordFail(): void
-    {
-        $row = factory(Model::class)->make()->toArray();
-        $row['password'] = 'fail';
-        $row['conditions'] = true;
-
-        $this->json('POST', $this->route('signup'), $row)
-            ->assertStatus(422)
-            ->assertSee('6 caracteres');
-    }
-
-    /**
-     * @return void
-     */
-    public function testSignupPasswordRepeatFail(): void
-    {
-        $row = factory(Model::class)->make()->toArray();
-        $row['password'] = $row['user'];
-        $row['password_repeat'] = 'failfail';
-        $row['conditions'] = true;
-
-        $this->json('POST', $this->route('signup'), $row)
-            ->assertStatus(422)
-            ->assertSee('no coincide');
-    }
-
-    /**
-     * @return void
-     */
-    public function testSignupConditionsFail(): void
-    {
-        $row = factory(Model::class)->make()->toArray();
-        $row['password'] = $row['user'];
-        $row['password_repeat'] = $row['user'];
-
-        $this->json('POST', $this->route('signup'), $row)
-            ->assertStatus(422)
-            ->assertSee('condiciones');
-    }
-
-    /**
-     * @return void
-     */
-    public function testSignupConfirmEmptyFail(): void
+    public function testConfirmEmptyFail(): void
     {
         $this->json('POST', $this->route('confirm.start'))
             ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' user ')
+            ->assertSee($this->t('validator.user-required'));
     }
 
     /**
      * @return void
      */
-    public function testSignupConfirmNoUserFail(): void
+    public function testConfirmInvalidFail(): void
     {
         $this->json('POST', $this->route('confirm.start'), ['user' => 'fail'])
             ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' user ')
+            ->assertSee($this->t('validator.user-email'));
     }
 
     /**
      * @return void
      */
-    public function testSignupConfirmNoExistsFail(): void
+    public function testConfirmNoExistsFail(): void
     {
         $this->json('POST', $this->route('confirm.start'), ['user' => 'fail@fail.com'])
             ->assertStatus(404);
     }
 
     /**
+     * Rules:
+     *
+     * 'user' => 'required|email|disposable_email',
+     */
+
+    /**
      * @return void
      */
-    public function testSignupPasswordResetEmptyFail(): void
+    public function testPasswordResetEmptyFail(): void
     {
         $this->json('POST', $this->route('password.reset.start'))
             ->assertStatus(422)
-            ->assertSee('correo electr\u00f3nico');
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' user ')
+            ->assertSee($this->t('validator.user-required'));
     }
 
     /**
      * @return void
      */
-    public function testSignupPasswordResetNoUserFail(): void
+    public function testPasswordResetInvalidFail(): void
     {
-        $this->json('POST', $this->route('password.reset.start'), [
-            'user' => 'fail'
-        ])->assertStatus(422)->assertSee('correo electr\u00f3nico');
+        $this->json('POST', $this->route('password.reset.start'), ['user' => 'fail'])
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' user ')
+            ->assertSee($this->t('validator.user-email'));
     }
 
     /**
@@ -167,7 +162,7 @@ class UserTest extends TestAbstract
      *
      * @return void
      */
-    public function testSignupPasswordResetNoExistsFail(): void
+    public function testPasswordResetNoExistsFail(): void
     {
         $this->json('POST', $this->route('password.reset.start'), ['user' => 'fail@fail.com'])
             ->assertStatus(200);
@@ -185,7 +180,7 @@ class UserTest extends TestAbstract
 
         $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
 
     /**
@@ -200,8 +195,14 @@ class UserTest extends TestAbstract
 
         $this->json('POST', $this->route('signup'), $row)
             ->assertStatus(200)
-            ->assertJsonStructure($this->structure());
+            ->assertJsonStructure($this->structure);
     }
+
+    /**
+     * Rules:
+     *
+     * 'user' => 'required|email|disposable_email',
+     */
 
     /**
      * @return void
@@ -224,30 +225,36 @@ class UserTest extends TestAbstract
      */
     public function testPasswordResetSuccess(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = $row['user'];
+        $row['password_repeat'] = $row['user'];
 
-        $this->json('POST', $this->route('password.reset.start'), ['user' => $row->user])
+        $this->json('POST', $this->route('password.reset.start'), $row)
             ->assertStatus(200);
 
         $hash = Models\UserPasswordReset::orderBy('id', 'DESC')->first()->hash;
 
-        $this->json('POST', $this->route('password.reset.finish', $hash), [
-            'password' => $row->user,
-            'password_repeat' => $row->user,
-        ])->assertStatus(200);
+        $this->json('POST', $this->route('password.reset.finish', $hash), $row)
+            ->assertStatus(200);
     }
+
+    /**
+     * Rules:
+     *
+     * 'user' => 'required|email|disposable_email',
+     * 'password' => 'required',
+     */
 
     /**
      * @return void
      */
     public function testAuthFail(): void
     {
-        $row = factory(Model::class)->make();
+        $row = factory(Model::class)->make()->toArray();
+        $row['password'] = $row['user'];
 
-        $this->json('POST', $this->route('auth.credentials'), [
-            'user' => $row->user,
-            'password' => $row->user
-        ])->assertStatus(401);
+        $this->json('POST', $this->route('auth.credentials'), $row)
+            ->assertStatus(401);
     }
 
     /**
@@ -255,13 +262,21 @@ class UserTest extends TestAbstract
      */
     public function testAuthSuccess(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = $row['user'];
 
-        $this->json('POST', $this->route('auth.credentials'), [
-            'user' => $row->user,
-            'password' => $row->user
-        ])->assertStatus(200)->assertJsonStructure($this->structure());
+        $this->json('POST', $this->route('auth.credentials'), $row)
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure);
     }
+
+    /**
+     * Rules:
+     *
+     * 'name' => 'required',
+     * 'user' => 'required|email|disposable_email',
+     * 'password_current' => 'required|password'
+     */
 
     /**
      * @return void
@@ -269,54 +284,61 @@ class UserTest extends TestAbstract
     public function testProfileNoAuthFail(): void
     {
         $row = $this->user();
+        $row->password_current = $row->user;
 
-        $this->json('PATCH', $this->route('update.profile'), [
-            'name' => $row->name,
-            'user' => $row->user,
-            'password_current' => $row->user
-        ])->assertStatus(401);
+        $this->json('PATCH', $this->route('update.profile'), $row->toArray())
+            ->assertStatus(401);
     }
 
     /**
      * @return void
      */
-    public function testProfileNameFail(): void
+    public function testProfileEmptyFail(): void
     {
-        $row = $this->user();
-
-        $this->auth()->json('PATCH', $this->route('update.profile'), [
-            'name' => '',
-            'user' => $row->user,
-            'password_current' => $row->user
-        ])->assertStatus(422)->assertSee('nombre');
+        $this->auth()->json('PATCH', $this->route('update.profile'))
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' user ')
+            ->assertDontSee(' password current ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.user-required'))
+            ->assertSee($this->t('validator.password_current-required'));
     }
 
     /**
      * @return void
      */
-    public function testProfileUserFail(): void
+    public function testProfileInvalidFail(): void
     {
         $row = $this->user();
+        $row->password_current = $row->user;
 
-        $this->auth()->json('PATCH', $this->route('update.profile'), [
-            'name' => $row->name,
-            'user' => '',
-            'password_current' => $row->user
-        ])->assertStatus(422)->assertSee('correo electr\u00f3nico');
+        $fail = ['user' => 'fail'];
+
+        $this->auth()->json('PATCH', $this->route('update.profile'), $fail + $row->toArray())
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' user ')
+            ->assertSee($this->t('validator.user-email'));
     }
 
     /**
      * @return void
      */
-    public function testProfilePasswordFail(): void
+    public function testProfilePasswordCurrentFail(): void
     {
         $row = $this->user();
+        $row->password_current = 'fail';
 
-        $this->auth()->json('PATCH', $this->route('update.profile'), [
-            'name' => $row->name,
-            'user' => $row->user,
-            'password_current' => $row->user.'1'
-        ])->assertStatus(422)->assertSee('contrase\u00f1a actual');
+        $this->auth()->json('PATCH', $this->route('update.profile'), $row->toArray())
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' password current ')
+            ->assertSee($this->t('validator.password_current-password'));
     }
 
     /**
@@ -325,27 +347,33 @@ class UserTest extends TestAbstract
     public function testProfileSuccess(): void
     {
         $row = $this->user();
+        $row->password_current = $row->user;
 
-        $this->auth()->json('PATCH', $this->route('update.profile'), [
-            'name' => $row->name,
-            'user' => $row->user,
-            'password' => $row->user,
-            'password_current' => $row->user
-        ])->assertStatus(200)->assertJsonStructure($this->structure()['user']);
+        $this->auth()->json('PATCH', $this->route('update.profile'), $row->toArray())
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure['user']);
     }
+
+    /**
+     * Rules:
+     *
+     * 'password_current' => 'required|password',
+     * 'password' => 'required|min:6',
+     * 'password_repeat' => 'required|same:password',
+     */
 
     /**
      * @return void
      */
     public function testPasswordNoAuthFail(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = $row['user'];
+        $row['password_repeat'] = $row['user'];
+        $row['password_current'] = $row['user'];
 
-        $this->json('PATCH', $this->route('update.password'), [
-            'password' => $row->user,
-            'password_repeat' => $row->user,
-            'password_current' => $row->user,
-        ])->assertStatus(401);
+        $this->json('PATCH', $this->route('update.password'), $row)
+            ->assertStatus(401);
     }
 
     /**
@@ -353,13 +381,17 @@ class UserTest extends TestAbstract
      */
     public function testPasswordPasswordFail(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = 'fail';
+        $row['password_repeat'] = 'fail';
+        $row['password_current'] = $row['user'];
 
-        $this->auth()->json('PATCH', $this->route('update.password'), [
-            'password' => 'fail',
-            'password_repeat' => 'fail',
-            'password_current' => $row->user,
-        ])->assertStatus(422)->assertSee('6 caracteres');
+        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' password ')
+            ->assertSee($this->t('validator.password-min', ['min' => 6]));
     }
 
     /**
@@ -367,13 +399,17 @@ class UserTest extends TestAbstract
      */
     public function testPasswordRepeatFail(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = $row['user'];
+        $row['password_repeat'] = 'fail';
+        $row['password_current'] = $row['user'];
 
-        $this->auth()->json('PATCH', $this->route('update.password'), [
-            'password' => $row->user,
-            'password_repeat' => $row->user.'1',
-            'password_current' => $row->user,
-        ])->assertStatus(422)->assertSee('repetici\u00f3n');
+        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' password repeat ')
+            ->assertSee($this->t('validator.password_repeat-same'));
     }
 
     /**
@@ -381,13 +417,17 @@ class UserTest extends TestAbstract
      */
     public function testPasswordCurrentFail(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = $row['user'];
+        $row['password_repeat'] = $row['user'];
+        $row['password_current'] = 'fail';
 
-        $this->auth()->json('PATCH', $this->route('update.password'), [
-            'password' => $row->user,
-            'password_repeat' => $row->user,
-            'password_current' => $row->user.'1',
-        ])->assertStatus(422)->assertSee('contrase\u00f1a actual');
+        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' password current ')
+            ->assertSee($this->t('validator.password_current-password'));
     }
 
     /**
@@ -395,20 +435,13 @@ class UserTest extends TestAbstract
      */
     public function testPasswordSuccess(): void
     {
-        $row = $this->user();
+        $row = $this->user()->toArray();
+        $row['password'] = $row['user'];
+        $row['password_repeat'] = $row['user'];
+        $row['password_current'] = $row['user'];
 
-        $this->auth()->json('PATCH', $this->route('update.password'), [
-            'password' => $row->user,
-            'password_repeat' => $row->user,
-            'password_current' => $row->user,
-        ])->assertStatus(200)->assertJsonStructure($this->structure()['user']);
-    }
-
-    /**
-     * @return array
-     */
-    protected function structure(): array
-    {
-        return ['token', 'user' => ['confirmed_at', 'id', 'user', 'name', 'language']];
+        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure['user']);
     }
 }

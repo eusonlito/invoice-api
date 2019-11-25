@@ -50,7 +50,7 @@ class Store extends StoreAbstract
 
         $this->row->save();
 
-        $this->cacheFlush('ClientAddress');
+        $this->cacheFlush('ClientAddress', 'Invoice');
 
         service()->log('client_address', 'update', $this->user->id, ['client_address_id' => $this->row->id]);
 
@@ -70,7 +70,7 @@ class Store extends StoreAbstract
 
         $row->delete();
 
-        $this->cacheFlush('ClientAddress');
+        $this->cacheFlush('ClientAddress', 'Invoice');
 
         service()->log('client_address', 'delete', $this->user->id);
     }

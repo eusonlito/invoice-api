@@ -41,7 +41,7 @@ class Store extends StoreAbstract
 
         $row->save();
 
-        $this->cacheFlush('InvoiceSerie');
+        $this->cacheFlush('InvoiceSerie', 'Invoice');
 
         service()->log('invoice_serie', 'update', $this->user->id, ['invoice_serie_id' => $row->id]);
 
@@ -58,7 +58,7 @@ class Store extends StoreAbstract
         $row->css = StoreCss::save($row, $this->data['css']);
         $row->save();
 
-        $this->cacheFlush('InvoiceSerie');
+        $this->cacheFlush('InvoiceSerie', 'Invoice');
 
         service()->log('invoice_serie', 'update-css', $this->user->id, ['invoice_serie_id' => $row->id]);
 
@@ -82,7 +82,7 @@ class Store extends StoreAbstract
             Model::disk()->delete($row->css);
         }
 
-        $this->cacheFlush('InvoiceSerie');
+        $this->cacheFlush('InvoiceSerie', 'Invoice');
 
         service()->log('invoice_serie', 'delete', $this->user->id);
     }
