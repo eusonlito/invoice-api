@@ -8,6 +8,11 @@ use App\Models\InvoiceFile as Model;
 class StoreUpload
 {
     /**
+     * @var string
+     */
+    protected static string $path = 'invoice-file/file';
+
+    /**
      * @param \App\Models\InvoiceFile $row
      * @param \Illuminate\Http\UploadedFile $upload
      *
@@ -35,12 +40,11 @@ class StoreUpload
         $name = explode('.', $upload->getClientOriginalName());
         $ext = array_pop($name);
 
-        $path = 'invoice-file/file';
         $name = str_slug(microtime().'-'.implode('-', $name), '-');
         $name = $row->invoice->id.'-'.$name.'.'.strtolower($ext);
 
-        Model::disk()->putFileAs($path, $upload, $name);
+        $row::disk()->putFileAs(static::$path, $upload, $name);
 
-        return $path.'/'.$name;
+        return static::$path.'/'.$name;
     }
 }

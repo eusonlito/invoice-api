@@ -2,7 +2,6 @@
 
 namespace App\Services\Pdf;
 
-use Illuminate\Support\Facades\Storage;
 use mikehaertl\wkhtmlto\Pdf as WPdf;
 use App\Exceptions;
 use App\Services;
@@ -26,7 +25,7 @@ class Pdf
      */
     protected static function options(): array
     {
-        $disk = Storage::disk('private');
+        $disk = service()->disk('private');
         $disk->makeDirectory('tmp');
 
         $options = [
@@ -66,7 +65,7 @@ class Pdf
      */
     public static function save(string $html, string $file): string
     {
-        $disk = Storage::disk('private');
+        $disk = service()->disk('private');
         $disk->makeDirectory(dirname($file));
 
         $pdf = static::load($html);

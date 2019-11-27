@@ -40,7 +40,7 @@ class Store extends StoreAbstract
         }
 
         if ($previous) {
-            Model::disk()->delete($previous);
+            $row::disk()->delete($previous);
         }
 
         $this->cacheFlush('InvoiceFile', 'Invoice');
@@ -59,7 +59,7 @@ class Store extends StoreAbstract
     {
         $row->delete();
 
-        Model::disk()->delete($row->file);
+        $row::disk()->delete($row->file);
 
         $this->cacheFlush('InvoiceFile', 'Invoice');
 

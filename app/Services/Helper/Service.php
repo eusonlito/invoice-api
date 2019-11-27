@@ -3,6 +3,8 @@
 namespace App\Services\Helper;
 
 use Closure;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 use App\Models;
 use App\Services;
 
@@ -43,5 +45,15 @@ class Service
     public function log(string $table, string $action, int $user_id, array $ids = []): Models\Log
     {
         return Services\Backup\Backup::log($table, $action, $user_id, $ids);
+    }
+
+    /**
+     * @param string $name = 'private'
+     *
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function disk(string $name = 'private'): Filesystem
+    {
+        return Storage::disk($name);
     }
 }

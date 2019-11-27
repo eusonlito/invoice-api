@@ -61,7 +61,7 @@ class StoreCss
     {
         $file = static::$path.'/'.$row->company_id.'-'.$row->id.'.css';
 
-        Model::disk()->put($file, static::validate($css));
+        $row::disk()->put($file, static::validate($css));
 
         return $file;
     }

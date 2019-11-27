@@ -19,6 +19,8 @@ class Validator extends ValidatorAbstract
                 'number_prefix' => 'required',
                 'number_fill' => 'integer',
                 'number_next' => 'integer',
+                'certificate_file' => 'file',
+                'certificate_password' => 'string',
                 'default' => 'boolean',
                 'enabled' => 'boolean',
             ],
@@ -28,6 +30,8 @@ class Validator extends ValidatorAbstract
                 'number_prefix.required' => __('validator.number_prefix-required'),
                 'number_fill.integer' => __('validator.number_fill-integer'),
                 'number_next.integer' => __('validator.number_next-integer'),
+                'certificate_file.file' => __('validator.certificate_file-file'),
+                'certificate_password.string' => __('validator.certificate_password-string'),
                 'default.boolean' => __('validator.default-boolean'),
                 'enabled.boolean' => __('validator.enabled-boolean'),
             ]

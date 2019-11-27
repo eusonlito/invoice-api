@@ -10,7 +10,7 @@
 
 body {
     font-family: Arial;
-    font-size: 0.7rem;
+    font-size: 16px;
 }
 
 #logo {
@@ -22,8 +22,8 @@ body {
     border-right: 18px solid #06C;
     padding-right: 20px;
     text-align: right;
-    font-size: 0.8rem;
     margin-bottom: 20px;
+    font-size: 18px;
 }
 
 #company .name {
@@ -33,7 +33,6 @@ body {
 #info {
     margin: 40px 0;
     text-align: center;
-    font-size: 0.8rem;
 }
 
 #info .header .line,
@@ -44,7 +43,6 @@ body {
     margin-right: 2px;
     padding: 3px 6px;
     width: 33%;
-    height: 20px;
 }
 
 #info .header .line {
@@ -129,7 +127,7 @@ body {
 
 #items .list {
     width: 100%;
-    font-size: 0.7rem;
+    font-size: 14px;
 }
 
 #items .list .header .line {

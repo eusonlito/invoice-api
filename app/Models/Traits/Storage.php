@@ -3,7 +3,6 @@
 namespace App\Models\Traits;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Storage as BaseStorage;
 
 trait Storage
 {
@@ -12,6 +11,6 @@ trait Storage
      */
     public static function disk(): Filesystem
     {
-        return BaseStorage::disk('private');
+        return service()->disk('private');
     }
 }

@@ -53,4 +53,16 @@ class InvoiceSerie extends ModelAbstract
     {
         $q->orderBy('default', 'DESC');
     }
+
+    /**
+     * @return string
+     */
+    public function getCertificateFilePublicAttribute(): string
+    {
+        if (empty($this->certificate_file)) {
+            return '';
+        }
+
+        return explode('-', basename($this->certificate_file), 2)[1];
+    }
 }

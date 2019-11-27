@@ -34,8 +34,13 @@ class Store extends StoreAbstract
         $this->user->save();
 
         $this->cacheFlush(
-            'Company', 'Discount', 'InvoiceSerie',
-            'InvoiceStatus', 'Payment', 'Tax', 'User'
+            'Company',
+            'Discount',
+            'InvoiceSerie',
+            'InvoiceStatus',
+            'Payment',
+            'Tax',
+            'User'
         );
 
         service()->log('company', 'update', $this->user->id, ['company_id' => $this->row->id]);

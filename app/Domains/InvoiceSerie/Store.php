@@ -39,6 +39,8 @@ class Store extends StoreAbstract
         $row->default = (bool)$this->data['default'];
         $row->enabled = (bool)$this->data['enabled'];
 
+        StoreCertificate::save($row, $this->data['certificate_file'], $this->data['certificate_password']);
+
         $row->save();
 
         $this->cacheFlush('InvoiceSerie', 'Invoice');
@@ -79,7 +81,7 @@ class Store extends StoreAbstract
         $row->delete();
 
         if ($row->css) {
-            Model::disk()->delete($row->css);
+            $row::disk()->delete($row->css);
         }
 
         $this->cacheFlush('InvoiceSerie', 'Invoice');

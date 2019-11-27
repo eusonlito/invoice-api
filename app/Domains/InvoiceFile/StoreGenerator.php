@@ -6,6 +6,7 @@ use App\Domains\InvoiceSerie\StoreCss;
 use App\Models;
 use App\Models\InvoiceFile as Model;
 use App\Services\Pdf\Pdf;
+use App\Services\Sign\SignFactory;
 
 class StoreGenerator
 {
@@ -20,6 +21,8 @@ class StoreGenerator
         $row->file = static::save($row->invoice);
         $row->main = true;
 
+        static::sign($row);
+
         $row->save();
 
         return $row;
@@ -32,7 +35,7 @@ class StoreGenerator
      */
     public static function download(Model $row): string
     {
-        $disk = Model::disk();
+        $disk = $row::disk();
 
         if ($disk->exists($row->file) === false) {
             static::generate($row);
@@ -46,7 +49,7 @@ class StoreGenerator
      *
      * @return string
      */
-    public static function html(Models\Invoice $invoice): string
+    protected static function html(Models\Invoice $invoice): string
     {
         return (string)view('pdf.pages.invoice.detail', [
             'css' => StoreCss::get($invoice->serie),
@@ -59,10 +62,34 @@ class StoreGenerator
      *
      * @return string
      */
-    public static function save(Models\Invoice $invoice): string
+    protected static function save(Models\Invoice $invoice): string
     {
         $name = $invoice->id.'-'.str_replace(['.', ' '], ['', '-'], microtime()).'.pdf';
 
         return Pdf::save(static::html($invoice), 'invoice-file/file/'.$name);
+    }
+
+    /**
+     * @param \App\Models\InvoiceFile $row
+     *
+     * @return \App\Models\InvoiceFile
+     */
+    protected static function sign(Model $row): Model
+    {
+        $serie = $row->invoice->serie;
+
+        if (empty($serie->certificate_file)) {
+            return $row;
+        }
+
+        $path = $row::disk()->path($row->file);
+        $certificate = $serie::disk()->path($serie->certificate_file);
+        $password = $serie->certificate_password ? decrypt($serie->certificate_password) : '';
+
+        SignFactory::get()->sign($path, $certificate, $password);
+
+        $row->name = preg_replace('/.pdf$/', '.firm.pdf', $row->name);
+
+        return $row;
     }
 }

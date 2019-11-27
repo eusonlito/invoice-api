@@ -287,6 +287,8 @@ class Base extends Migration
             $table->string('number_fill')->default('');
             $table->string('number_next')->default('');
             $table->string('css')->default('');
+            $table->string('certificate_file')->default('');
+            $table->string('certificate_password')->default('');
 
             $table->boolean('default')->default(0);
             $table->boolean('enabled')->default(0);

@@ -20,6 +20,7 @@ class Fractal extends FractalAbstract
             'number_prefix' => $row->number_prefix,
             'number_fill' => $row->number_fill,
             'number_next' => $row->number_next,
+            'certificate_file' => $row->certificate_file_public,
             'default' => $row->default,
             'enabled' => $row->enabled,
         ];

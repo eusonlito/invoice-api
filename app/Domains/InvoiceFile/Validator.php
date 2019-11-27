@@ -21,7 +21,7 @@ class Validator extends ValidatorAbstract
             'messages' => [
                 'file.required' => __('validator.file-required'),
                 'file.file' => __('validator.file-file'),
-                'file.mimes' => __('validator.file-mimes', ['mimes' => 'pdf, doc, docx,xls, xlsx, odt, ods, jpg y png']),
+                'file.mimes' => __('validator.file-mimes', ['mimes' => 'pdf, doc, docx, xls, xlsx, odt, ods, jpg y png']),
             ]
         ];
     }
