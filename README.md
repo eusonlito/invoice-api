@@ -8,6 +8,12 @@ Este proyecto es la base del API para https://invoice.lito.com.es y https://invo
 * PHP >= 7.4
 * MySQL >= 5.7
 
+```bash
+$> sudo apt-get install python-pip swig
+$> sudo pip install endesive
+```
+
+
 ## Instalación
 
 ```bash
