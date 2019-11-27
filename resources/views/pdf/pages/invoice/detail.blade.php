@@ -132,7 +132,7 @@
                     <td class="line quantity">{{ number($item->quantity) }}</td>
                     <td class="line discount">
                         @if ($item->percent_discount)
-                        {{ $item->percent_discount }}%
+                        {{ (int)$item->percent_discount }}%
                         @else
                         -
                         @endif

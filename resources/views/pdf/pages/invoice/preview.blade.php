@@ -101,7 +101,7 @@
                     <td class="line description">Dominio .com (1 año)</td>
                     <td class="line amount">90,00€</td>
                     <td class="line quantity">3,00</td>
-                    <td class="line discount">1.00%</td>
+                    <td class="line discount">1%</td>
                     <td class="line total">267,30€</td>
                 </tr>
 
@@ -110,7 +110,7 @@
                     <td class="line description">Plantilla WordPress</td>
                     <td class="line amount">200,00€</td>
                     <td class="line quantity">1,00</td>
-                    <td class="line discount">3.00%</td>
+                    <td class="line discount">3%</td>
                     <td class="line total">194,00€</td>
                 </tr>
 
@@ -119,7 +119,7 @@
                     <td class="line description">Plantilla WordPress</td>
                     <td class="line amount">200,00€</td>
                     <td class="line quantity">1,00</td>
-                    <td class="line discount">44.00%</td>
+                    <td class="line discount">44%</td>
                     <td class="line total">112,00€</td>
                 </tr>
 
@@ -128,7 +128,7 @@
                     <td class="line description">Alojamiento Web Básico (1 año)</td>
                     <td class="line amount">60,00€</td>
                     <td class="line quantity">3,00</td>
-                    <td class="line discount">22.00%</td>
+                    <td class="line discount">22%</td>
                     <td class="line total">140,40€</td>
                 </tr>
             </table>
