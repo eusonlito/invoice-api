@@ -12,6 +12,8 @@
          stopOnFailure="true">
     <testsuites>
         <testsuite name="Unit">
+            <file>./tests/Unit/CountryTest.php</file>
+
             <file>./tests/Unit/UserTest.php</file>
             <file>./tests/Unit/CompanyTest.php</file>
             <file>./tests/Unit/InvoiceSerieTest.php</file>
@@ -24,7 +26,9 @@
             <file>./tests/Unit/ClientTest.php</file>
             <file>./tests/Unit/ClientAddressTest.php</file>
             <file>./tests/Unit/InvoiceTest.php</file>
+            <file>./tests/Unit/InvoiceFileTest.php</file>
 
+            <file>./tests/Unit/InvoiceFileFinishTest.php</file>
             <file>./tests/Unit/InvoiceFinishTest.php</file>
             <file>./tests/Unit/ClientAddressFinishTest.php</file>
             <file>./tests/Unit/ClientFinishTest.php</file>
@@ -41,6 +45,10 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
+
+            <exclude>
+                <directory>./app/Http/routes</directory>
+            </exclude>
         </whitelist>
     </filter>
 

@@ -80,7 +80,7 @@ abstract class RequestAbstract
      */
     protected function cacheTags(string $name): string
     {
-        return explode('\\', $name)[3];
+        return explode('\\', $name)[2];
     }
 
     /**

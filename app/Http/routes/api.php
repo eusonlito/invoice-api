@@ -64,6 +64,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/invoice-file/{id}', 'InvoiceFile@detail')->name('invoice-file.detail');
     Route::get('/invoice-file/{id}/download', 'InvoiceFile@download')->name('invoice-file.download');
+    Route::get('/invoice-file/invoice/{invoice_id}', 'InvoiceFile@invoice')->name('invoice-file.invoice');
     Route::get('/invoice-file/invoice/{invoice_id}/main', 'InvoiceFile@main')->name('invoice-file.main');
     Route::post('/invoice-file/invoice/{invoice_id}', 'InvoiceFile@create')->name('invoice-file.create');
     Route::delete('/invoice-file/{id}', 'InvoiceFile@delete')->name('invoice-file.delete');

@@ -11,18 +11,6 @@ use App\Services;
 class Service
 {
     /**
-     * @param string $key
-     * @param int $time
-     * @param \Closure $callback
-     *
-     * @return mixed
-     */
-    public function cache(string $key, int $time, Closure $callback)
-    {
-        return Services\Cache\Cache::remember($key, $time, $callback);
-    }
-
-    /**
      * @param string $action
      * @param \App\Models\ModelAbstract $row
      * @param int $user_id

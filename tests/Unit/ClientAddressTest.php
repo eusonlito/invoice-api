@@ -57,6 +57,15 @@ class ClientAddressTest extends TestAbstract
     /**
      * @return void
      */
+    public function testClientNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())->json('GET', $this->route('client', $this->client()->id))
+            ->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
     public function testClientSuccess(): void
     {
         $this->auth()->json('GET', $this->route('client', $this->client()->id))
@@ -71,6 +80,15 @@ class ClientAddressTest extends TestAbstract
     {
         $this->json('GET', $this->route('client.enabled', $this->client()->id))
             ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testClienEnabledtNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())->json('GET', $this->route('client.enabled', $this->client()->id))
+            ->assertStatus(404);
     }
 
     /**
@@ -186,7 +204,6 @@ class ClientAddressTest extends TestAbstract
     public function testCreateSuccess(): void
     {
         $row = factory(Model::class)->make();
-        $user = $this->user();
 
         $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
             ->assertStatus(200)

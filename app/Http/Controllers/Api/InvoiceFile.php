@@ -21,6 +21,18 @@ class InvoiceFile extends ControllerAbstract
     }
 
     /**
+     * GET /invoice-file/invoice/{invoice_id}
+     *
+     * @param int $invoice_id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function invoice(int $invoice_id): JsonResponse
+    {
+        return $this->json($this->request()->invoiceCached($invoice_id));
+    }
+
+    /**
      * GET /invoice-file/invoice/{invoice_id}/main
      *
      * @param int $invoice_id

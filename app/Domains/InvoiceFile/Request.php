@@ -3,6 +3,7 @@
 namespace App\Domains\InvoiceFile;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models;
 use App\Models\InvoiceFile as Model;
 use App\Domains\RequestAbstract;
@@ -27,6 +28,26 @@ class Request extends RequestAbstract
     public function detailCached(int $id): array
     {
         return $this->cache(__METHOD__, fn () => $this->detail($id));
+    }
+
+    /**
+     * @param int $invoice_id
+     *
+     * @return array
+     */
+    public function invoice(int $invoice_id): array
+    {
+        return $this->fractal('detail', $this->modelByInvoiceId($invoice_id)->get());
+    }
+
+    /**
+     * @param int $invoice_id
+     *
+     * @return array
+     */
+    public function invoiceCached(int $invoice_id): array
+    {
+        return $this->cache(__METHOD__, fn () => $this->invoice($invoice_id));
     }
 
     /**
@@ -91,6 +112,16 @@ class Request extends RequestAbstract
     protected function model(): Builder
     {
         return Model::byCompany($this->user->company);
+    }
+
+    /**
+     * @param int $invoice_id
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    protected function modelByInvoiceId(int $invoice_id): HasMany
+    {
+        return $this->getInvoiceById($invoice_id)->files();
     }
 
     /**

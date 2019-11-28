@@ -189,9 +189,8 @@ class ClientTest extends TestAbstract
     public function testCreateFirstSuccess(): void
     {
         $row = factory(Model::class)->make();
-        $user = $this->userFirst();
 
-        $this->auth($user)->json('POST', $this->route('create'), $row->toArray())
+        $this->auth($this->userFirst())->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -202,7 +201,6 @@ class ClientTest extends TestAbstract
     public function testCreateSuccess(): void
     {
         $row = factory(Model::class)->make();
-        $user = $this->user();
 
         $this->auth()->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)

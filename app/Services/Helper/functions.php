@@ -48,5 +48,7 @@ function routeWeb(string $route, $params): string
  */
 function service(): App\Services\Helper\Service
 {
-    return new App\Services\Helper\Service();
+    static $service;
+
+    return $service ?: ($service = new App\Services\Helper\Service());
 }

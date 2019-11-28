@@ -3,6 +3,7 @@
 namespace App\Domains\ClientAddress;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models;
 use App\Models\ClientAddress as Model;
 use App\Domains\RequestAbstract;
@@ -116,11 +117,11 @@ class Request extends RequestAbstract
     /**
      * @param int $client_id
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected function modelByClientId(int $client_id): Builder
+    protected function modelByClientId(int $client_id): HasMany
     {
-        return $this->model()->where('client_id', $client_id);
+        return $this->getClientById($client_id)->addresses();
     }
 
     /**
