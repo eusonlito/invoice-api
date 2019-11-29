@@ -4,5 +4,7 @@
 /vendor
 
 .env
+.php_cs.cache
+.phpunit.result.cache
 
 *.sh
