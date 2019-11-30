@@ -78,5 +78,7 @@
     'user-exists' => 'Ya existe un usuario con ese correo electrónico.',
     'user-required' => 'El correo electrónico es obligatorio.',
     'value-numeric' => 'El valor debe ser numérico.',
-    'css-format' => 'El CSS debe ser incluir todas las definiciones iniciales.'
+    'css-format' => 'El CSS debe ser incluir todas las definiciones iniciales.',
+    'every-required' => 'La periodicidad es obligatoria.',
+    'every-in' => 'La opción de periodicidad no es válida.',
 ];

@@ -37,7 +37,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('invoice', $this->invoice()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('invoice', $this->invoice()->id))
             ->assertStatus(404);
     }
 
@@ -46,7 +47,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('invoice', $this->invoice()->id))
+        $this->auth()
+            ->json('GET', $this->route('invoice', $this->invoice()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -65,7 +67,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceMainNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('main', $this->invoice()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('main', $this->invoice()->id))
             ->assertStatus(404);
     }
 
@@ -74,7 +77,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceMainSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('main', $this->invoice()->id))
+        $this->auth()
+            ->json('GET', $this->route('main', $this->invoice()->id))
             ->assertStatus(200);
     }
 
@@ -83,7 +87,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceAfterMainSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('invoice', $this->invoice()->id))
+        $this->auth()
+            ->json('GET', $this->route('invoice', $this->invoice()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -93,7 +98,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testDeleteSuccess(): void
     {
-        $this->auth()->json('DELETE', $this->route('delete', $this->row()->id))
+        $this->auth()
+            ->json('DELETE', $this->route('delete', $this->row()->id))
             ->assertStatus(200);
     }
 
@@ -102,7 +108,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceMainAfterDeleteSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('main', $this->invoice()->id))
+        $this->auth()
+            ->json('GET', $this->route('main', $this->invoice()->id))
             ->assertStatus(200);
     }
 
@@ -111,7 +118,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceAfterDeleteSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('invoice', $this->invoice()->id))
+        $this->auth()
+            ->json('GET', $this->route('invoice', $this->invoice()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -127,7 +135,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testCreateEmptyFail(): void
     {
-        $this->auth()->json('POST', $this->route('create', $this->invoice()->id))
+        $this->auth()
+            ->json('POST', $this->route('create', $this->invoice()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -142,7 +151,8 @@ class InvoiceFileTest extends TestAbstract
     {
         $fail = ['file' => 'fail'];
 
-        $this->auth()->json('POST', $this->route('create', $this->invoice()->id), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create', $this->invoice()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -157,7 +167,8 @@ class InvoiceFileTest extends TestAbstract
     {
         $fail = ['file' => UploadedFile::fake()->create('avatar.zip', 1024)];
 
-        $this->auth()->json('POST', $this->route('create', $this->invoice()->id), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create', $this->invoice()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -182,7 +193,8 @@ class InvoiceFileTest extends TestAbstract
         $row = ['file' => UploadedFile::fake()->create('avatar.pdf', 1024)];
         $user = $this->userFirst();
 
-        $this->auth($user)->json('POST', $this->route('create', $this->invoiceByUser($user)->id), $row)
+        $this->auth($user)
+            ->json('POST', $this->route('create', $this->invoiceByUser($user)->id), $row)
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -194,7 +206,8 @@ class InvoiceFileTest extends TestAbstract
     {
         $row = ['file' => UploadedFile::fake()->create('avatar.pdf', 1024)];
 
-        $this->auth()->json('POST', $this->route('create', $this->invoice()->id), $row)
+        $this->auth()
+            ->json('POST', $this->route('create', $this->invoice()->id), $row)
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -204,7 +217,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testInvoiceAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('invoice', $this->invoice()->id))
+        $this->auth()
+            ->json('GET', $this->route('invoice', $this->invoice()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }
@@ -223,7 +237,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testDetailNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('detail', $this->row()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -232,7 +247,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('detail', $this->row()->id))
+        $this->auth()
+            ->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -242,7 +258,8 @@ class InvoiceFileTest extends TestAbstract
      */
     public function testDownloadSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('download', $this->row()->id))
+        $this->auth()
+            ->json('GET', $this->route('download', $this->row()->id))
             ->assertStatus(200);
     }
 

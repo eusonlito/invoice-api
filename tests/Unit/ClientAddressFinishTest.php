@@ -31,7 +31,8 @@ class ClientAddressFinishTest extends TestAbstract
      */
     public function testNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('DELETE', $this->route('delete', $this->row()->id))
+        $this->auth($this->userFirst())
+            ->json('DELETE', $this->route('delete', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -40,7 +41,8 @@ class ClientAddressFinishTest extends TestAbstract
      */
     public function testSuccess(): void
     {
-        $this->auth()->json('DELETE', $this->route('delete', $this->row()->id))
+        $this->auth()
+            ->json('DELETE', $this->route('delete', $this->row()->id))
             ->assertStatus(200);
     }
 
@@ -49,7 +51,8 @@ class ClientAddressFinishTest extends TestAbstract
      */
     public function testEnabledSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('enabled'))
+        $this->auth()
+            ->json('GET', $this->route('enabled'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -59,7 +62,8 @@ class ClientAddressFinishTest extends TestAbstract
      */
     public function testClientSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('client', $this->client()->id))
+        $this->auth()
+            ->json('GET', $this->route('client', $this->client()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -69,7 +73,8 @@ class ClientAddressFinishTest extends TestAbstract
      */
     public function testClientEnabledSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('client.enabled', $this->client()->id))
+        $this->auth()
+            ->json('GET', $this->route('client.enabled', $this->client()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }

@@ -2,22 +2,17 @@
 
 namespace Tests\Unit;
 
-class CountryTest extends TestAbstract
+class ConfigurationTest extends TestAbstract
 {
     /**
      * @var string
      */
-    protected string $route = 'country';
+    protected string $route = 'configuration';
 
     /**
      * @var int
      */
-    protected int $count = 1;
-
-    /**
-     * @var array
-     */
-    protected array $structure = ['id', 'iso', 'name'];
+    protected int $count = 0;
 
     /**
      * @return void
@@ -26,7 +21,6 @@ class CountryTest extends TestAbstract
     {
         $this->json('GET', $this->route('index'))
             ->assertStatus(200)
-            ->assertJsonStructure([$this->structure])
             ->assertJsonCount($this->count);
     }
 
@@ -38,7 +32,18 @@ class CountryTest extends TestAbstract
         $this->auth()
             ->json('GET', $this->route('index'))
             ->assertStatus(200)
-            ->assertJsonStructure([$this->structure])
             ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCacheSuccess(): void
+    {
+        $content = $this->get($this->route('cache.version'))
+            ->assertStatus(200)
+            ->getContent();
+
+        $this->assertEquals($content, '1');
     }
 }

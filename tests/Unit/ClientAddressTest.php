@@ -40,7 +40,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testEnabledSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('enabled'))
+        $this->auth()
+            ->json('GET', $this->route('enabled'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -59,7 +60,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testClientNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('client', $this->client()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('client', $this->client()->id))
             ->assertStatus(404);
     }
 
@@ -68,7 +70,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testClientSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('client', $this->client()->id))
+        $this->auth()
+            ->json('GET', $this->route('client', $this->client()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -87,7 +90,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testClienEnabledtNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('client.enabled', $this->client()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('client.enabled', $this->client()->id))
             ->assertStatus(404);
     }
 
@@ -96,7 +100,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testClientEnabledSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('client.enabled', $this->client()->id))
+        $this->auth()
+            ->json('GET', $this->route('client.enabled', $this->client()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -124,7 +129,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testCreateEmptyFail(): void
     {
-        $this->auth()->json('POST', $this->route('create', $this->client()->id))
+        $this->auth()
+            ->json('POST', $this->route('create', $this->client()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -149,7 +155,8 @@ class ClientAddressTest extends TestAbstract
     {
         $fail = ['email' => 'fail'];
 
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create', $this->client()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -167,7 +174,8 @@ class ClientAddressTest extends TestAbstract
             'tax_number' => ''
         ];
 
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create', $this->client()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -193,7 +201,8 @@ class ClientAddressTest extends TestAbstract
         $row = factory(Model::class)->make();
         $user = $this->userFirst();
 
-        $this->auth($user)->json('POST', $this->route('create', $this->clientByUser($user)->id), $row->toArray())
+        $this->auth($user)
+            ->json('POST', $this->route('create', $this->clientByUser($user)->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -205,7 +214,8 @@ class ClientAddressTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', $this->route('create', $this->client()->id), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create', $this->client()->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -215,9 +225,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testUpdateRequiredFail(): void
     {
-        $row = $this->row();
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id))
+        $this->auth()
+            ->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -240,10 +249,10 @@ class ClientAddressTest extends TestAbstract
      */
     public function testUpdateEmailFail(): void
     {
-        $row = $this->row();
         $fail = ['email' => 'fail'];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
+        $this->auth()
+            ->json('PATCH', $this->route('update', $this->row()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -256,13 +265,13 @@ class ClientAddressTest extends TestAbstract
      */
     public function testUpdateBillingNifFail(): void
     {
-        $row = $this->row();
         $fail = [
             'billing' => true,
             'tax_number' => ''
         ];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
+        $this->auth()
+            ->json('PATCH', $this->route('update', $this->row()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -276,9 +285,7 @@ class ClientAddressTest extends TestAbstract
      */
     public function testUpdateNoAuthFail(): void
     {
-        $row = $this->row();
-
-        $this->json('PATCH', $this->route('update', $row->id))
+        $this->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(401);
     }
 
@@ -289,7 +296,8 @@ class ClientAddressTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth($this->userFirst())->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth($this->userFirst())
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -300,7 +308,8 @@ class ClientAddressTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -310,7 +319,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testEnabledAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('enabled'))
+        $this->auth()
+            ->json('GET', $this->route('enabled'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }
@@ -320,7 +330,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testClientAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('client', $this->client()->id))
+        $this->auth()
+            ->json('GET', $this->route('client', $this->client()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }
@@ -330,7 +341,8 @@ class ClientAddressTest extends TestAbstract
      */
     public function testClientEnabledAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('client.enabled', $this->client()->id))
+        $this->auth()
+            ->json('GET', $this->route('client.enabled', $this->client()->id))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }

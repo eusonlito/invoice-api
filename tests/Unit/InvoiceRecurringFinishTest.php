@@ -2,20 +2,19 @@
 
 namespace Tests\Unit;
 
-use App\Models;
-use App\Models\InvoiceFile as Model;
+use App\Models\InvoiceRecurring as Model;
 
-class InvoiceFileFinishTest extends TestAbstract
+class InvoiceRecurringFinishTest extends TestAbstract
 {
     /**
      * @var string
      */
-    protected string $route = 'invoice-file';
+    protected string $route = 'invoice-recurring';
 
     /**
      * @var int
      */
-    protected int $count = 1;
+    protected int $count = 0;
 
     /**
      * @return void
@@ -49,27 +48,41 @@ class InvoiceFileFinishTest extends TestAbstract
     /**
      * @return void
      */
-    public function testInvoiceSuccess(): void
+    public function testIndexSuccess(): void
     {
         $this->auth()
-            ->json('GET', $this->route('invoice', $this->invoice()->id))
+            ->json('GET', $this->route('index'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
 
     /**
-     * @return \App\Models\InvoiceFile
+     * @return void
+     */
+    public function testEnabledSuccess(): void
+    {
+        $this->auth()
+            ->json('GET', $this->route('index'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return void
+     */
+    public function testExportSuccess(): void
+    {
+        $this->auth()
+            ->json('GET', $this->route('export'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return \App\Models\InvoiceRecurring
      */
     protected function row(): Model
     {
         return Model::orderBy('id', 'DESC')->first();
-    }
-
-    /**
-     * @return \App\Models\Invoice
-     */
-    protected function invoice(): Models\Invoice
-    {
-        return Models\Invoice::orderBy('id', 'DESC')->first();
     }
 }

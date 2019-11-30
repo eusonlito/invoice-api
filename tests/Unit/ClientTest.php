@@ -40,7 +40,8 @@ class ClientTest extends TestAbstract
      */
     public function testIndexSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('index'))
+        $this->auth()
+            ->json('GET', $this->route('index'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -59,7 +60,8 @@ class ClientTest extends TestAbstract
      */
     public function testExportSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('export'))
+        $this->auth()
+            ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -88,7 +90,8 @@ class ClientTest extends TestAbstract
      */
     public function testCreateEmptyFail(): void
     {
-        $this->auth()->json('POST', $this->route('create'))
+        $this->auth()
+            ->json('POST', $this->route('create'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -112,7 +115,8 @@ class ClientTest extends TestAbstract
             'tax_id' => 'fail',
         ];
 
-        $this->auth()->json('POST', $this->route('create'), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -137,7 +141,8 @@ class ClientTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['discount_id' => 1]);
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -148,7 +153,8 @@ class ClientTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['payment_id' => 1]);
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -159,7 +165,8 @@ class ClientTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['shipping_id' => 1]);
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -170,7 +177,8 @@ class ClientTest extends TestAbstract
     {
         $row = factory(Model::class)->make(['tax_id' => 1]);
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -190,7 +198,8 @@ class ClientTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth($this->userFirst())->json('POST', $this->route('create'), $row->toArray())
+        $this->auth($this->userFirst())
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -202,7 +211,8 @@ class ClientTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -221,7 +231,8 @@ class ClientTest extends TestAbstract
      */
     public function testDetailNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('detail', $this->row()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -230,7 +241,8 @@ class ClientTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('detail', $this->row()->id))
+        $this->auth()
+            ->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -240,9 +252,8 @@ class ClientTest extends TestAbstract
      */
     public function testUpdateEmptyFail(): void
     {
-        $row = $this->row();
-
-        $this->auth()->json('PATCH', $this->route('update', $row->id))
+        $this->auth()
+            ->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -257,7 +268,6 @@ class ClientTest extends TestAbstract
      */
     public function testUpdateIvalidFail(): void
     {
-        $row = $this->row();
         $fail = [
             'email' => 'fail',
             'contact_email' => 'fail',
@@ -267,7 +277,8 @@ class ClientTest extends TestAbstract
             'tax_id' => 'fail',
         ];
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $fail)
+        $this->auth()
+            ->json('PATCH', $this->route('update', $this->row()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -293,7 +304,8 @@ class ClientTest extends TestAbstract
         $row = $this->row();
         $row->discount_id = 1;
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -305,7 +317,8 @@ class ClientTest extends TestAbstract
         $row = $this->row();
         $row->payment_id = 1;
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -317,7 +330,8 @@ class ClientTest extends TestAbstract
         $row = $this->row();
         $row->shipping_id = 1;
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -329,7 +343,8 @@ class ClientTest extends TestAbstract
         $row = $this->row();
         $row->tax_id = 1;
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -351,7 +366,8 @@ class ClientTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth($this->userFirst())->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth($this->userFirst())
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(404);
     }
 
@@ -368,7 +384,8 @@ class ClientTest extends TestAbstract
         $row->shipping_id = Models\Shipping::where('user_id', $user->id)->first()->id;
         $row->tax_id = Models\Tax::where('user_id', $user->id)->first()->id;
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -378,7 +395,8 @@ class ClientTest extends TestAbstract
      */
     public function testIndexAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('index'))
+        $this->auth()
+            ->json('GET', $this->route('index'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }
@@ -388,7 +406,8 @@ class ClientTest extends TestAbstract
      */
     public function testExportAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('export'))
+        $this->auth()
+            ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }

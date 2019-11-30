@@ -30,7 +30,8 @@ class ClientFinishTest extends TestAbstract
      */
     public function testNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('DELETE', $this->route('delete', $this->row()->id))
+        $this->auth($this->userFirst())
+            ->json('DELETE', $this->route('delete', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -39,7 +40,8 @@ class ClientFinishTest extends TestAbstract
      */
     public function testSuccess(): void
     {
-        $this->auth()->json('DELETE', $this->route('delete', $this->row()->id))
+        $this->auth()
+            ->json('DELETE', $this->route('delete', $this->row()->id))
             ->assertStatus(200);
     }
 
@@ -48,7 +50,8 @@ class ClientFinishTest extends TestAbstract
      */
     public function testIndexSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('index'))
+        $this->auth()
+            ->json('GET', $this->route('index'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -58,7 +61,8 @@ class ClientFinishTest extends TestAbstract
      */
     public function testExportSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('export'))
+        $this->auth()
+            ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }

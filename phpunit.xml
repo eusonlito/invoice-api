@@ -12,10 +12,12 @@
          stopOnFailure="true">
     <testsuites>
         <testsuite name="Unit">
+            <file>./tests/Unit/ConfigurationTest.php</file>
             <file>./tests/Unit/CountryTest.php</file>
 
             <file>./tests/Unit/UserTest.php</file>
             <file>./tests/Unit/CompanyTest.php</file>
+            <file>./tests/Unit/InvoiceRecurringTest.php</file>
             <file>./tests/Unit/InvoiceSerieTest.php</file>
             <file>./tests/Unit/InvoiceStatusTest.php</file>
             <file>./tests/Unit/DiscountTest.php</file>
@@ -39,6 +41,7 @@
             <file>./tests/Unit/DiscountFinishTest.php</file>
             <file>./tests/Unit/InvoiceStatusFinishTest.php</file>
             <file>./tests/Unit/InvoiceSerieFinishTest.php</file>
+            <file>./tests/Unit/InvoiceRecurringFinishTest.php</file>
         </testsuite>
     </testsuites>
 

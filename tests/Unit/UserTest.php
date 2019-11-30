@@ -295,7 +295,8 @@ class UserTest extends TestAbstract
      */
     public function testProfileEmptyFail(): void
     {
-        $this->auth()->json('PATCH', $this->route('update.profile'))
+        $this->auth()
+            ->json('PATCH', $this->route('update.profile'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -317,7 +318,8 @@ class UserTest extends TestAbstract
 
         $fail = ['user' => 'fail'];
 
-        $this->auth()->json('PATCH', $this->route('update.profile'), $fail + $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update.profile'), $fail + $row->toArray())
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -333,7 +335,8 @@ class UserTest extends TestAbstract
         $row = $this->user();
         $row->password_current = 'fail';
 
-        $this->auth()->json('PATCH', $this->route('update.profile'), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update.profile'), $row->toArray())
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -349,7 +352,8 @@ class UserTest extends TestAbstract
         $row = $this->user();
         $row->password_current = $row->user;
 
-        $this->auth()->json('PATCH', $this->route('update.profile'), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update.profile'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure['user']);
     }
@@ -386,7 +390,8 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = 'fail';
         $row['password_current'] = $row['user'];
 
-        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+        $this->auth()
+            ->json('PATCH', $this->route('update.password'), $row)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -404,7 +409,8 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = 'fail';
         $row['password_current'] = $row['user'];
 
-        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+        $this->auth()
+            ->json('PATCH', $this->route('update.password'), $row)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -422,7 +428,8 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = $row['user'];
         $row['password_current'] = 'fail';
 
-        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+        $this->auth()
+            ->json('PATCH', $this->route('update.password'), $row)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -440,7 +447,8 @@ class UserTest extends TestAbstract
         $row['password_repeat'] = $row['user'];
         $row['password_current'] = $row['user'];
 
-        $this->auth()->json('PATCH', $this->route('update.password'), $row)
+        $this->auth()
+            ->json('PATCH', $this->route('update.password'), $row)
             ->assertStatus(200)
             ->assertJsonStructure($this->structure['user']);
     }

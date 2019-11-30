@@ -34,7 +34,8 @@ class CompanyTest extends TestAbstract
      */
     public function testDetailNoExistsFail(): void
     {
-        $this->auth()->json('GET', $this->route('detail'))
+        $this->auth()
+            ->json('GET', $this->route('detail'))
             ->assertStatus(404);
     }
 
@@ -57,7 +58,8 @@ class CompanyTest extends TestAbstract
      */
     public function testUpdateEmptyFail(): void
     {
-        $this->auth()->json('PATCH', $this->route('update'))
+        $this->auth()
+            ->json('PATCH', $this->route('update'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -91,7 +93,8 @@ class CompanyTest extends TestAbstract
             'country_id' => 99999
         ];
 
-        $this->auth()->json('PATCH', $this->route('update'), $fail)
+        $this->auth()
+            ->json('PATCH', $this->route('update'), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -117,7 +120,8 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth($this->userFirst())->json('PATCH', $this->route('update'), $row->toArray())
+        $this->auth($this->userFirst())
+            ->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -129,7 +133,8 @@ class CompanyTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
 
-        $this->auth()->json('PATCH', $this->route('update'), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -139,7 +144,8 @@ class CompanyTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('detail'))
+        $this->auth()
+            ->json('GET', $this->route('detail'))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Services\Helper;
 
-use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use App\Models;

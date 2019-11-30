@@ -81,6 +81,7 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX'),
+    'prefix' => env('CACHE_PREFIX').env('CACHE_VERSION').'-',
+    'version' => env('CACHE_VERSION'),
 
 ];

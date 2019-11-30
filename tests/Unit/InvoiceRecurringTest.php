@@ -2,24 +2,24 @@
 
 namespace Tests\Unit;
 
-use App\Models\InvoiceStatus as Model;
+use App\Models\InvoiceRecurring as Model;
 
-class InvoiceStatusTest extends TestAbstract
+class InvoiceRecurringTest extends TestAbstract
 {
     /**
      * @var string
      */
-    protected string $route = 'invoice-status';
+    protected string $route = 'invoice-recurring';
 
     /**
      * @var int
      */
-    protected int $count = 4;
+    protected int $count = 0;
 
     /**
      * @var array
      */
-    protected array $structure = ['id', 'name', 'order', 'paid', 'default', 'enabled'];
+    protected array $structure = ['id', 'name', 'every', 'enabled'];
 
     /**
      * @return void
@@ -94,9 +94,7 @@ class InvoiceStatusTest extends TestAbstract
      * Rules:
      *
      * 'name' => 'required|string',
-     * 'order' => 'required|integer',
-     * 'paid' => 'boolean',
-     * 'default' => 'boolean',
+     * 'every' => 'required|in:week,month,year',
      * 'enabled' => 'boolean',
      */
 
@@ -111,9 +109,9 @@ class InvoiceStatusTest extends TestAbstract
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
             ->assertDontSee(' name ')
-            ->assertDontSee(' order ')
+            ->assertDontSee(' every ')
             ->assertSee($this->t('validator.name-required'))
-            ->assertSee($this->t('validator.order-required'));
+            ->assertSee($this->t('validator.every-required'));
     }
 
     /**
@@ -121,15 +119,15 @@ class InvoiceStatusTest extends TestAbstract
      */
     public function testCreateInvalidFail(): void
     {
-        $fail = ['order' => 'fail'];
+        $fail = ['every' => 'fail'];
 
         $this->auth()
             ->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
-            ->assertDontSee(' order ')
-            ->assertSee($this->t('validator.order-integer'));
+            ->assertDontSee(' every ')
+            ->assertSee($this->t('validator.every-in'));
     }
 
     /**
@@ -139,8 +137,7 @@ class InvoiceStatusTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
         $row->name = 'Test';
-        $row->order = 1;
-        $row->paid = true;
+        $row->every = 'month';
         $row->default = true;
 
         $this->auth($this->userFirst())
@@ -156,8 +153,7 @@ class InvoiceStatusTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
         $row->name = 'Test';
-        $row->order = 1;
-        $row->paid = true;
+        $row->every = 'month';
         $row->default = true;
 
         $this->auth()
@@ -207,9 +203,9 @@ class InvoiceStatusTest extends TestAbstract
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
             ->assertDontSee(' name ')
-            ->assertDontSee(' order ')
+            ->assertDontSee(' every ')
             ->assertSee($this->t('validator.name-required'))
-            ->assertSee($this->t('validator.order-required'));
+            ->assertSee($this->t('validator.every-required'));
     }
 
     /**
@@ -217,15 +213,15 @@ class InvoiceStatusTest extends TestAbstract
      */
     public function testUpdateInvalidFail(): void
     {
-        $fail = ['order' => 'fail'];
+        $fail = ['every' => 'fail'];
 
         $this->auth()
             ->json('PATCH', $this->route('update', $this->row()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
-            ->assertDontSee(' order ')
-            ->assertSee($this->t('validator.order-integer'));
+            ->assertDontSee(' every ')
+            ->assertSee($this->t('validator.every-in'));
     }
 
     /**
@@ -296,7 +292,7 @@ class InvoiceStatusTest extends TestAbstract
     }
 
     /**
-     * @return \App\Models\InvoiceStatus
+     * @return \App\Models\InvoiceRecurring
      */
     protected function row(): Model
     {

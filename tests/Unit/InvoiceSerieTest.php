@@ -37,7 +37,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testIndexSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('index'))
+        $this->auth()
+            ->json('GET', $this->route('index'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -56,7 +57,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testEnabledSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('enabled'))
+        $this->auth()
+            ->json('GET', $this->route('enabled'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -75,7 +77,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testExportSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('export'))
+        $this->auth()
+            ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
@@ -105,7 +108,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testCreateEmptyFail(): void
     {
-        $this->auth()->json('POST', $this->route('create'))
+        $this->auth()
+            ->json('POST', $this->route('create'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -125,7 +129,8 @@ class InvoiceSerieTest extends TestAbstract
             'number_next' => 'fail'
         ];
 
-        $this->auth()->json('POST', $this->route('create'), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -145,7 +150,8 @@ class InvoiceSerieTest extends TestAbstract
         $row->number_prefix = 'T';
         $row->default = true;
 
-        $this->auth($this->userFirst())->json('POST', $this->route('create'), $row->toArray())
+        $this->auth($this->userFirst())
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -160,7 +166,8 @@ class InvoiceSerieTest extends TestAbstract
         $row->number_prefix = 'T';
         $row->default = true;
 
-        $this->auth()->json('POST', $this->route('create'), $row->toArray())
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -179,7 +186,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testDetailNotAllowedFail(): void
     {
-        $this->auth($this->userFirst())->json('GET', $this->route('detail', $this->row()->id))
+        $this->auth($this->userFirst())
+            ->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(404);
     }
 
@@ -188,7 +196,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testDetailSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('detail', $this->row()->id))
+        $this->auth()
+            ->json('GET', $this->route('detail', $this->row()->id))
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -198,7 +207,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testUpdatEmptyFail(): void
     {
-        $this->auth()->json('PATCH', $this->route('update', $this->row()->id))
+        $this->auth()
+            ->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -219,7 +229,8 @@ class InvoiceSerieTest extends TestAbstract
             'number_next' => 'fail'
         ];
 
-        $this->auth()->json('POST', $this->route('create'), $fail)
+        $this->auth()
+            ->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
@@ -234,9 +245,7 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testUpdateNoAuthFail(): void
     {
-        $row = $this->row();
-
-        $this->json('PATCH', $this->route('update', $row->id))
+        $this->json('PATCH', $this->route('update', $this->row()->id))
             ->assertStatus(401);
     }
 
@@ -259,7 +268,8 @@ class InvoiceSerieTest extends TestAbstract
     {
         $row = $this->row();
 
-        $this->auth()->json('PATCH', $this->route('update', $row->id), $row->toArray())
+        $this->auth()
+            ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure);
     }
@@ -269,7 +279,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testIndexAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('index'))
+        $this->auth()
+            ->json('GET', $this->route('index'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }
@@ -279,7 +290,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testEnabledAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('enabled'))
+        $this->auth()
+            ->json('GET', $this->route('enabled'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }
@@ -289,7 +301,8 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testExportAfterSuccess(): void
     {
-        $this->auth()->json('GET', $this->route('export'))
+        $this->auth()
+            ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
     }

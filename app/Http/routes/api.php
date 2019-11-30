@@ -9,6 +9,9 @@ Route::post('/user/confirm/{hash}', 'User@confirmFinish')->name('user.confirm.fi
 Route::post('/user/password/reset', 'User@PasswordResetStart')->name('user.password.reset.start');
 Route::post('/user/password/reset/{hash}', 'User@PasswordResetFinish')->name('user.password.reset.finish');
 
+Route::get('/configuration', 'Configuration@index')->name('configuration.index');
+Route::get('/configuration/cache/version', 'Configuration@cacheVersion')->name('configuration.cache.version');
+
 Route::get('/country', 'Country@index')->name('country.index');
 
 Route::group(['middleware' => 'user.refresh'], static function () {
@@ -68,6 +71,14 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/invoice-file/invoice/{invoice_id}/main', 'InvoiceFile@main')->name('invoice-file.main');
     Route::post('/invoice-file/invoice/{invoice_id}', 'InvoiceFile@create')->name('invoice-file.create');
     Route::delete('/invoice-file/{id}', 'InvoiceFile@delete')->name('invoice-file.delete');
+
+    Route::get('/invoice-recurring', 'InvoiceRecurring@index')->name('invoice-recurring.index');
+    Route::get('/invoice-recurring/enabled', 'InvoiceRecurring@enabled')->name('invoice-recurring.enabled');
+    Route::get('/invoice-recurring/export', 'InvoiceRecurring@export')->name('invoice-recurring.export');
+    Route::get('/invoice-recurring/{id}', 'InvoiceRecurring@detail')->name('invoice-recurring.detail');
+    Route::post('/invoice-recurring', 'InvoiceRecurring@create')->name('invoice-recurring.create');
+    Route::patch('/invoice-recurring/{id}', 'InvoiceRecurring@update')->name('invoice-recurring.update');
+    Route::delete('/invoice-recurring/{id}', 'InvoiceRecurring@delete')->name('invoice-recurring.delete');
 
     Route::get('/invoice-serie', 'InvoiceSerie@index')->name('invoice-serie.index');
     Route::get('/invoice-serie/enabled', 'InvoiceSerie@enabled')->name('invoice-serie.enabled');
