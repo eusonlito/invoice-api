@@ -219,6 +219,7 @@ class Base extends Migration
             $table->date('date_at');
             $table->date('paid_at')->nullable();
             $table->date('required_at')->nullable();
+            $table->date('recurring_at')->nullable();
 
             $table->text('comment_private');
             $table->text('comment_public');

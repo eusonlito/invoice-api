@@ -4,7 +4,7 @@ namespace App\Domains;
 
 use App\Models;
 
-abstract class StoreAbstract
+abstract class StoreAbstract extends CacheAbstract
 {
     /**
      * @var ?\App\Models\User
@@ -31,28 +31,5 @@ abstract class StoreAbstract
     {
         $this->user = $user;
         $this->data = $data;
-    }
-
-    /**
-     * @param string ...$names
-     *
-     * @return void
-     */
-    protected function cacheFlush(string ...$names)
-    {
-        cache()->tags($names)->flush();
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $response
-     *
-     * @return mixed
-     */
-    protected function cacheFlushResponse(string $name, $response)
-    {
-        $this->cacheFlush($name);
-
-        return $response;
     }
 }

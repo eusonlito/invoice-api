@@ -9,6 +9,7 @@ use App\Domains\ClientAddress\Fractal as ClientAddress;
 use App\Domains\Discount\Fractal as Discount;
 use App\Domains\InvoiceFile\Fractal as InvoiceFile;
 use App\Domains\InvoiceItem\Fractal as InvoiceItem;
+use App\Domains\InvoiceRecurring\Fractal as InvoiceRecurring;
 use App\Domains\InvoiceSerie\Fractal as InvoiceSerie;
 use App\Domains\InvoiceStatus\Fractal as InvoiceStatus;
 use App\Domains\Payment\Fractal as Payment;
@@ -34,6 +35,7 @@ class Fractal extends FractalAbstract
             'date_at' => $row->date_at,
             'paid_at' => $row->paid_at,
             'created_at' => $row->created_at,
+            'recurring_at' => $row->recurring_at,
             'serie' => InvoiceSerie::transform('simple', $row->serie),
             'status' => InvoiceStatus::transform('simple', $row->status)
         ];
@@ -91,6 +93,7 @@ class Fractal extends FractalAbstract
             'discount' => Discount::transform('simple', $row->discount),
             'files' => InvoiceFile::transform('simple', $row->files),
             'payment' => Payment::transform('simple', $row->payment),
+            'recurring' => InvoiceRecurring::transform('simple', $row->recurring),
             'shipping' => Shipping::transform('simple', $row->shipping),
             'tax' => Tax::transform('simple', $row->tax),
         ] + static::simple($row);

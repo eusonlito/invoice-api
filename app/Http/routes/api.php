@@ -63,6 +63,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/invoice/w/{id}', 'Invoice@wUpdate')->name('invoice.w.update');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
+    Route::patch('/invoice/{id}/paid', 'Invoice@paid')->name('invoice.paid');
     Route::delete('/invoice/{id}', 'Invoice@delete')->name('invoice.delete');
 
     Route::get('/invoice-file/{id}', 'InvoiceFile@detail')->name('invoice-file.detail');

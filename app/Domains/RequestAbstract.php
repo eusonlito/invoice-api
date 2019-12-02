@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models;
 
-abstract class RequestAbstract
+abstract class RequestAbstract extends CacheAbstract
 {
     /**
      * @var \Illuminate\Http\Request
@@ -59,39 +59,5 @@ abstract class RequestAbstract
     protected function modelDetailById(int $id): Models\ModelAbstract
     {
         return $this->model()->detail()->byId($id)->firstOrFail();
-    }
-
-    /**
-     * @param string $name
-     * @param Closure $closure
-     * @param int $time = 3600
-     *
-     * @return array|string
-     */
-    protected function cache(string $name, Closure $closure, int $time = 3600)
-    {
-        return cache()->tags($this->cacheTags($name))->remember($this->cacheName($name), $time, $closure);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function cacheTags(string $name): string
-    {
-        return explode('\\', $name)[2];
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function cacheName(string $name): string
-    {
-        $id = isset($this->user) ? (string)$this->user->company_id : '0';
-
-        return md5($name.'|'.$id.'|'.$this->request->fullUrl());
     }
 }

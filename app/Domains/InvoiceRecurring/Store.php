@@ -28,17 +28,31 @@ class Store extends StoreAbstract
      */
     public function update(Model $row): Model
     {
-        $row->name = $this->data['name'];
-        $row->every = $this->data['every'];
-        $row->enabled = (bool)$this->data['enabled'];
+        $this->row = $row;
 
-        $row->save();
+        $this->row->name = $this->data['name'];
+        $this->row->every = $this->data['every'];
+        $this->row->enabled = (bool)$this->data['enabled'];
+
+        $this->row->save();
+
+        $this->invoices();
 
         $this->cacheFlush('InvoiceRecurring', 'Invoice');
 
-        service()->log('invoice_recurring', 'update', $this->user->id, ['invoice_recurring_id' => $row->id]);
+        service()->log('invoice_recurring', 'update', $this->user->id, ['invoice_recurring_id' => $this->row->id]);
 
-        return $row;
+        return $this->row;
+    }
+
+    /**
+     * @return void
+     */
+    protected function invoices()
+    {
+        $this->row->invoices()->update([
+            'recurring_at' => Model::dateAdd('date_at', 1, $this->row->every)
+        ]);
     }
 
     /**
@@ -52,6 +66,7 @@ class Store extends StoreAbstract
             throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
         }
 
+        $row->invoices()->update(['recurring_at' => null]);
         $row->delete();
 
         $this->cacheFlush('InvoiceRecurring', 'Invoice');

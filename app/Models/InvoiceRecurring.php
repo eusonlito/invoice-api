@@ -41,4 +41,14 @@ class InvoiceRecurring extends ModelAbstract
     {
         $q->orderBy('name', 'ASC');
     }
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    public function next(string $date): string
+    {
+        return date('Y-m-d', strtotime($date.' +1 '.$this->every));
+    }
 }

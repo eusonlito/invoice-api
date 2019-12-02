@@ -110,6 +110,14 @@ class Invoice extends ModelAbstract
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function recurring(): Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceRecurring::class, InvoiceRecurring::$foreign);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function serie(): Relations\BelongsTo
     {
         return $this->belongsTo(InvoiceSerie::class, InvoiceSerie::$foreign);
@@ -140,6 +148,14 @@ class Invoice extends ModelAbstract
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, User::$foreign);
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void
@@ -147,6 +163,17 @@ class Invoice extends ModelAbstract
     public function scopeList(Builder $q)
     {
         $q->simple()->with(['serie', 'status'])->orderBy('date_at', 'DESC');
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     *
+     * @return void
+     */
+    public function scopePendingToRecurring(Builder $q)
+    {
+        $q->where('recurring_at', '<=', date('Y-m-d'))
+            ->whereIn('invoice_recurring_id', InvoiceRecurring::select('id')->enabled());
     }
 
     /**

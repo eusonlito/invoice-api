@@ -67,6 +67,18 @@ class Invoice extends ControllerAbstract
     }
 
     /**
+     * PATCH /invoice/{id}/paid
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function paid(int $id): JsonResponse
+    {
+        return $this->json($this->request()->paid($id));
+    }
+
+    /**
      * DELETE /invoice/{id}
      *
      * @param int $id
@@ -110,6 +122,7 @@ class Invoice extends ControllerAbstract
         return [
             'client_address' => (new Domains\ClientAddress\Request($this->request, $this->user))->enabledCached(),
             'discount' => (new Domains\Discount\Request($this->request, $this->user))->enabledCached(),
+            'invoice_recurring' => (new Domains\InvoiceRecurring\Request($this->request, $this->user))->enabledCached(),
             'invoice_serie' => (new Domains\InvoiceSerie\Request($this->request, $this->user))->enabledCached(),
             'invoice_status' => (new Domains\InvoiceStatus\Request($this->request, $this->user))->enabledCached(),
             'payment' => (new Domains\Payment\Request($this->request, $this->user))->enabledCached(),

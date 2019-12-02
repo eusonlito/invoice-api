@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Domains;
 use App\Listeners;
 
 class Event extends ServiceProvider
@@ -14,6 +15,7 @@ class Event extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        Domains\Invoice\Event\Recurring::class => [Domains\Invoice\Listener\Recurring::class],
         MessageSending::class => [Listeners\Mail\Logger::class],
     ];
 }

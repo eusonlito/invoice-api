@@ -29,6 +29,7 @@ class InvoiceTest extends TestAbstract
         'clientAddressShipping' => ['id', 'name'],
         'discount' => ['id', 'name'],
         'payment' => ['id', 'name'],
+        'recurring' => ['id', 'name'],
         'serie' => ['id', 'name'],
         'status' => ['id', 'name'],
         'shipping' => ['id', 'name'],
@@ -108,6 +109,7 @@ class InvoiceTest extends TestAbstract
      * 'date_at' => 'required|date',
      * 'paid_at' => 'nullable|date',
      * 'required_at' => 'nullable|date',
+     * 'invoice_recurring_id' => 'nullable|integer',
      * 'invoice_serie_id' => 'required|integer',
      * 'invoice_status_id' => 'required|integer',
      * 'payment_id' => 'nullable|integer',
@@ -176,7 +178,17 @@ class InvoiceTest extends TestAbstract
             'percent_tax' => 'fail',
             'amount_due' => 'fail',
             'amount_shipping' => 'fail',
-            'amount_paid' => 'fail'
+            'amount_paid' => 'fail',
+
+            'client_address_billing_id' => 'fail',
+            'client_address_shipping_id' => 'fail',
+            'invoice_recurring_id' => 'fail',
+            'invoice_serie_id' => 'fail',
+            'invoice_status_id' => 'fail',
+            'payment_id' => 'fail',
+            'discount_id' => 'fail',
+            'tax_id' => 'fail',
+            'shipping_id' => 'fail',
         ];
 
         $this->auth()
@@ -191,7 +203,16 @@ class InvoiceTest extends TestAbstract
             ->assertSee($this->t('validator.percent_tax-numeric'))
             ->assertSee($this->t('validator.amount_due-numeric'))
             ->assertSee($this->t('validator.amount_shipping-numeric'))
-            ->assertSee($this->t('validator.amount_paid-numeric'));
+            ->assertSee($this->t('validator.amount_paid-numeric'))
+            ->assertSee($this->t('validator.client_address_billing_id-integer'))
+            ->assertSee($this->t('validator.client_address_shipping_id-integer'))
+            ->assertSee($this->t('validator.invoice_recurring_id-integer'))
+            ->assertSee($this->t('validator.invoice_serie_id-integer'))
+            ->assertSee($this->t('validator.invoice_status_id-integer'))
+            ->assertSee($this->t('validator.payment_id-integer'))
+            ->assertSee($this->t('validator.discount_id-integer'))
+            ->assertSee($this->t('validator.tax_id-integer'))
+            ->assertSee($this->t('validator.shipping_id-integer'));
     }
 
     /**
@@ -354,7 +375,17 @@ class InvoiceTest extends TestAbstract
             'percent_tax' => 'fail',
             'amount_due' => 'fail',
             'amount_shipping' => 'fail',
-            'amount_paid' => 'fail'
+            'amount_paid' => 'fail',
+
+            'client_address_billing_id' => 'fail',
+            'client_address_shipping_id' => 'fail',
+            'invoice_recurring_id' => 'fail',
+            'invoice_serie_id' => 'fail',
+            'invoice_status_id' => 'fail',
+            'payment_id' => 'fail',
+            'discount_id' => 'fail',
+            'tax_id' => 'fail',
+            'shipping_id' => 'fail',
         ];
 
         $this->auth()
@@ -369,7 +400,16 @@ class InvoiceTest extends TestAbstract
             ->assertSee($this->t('validator.percent_tax-numeric'))
             ->assertSee($this->t('validator.amount_due-numeric'))
             ->assertSee($this->t('validator.amount_shipping-numeric'))
-            ->assertSee($this->t('validator.amount_paid-numeric'));
+            ->assertSee($this->t('validator.amount_paid-numeric'))
+            ->assertSee($this->t('validator.client_address_billing_id-integer'))
+            ->assertSee($this->t('validator.client_address_shipping_id-integer'))
+            ->assertSee($this->t('validator.invoice_recurring_id-integer'))
+            ->assertSee($this->t('validator.invoice_serie_id-integer'))
+            ->assertSee($this->t('validator.invoice_status_id-integer'))
+            ->assertSee($this->t('validator.payment_id-integer'))
+            ->assertSee($this->t('validator.discount_id-integer'))
+            ->assertSee($this->t('validator.tax_id-integer'))
+            ->assertSee($this->t('validator.shipping_id-integer'));
     }
 
     /**
@@ -472,6 +512,7 @@ class InvoiceTest extends TestAbstract
     {
         $user = $row->user;
 
+        $invoiceRecurring = Models\InvoiceRecurring::where('user_id', $user->id)->orderBy('id', 'DESC')->first();
         $invoiceSerie = Models\InvoiceSerie::where('user_id', $user->id)->orderBy('id', 'DESC')->first();
         $invoiceStatus = Models\InvoiceStatus::where('user_id', $user->id)->orderBy('id', 'DESC')->first();
         $client = Models\Client::where('user_id', $user->id)->orderBy('id', 'DESC')->first();
@@ -520,6 +561,7 @@ class InvoiceTest extends TestAbstract
         $row->client_address_billing_id = $clientBilling->id;
         $row->client_address_shipping_id = $clientShipping->id;
         $row->discount_id = $discount->id;
+        $row->invoice_recurring_id = $invoiceRecurring->id;
         $row->invoice_serie_id = $invoiceSerie->id;
         $row->invoice_status_id = $invoiceStatus->id;
         $row->payment_id = $payment->id;

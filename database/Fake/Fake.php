@@ -25,6 +25,7 @@ class Fake extends Seeder
             $this->call(Shipping::class);
             $this->call(Tax::class);
             $this->call(Client::class);
+            $this->call(InvoiceRecurring::class);
             $this->call(InvoiceSerie::class);
             $this->call(InvoiceStatus::class);
             $this->call(Invoice::class);

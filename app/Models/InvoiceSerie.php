@@ -65,4 +65,22 @@ class InvoiceSerie extends ModelAbstract
 
         return explode('-', basename($this->certificate_file), 2)[1];
     }
+
+    /**
+     * @return string
+     */
+    public function getNumberValueAttribute(): string
+    {
+        $number = $this->number_next;
+
+        if ($this->number_fill) {
+            $number = sprintf('%0'.$this->number_fill.'d', $number);
+        }
+
+        if ($this->number_prefix) {
+            $number = $this->number_prefix.$number;
+        }
+
+        return $number;
+    }
 }

@@ -47,6 +47,7 @@ class Store extends StoreAbstract
         $this->company();
         $this->clientAddressBilling();
         $this->clientAddressShipping();
+        $this->recurring();
         $this->serie();
         $this->status();
         $this->payment();
@@ -55,7 +56,10 @@ class Store extends StoreAbstract
         $this->shipping();
 
         $this->row->save();
-        $this->row->load(['discount', 'shipping', 'tax']);
+        $this->row->load([
+            'client', 'clientAddressBilling', 'clientAddressShipping', 'recurring',
+            'serie', 'status', 'discount', 'payment', 'shipping', 'tax'
+        ]);
 
         $this->items();
         $this->amount();
@@ -133,7 +137,7 @@ class Store extends StoreAbstract
             return;
         }
 
-        $address = Models\ClientAddress::byId($this->data['client_address_billing_id'])
+        $address = Models\ClientAddress::byId($this->data['client_address_shipping_id'])
             ->where('client_id', $this->row->client_id)
             ->byCompany($this->user->company)
             ->firstOrFail();
@@ -145,6 +149,24 @@ class Store extends StoreAbstract
         $this->row->shipping_state = $address->state;
         $this->row->shipping_postal_code = $address->postal_code;
         $this->row->shipping_country = $address->country;
+    }
+
+    /**
+     * @return void
+     */
+    protected function recurring()
+    {
+        if (empty($this->data['invoice_recurring_id'])) {
+            return $this->row->invoice_recurring_id = $this->row->recurring_at = null;
+        }
+
+        $related = Models\InvoiceRecurring::select('id', 'every')
+            ->byId($this->data['invoice_recurring_id'])
+            ->byCompany($this->user->company)
+            ->firstOrFail();
+
+        $this->row->invoice_recurring_id = $related->id;
+        $this->row->recurring_at = $related->next($this->row->date_at);
     }
 
     /**
@@ -399,6 +421,36 @@ class Store extends StoreAbstract
     protected function float($value): float
     {
         return round(abs((float)$value), 2);
+    }
+
+    /**
+     * @param \App\Models\Invoice $row
+     *
+     * @return \App\Models\Invoice
+     */
+    public function paid(Model $row): Model
+    {
+        $row->paid_at = date('Y-m-d');
+        $row->amount_paid = $row->amount_total;
+        $row->amount_due = 0;
+
+        $status = Models\InvoiceStatus::select('id')
+            ->byCompany($this->user->company)
+            ->where('paid', true)
+            ->first();
+
+        if ($status) {
+            $row->invoice_status_id = $status->id;
+            $row->load(['status']);
+        }
+
+        $row->save();
+
+        $this->cacheFlush('Invoice');
+
+        service()->log('invoice', 'paid', $this->user->id, ['invoice_id' => $row->id]);
+
+        return $row;
     }
 
     /**

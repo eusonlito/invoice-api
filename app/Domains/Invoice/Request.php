@@ -81,6 +81,16 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
+     * @return array
+     */
+    public function paid(int $id): array
+    {
+        return $this->fractal('detail', $this->store()->paid($this->modelById($id)));
+    }
+
+    /**
+     * @param int $id
+     *
      * @return void
      */
     public function delete(int $id): void
