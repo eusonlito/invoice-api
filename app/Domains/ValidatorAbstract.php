@@ -12,7 +12,7 @@ abstract class ValidatorAbstract extends Generator
      *
      * @return array
      */
-    protected static function config(string $name): array
+    final protected static function config(string $name): array
     {
         $method = 'config'.ucfirst($name);
 

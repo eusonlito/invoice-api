@@ -8,7 +8,7 @@ abstract class CommandInterface extends Command
 {
     /**
      * @param mixed $string
-     * @param bool|int|string|null $verbosity = false
+     * @param int|null|string $verbosity = false
      *
      * @return void
      */
@@ -23,7 +23,7 @@ abstract class CommandInterface extends Command
 
     /**
      * @param mixed $string
-     * @param bool|int|string|null $verbosity = false
+     * @param int|null|string $verbosity = false
      *
      * @return void
      */

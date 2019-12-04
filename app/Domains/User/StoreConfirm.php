@@ -45,8 +45,9 @@ class StoreConfirm
     public static function start(string $user): Model
     {
         $user = Model::where('user', $user)->enabled()->firstOrFail();
+        $hash = encrypt($user->id.'|'.microtime(true));
 
-        Mailer::userConfirm($user, encrypt($user->id.'|'.microtime(true)));
+        Mailer::queue(new Mail\Confirm($user, $hash), $user, [$user->user]);
 
         return $user;
     }

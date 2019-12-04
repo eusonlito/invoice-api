@@ -3,52 +3,19 @@
 namespace App\Services\Mail;
 
 use Illuminate\Support\Facades\Mail;
-use App\Mails;
+use App\Mails\MailAbstract;
 use App\Models;
 
 class Mailer
 {
     /**
-     * @param \App\Models\User $user
-     * @param string $hash
-     *
-     * @return void
-     */
-    public static function userConfirm(Models\User $user, string $hash)
-    {
-        static::queue(new Mails\User\Confirm($user, $hash), $user, [$user->user]);
-    }
-
-    /**
-     * @param \App\Models\User $user
-     * @param \App\Models\UserPasswordReset $reset
-     *
-     * @return void
-     */
-    public static function userPasswordReset(Models\User $user, Models\UserPasswordReset $reset)
-    {
-        static::queue(new Mails\User\PasswordReset($user, $reset), $user, [$user->user]);
-    }
-
-    /**
-     * @param \App\Models\User $user
-     * @param string $hash
-     *
-     * @return void
-     */
-    public static function userSignup(Models\User $user, string $hash)
-    {
-        static::queue(new Mails\User\Signup($user, $hash), $user, [$user->user]);
-    }
-
-    /**
      * @param \App\Mails\MailAbstract $mail
      * @param ?\App\Models\User $user
-     * @param array $emails
+     * @param array $emails = []
      *
      * @return void
      */
-    protected static function queue(Mails\MailAbstract $mail, ?Models\User $user, array $emails)
+    public static function queue(MailAbstract $mail, ?Models\User $user, array $emails = [])
     {
         Mail::queue(static::options($mail, $user, $emails));
     }
@@ -56,11 +23,11 @@ class Mailer
     /**
      * @param \App\Mails\MailAbstract $mail
      * @param ?\App\Models\User $user
-     * @param array $emails
+     * @param array $emails = []
      *
      * @return void
      */
-    protected static function send(Mails\MailAbstract $mail, ?Models\User $user, array $emails)
+    public static function send(MailAbstract $mail, ?Models\User $user, array $emails = [])
     {
         Mail::send(static::options($mail, $user, $emails));
     }
@@ -72,7 +39,7 @@ class Mailer
      *
      * @return \App\Mails\MailAbstract
      */
-    protected static function options(Mails\MailAbstract $mail, ?Models\User $user, array $emails): Mails\MailAbstract
+    protected static function options(MailAbstract $mail, ?Models\User $user, array $emails): MailAbstract
     {
         $mail->to(static::filter($emails));
         $mail->locale($user->language->iso ?: app()->getLocale());

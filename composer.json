@@ -20,8 +20,7 @@
     "require-dev": {
         "nunomaduro/larastan": "^0.4",
         "nunomaduro/phpinsights": "^1.9",
-        "phpunit/phpunit": "^8.4",
-        "symplify/easy-coding-standard": "^6.1"
+        "phpunit/phpunit": "^8.4"
     },
     "config": {
         "optimize-autoloader": true,

@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Exceptions\ValidatorException;
 use App\Models;
 use App\Models\User as Model;
-use App\Services;
+use App\Services\Request\IpLock;
+use App\Services\Mail\Mailer;
 
 class StorePasswordReset
 {
@@ -19,7 +20,7 @@ class StorePasswordReset
      */
     public static function start(string $user): ?Model
     {
-        Services\Request\IpLock::locked(true);
+        IpLock::locked(true);
 
         $user = Model::where('user', $user)->enabled()->first();
 
@@ -39,7 +40,7 @@ class StorePasswordReset
 
         service()->log('user', 'password-reset-start', $user->id);
 
-        Services\Mail\Mailer::userPasswordReset($user, $reset);
+        Mailer::queue(new Mail\PasswordReset($user, $reset), $user, [$user->user]);
 
         return $user;
     }

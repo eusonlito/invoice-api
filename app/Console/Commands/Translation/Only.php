@@ -21,7 +21,7 @@ class Only extends TranslationAbstract
      */
     public function handle()
     {
-        foreach ((new BaseOnly($this->argument('lang')))->scan() as $status) {
+        foreach ((new BaseOnly((string)$this->argument('lang')))->scan() as $status) {
             $this->info($status);
         }
     }

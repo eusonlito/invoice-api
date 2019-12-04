@@ -36,9 +36,9 @@ class Request extends RequestAbstract
      * @param string $name
      * @param mixed $data
      *
-     * @return ?array
+     * @return array
      */
-    protected function fractal(string $name, $data): ?array
+    protected function fractal(string $name, $data): array
     {
         return Fractal::transform($name, $data);
     }

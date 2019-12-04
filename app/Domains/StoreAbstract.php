@@ -4,8 +4,10 @@ namespace App\Domains;
 
 use App\Models;
 
-abstract class StoreAbstract extends CacheAbstract
+abstract class StoreAbstract
 {
+    use CacheTrait;
+
     /**
      * @var ?\App\Models\User
      */

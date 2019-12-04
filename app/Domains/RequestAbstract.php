@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models;
 
-abstract class RequestAbstract extends CacheAbstract
+abstract class RequestAbstract
 {
+    use CacheTrait;
+
     /**
      * @var \Illuminate\Http\Request
      */

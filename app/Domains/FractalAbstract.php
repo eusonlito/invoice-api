@@ -16,7 +16,7 @@ abstract class FractalAbstract
      *
      * @return ?array
      */
-    public static function transform(string $function, $value, ...$parameters): ?array
+    final public static function transform(string $function, $value, ...$parameters): ?array
     {
         if ($value === null) {
             return null;
@@ -42,7 +42,7 @@ abstract class FractalAbstract
      *
      * @return bool
      */
-    protected static function isArraySequential($value): bool
+    final protected static function isArraySequential($value): bool
     {
         return is_array($value) && (array_values($value) === $value);
     }
@@ -54,7 +54,7 @@ abstract class FractalAbstract
      *
      * @return array
      */
-    protected static function collection(string $function, Collection $value, array $parameters): array
+    final protected static function collection(string $function, Collection $value, array $parameters): array
     {
         return $value->map(static fn ($value) => static::call($function, $value, $parameters))->values()->toArray();
     }
@@ -66,7 +66,7 @@ abstract class FractalAbstract
      *
      * @return array
      */
-    protected static function sequential(string $function, array $value, array $parameters): array
+    final protected static function sequential(string $function, array $value, array $parameters): array
     {
         return array_map(static fn ($value) => static::call($function, $value, $parameters), array_values($value));
     }
@@ -78,7 +78,7 @@ abstract class FractalAbstract
      *
      * @return ?array
      */
-    protected static function call(string $function, $value, array $parameters): ?array
+    final protected static function call(string $function, $value, array $parameters): ?array
     {
         return forward_static_call_array(['static', $function], array_merge([$value], $parameters));
     }
@@ -92,7 +92,7 @@ abstract class FractalAbstract
      *
      * @return ?array
      */
-    protected static function relationIfLoaded(
+    final protected static function relationIfLoaded(
         ModelAbstract $row,
         string $name,
         string $class,

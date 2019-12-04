@@ -11,6 +11,16 @@ abstract class MailAbstract extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * @var string
+     */
+    public $subject = '';
+
+    /**
+     * @var string
+     */
+    public $view = '';
+
+    /**
      * Build the message.
      *
      * @return self

@@ -37,7 +37,7 @@ abstract class ControllerAbstract extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function json($data, int $httpStatus = 200): JsonResponse
+    final protected function json($data, int $httpStatus = 200): JsonResponse
     {
         return Services\Request\Auth::addTokenToResponse(response()->json($data, $httpStatus, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $data);
     }
@@ -49,7 +49,7 @@ abstract class ControllerAbstract extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function error(string $code, string $message, int $httpStatus): JsonResponse
+    final protected function error(string $code, string $message, int $httpStatus): JsonResponse
     {
         return $this->json([
             'code' => $code,

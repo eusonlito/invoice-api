@@ -1,26 +1,27 @@
 <?php declare(strict_types=1);
 
-namespace App\Mails\User;
+namespace App\Domains\User\Mail;
 
 use App\Mails\MailAbstract;
 use App\Models;
+use App\Models\User as Model;
 
 class PasswordReset extends MailAbstract
 {
     /**
      * @var \App\Models\User
      */
-    public $user;
+    public Model $user;
 
     /**
      * @var \App\Models\UserPasswordReset
      */
-    public $reset;
+    public Models\UserPasswordReset $reset;
 
     /**
      * @var string
      */
-    public $url = '';
+    public string $url = '';
 
     /**
      * @var string
@@ -38,7 +39,7 @@ class PasswordReset extends MailAbstract
      *
      * @return self
      */
-    public function __construct(Models\User $user, Models\UserPasswordReset $reset)
+    public function __construct(Model $user, Models\UserPasswordReset $reset)
     {
         $this->subject = __('mail.user.password-reset.subject');
         $this->user = $user;

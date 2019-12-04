@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace App\Mails\User;
+namespace App\Domains\User\Mail;
 
 use App\Mails\MailAbstract;
-use App\Models;
+use App\Models\User as Model;
 
-class Signup extends MailAbstract
+class Confirm extends MailAbstract
 {
     /**
      * @var \App\Models\User
      */
-    public $user;
+    public Model $user;
 
     /**
      * @var string
      */
-    public $url = '';
+    public string $url = '';
 
     /**
      * @var string
@@ -25,7 +25,7 @@ class Signup extends MailAbstract
     /**
      * @var string
      */
-    public $view = 'user.signup';
+    public $view = 'user.confirm';
 
     /**
      * @param \App\Models\User $user
@@ -33,9 +33,9 @@ class Signup extends MailAbstract
      *
      * @return self
      */
-    public function __construct(Models\User $user, string $hash)
+    public function __construct(Model $user, string $hash)
     {
-        $this->subject = __('mail.user.signup.subject');
+        $this->subject = __('mail.user.confirm.subject');
         $this->user = $user;
         $this->url = routeWeb('user.confirm.finish', $hash);
     }

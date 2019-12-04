@@ -119,7 +119,9 @@ class StoreSignup
      */
     public static function mail(Model $user): Model
     {
-        Mailer::userSignup($user, encrypt($user->id.'|'.time()));
+        $hash = encrypt($user->id.'|'.time());
+
+        Mailer::queue(new Mail\Signup($user, $hash), $user, [$user->user]);
 
         return $user;
     }
