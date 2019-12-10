@@ -185,7 +185,7 @@ class Invoice extends ModelAbstract
     {
         $q->with([
             'clientAddressBilling', 'clientAddressShipping', 'discount', 'files', 'items',
-            'payment', 'shipping', 'serie', 'status', 'tax'
+            'payment', 'recurring', 'shipping', 'serie', 'status', 'tax'
         ]);
     }
 
@@ -198,7 +198,60 @@ class Invoice extends ModelAbstract
     {
         $q->detail()->with(['client', 'items' => static function ($q) {
             $q->with(['product']);
-        }])->orderBy('id', 'ASC');
+        }])->orderBy('date_at', 'ASC');
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     *
+     * @return void
+     */
+    public function scopeExportPlain(Builder $q)
+    {
+        $q->detail()->orderBy('date_at', 'ASC');
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     *
+     * @return void
+     */
+    public function scopeExportZip(Builder $q)
+    {
+        $q->with(['file', 'user'])->orderBy('date_at', 'ASC');
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     * @param array $input
+     *
+     * @return void
+     */
+    public function scopeFilterByInput(Builder $q, array $input)
+    {
+        if ($filter = $input['date_start'] ??= false) {
+            $q->where('date_at', '>=', dateToDate($filter));
+        }
+
+        if ($filter = $input['date_end'] ??= false) {
+            $q->where('date_at', '<=', dateToDate($filter));
+        }
+
+        if ($filter = $input['invoice_recurring_id'] ??= false) {
+            $q->where('invoice_recurring_id', (int)$filter);
+        }
+
+        if ($filter = $input['invoice_serie_id'] ??= false) {
+            $q->where('invoice_serie_id', (int)$filter);
+        }
+
+        if ($filter = $input['invoice_status_id'] ??= false) {
+            $q->where('invoice_status_id', (int)$filter);
+        }
+
+        if ($filter = $input['payment_id'] ??= false) {
+            $q->where('payment_id', (int)$filter);
+        }
     }
 
     /**
@@ -221,6 +274,7 @@ class Invoice extends ModelAbstract
             'client_address_billing_id',
             'client_address_shipping_id',
             'discount_id',
+            'invoice_recurring_id',
             'invoice_serie_id',
             'invoice_status_id',
             'payment_id',

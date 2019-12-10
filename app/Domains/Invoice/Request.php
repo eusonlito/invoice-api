@@ -3,6 +3,7 @@
 namespace App\Domains\Invoice;
 
 use Illuminate\Database\Eloquent\Builder;
+use App\Exceptions\UnexpectedValueException;
 use App\Models\Invoice as Model;
 use App\Domains\RequestAbstract;
 
@@ -13,7 +14,7 @@ class Request extends RequestAbstract
      */
     public function index(): array
     {
-        return $this->fractal('simple', $this->model()->list()->get());
+        return $this->fractal('simple', $this->model()->list()->filterByInput($this->request->input())->get());
     }
 
     /**
@@ -38,6 +39,50 @@ class Request extends RequestAbstract
     public function exportCached(): array
     {
         return $this->cache(__METHOD__, fn () => $this->export());
+    }
+
+    /**
+     * @param string $format
+     * @param string $filter
+     *
+     * @return array|string
+     */
+    public function exportFormatFilter(string $format, string $filter)
+    {
+        $model = $this->model();
+
+        if ($filter) {
+            $model->filterByInput($this->request->input());
+        }
+
+        if ($format === 'csv') {
+            return Csv::export($model->exportPlain()->get());
+        }
+
+        if ($format === 'zip') {
+            return Zip::export($model->exportZip()->get());
+        }
+
+        return $this->fractal('export', $model->export()->get());
+    }
+
+    /**
+     * @param string $format
+     * @param string $filter
+     *
+     * @return array|string
+     */
+    public function exportFormatFilterCached(string $format, string $filter)
+    {
+        if (in_array($format, ['json', 'csv', 'zip'], true) === false) {
+            throw new UnexpectedValueException();
+        }
+
+        if ($format === 'zip') {
+            return $this->exportFormatFilter($format, $filter);
+        }
+
+        return $this->cache(__METHOD__, fn () => $this->exportFormatFilter($format, $filter));
     }
 
     /**

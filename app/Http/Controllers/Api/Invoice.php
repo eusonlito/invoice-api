@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use App\Domains;
 use App\Domains\Invoice\Request;
 
@@ -26,6 +27,25 @@ class Invoice extends ControllerAbstract
     public function export(): JsonResponse
     {
         return $this->json($this->request()->exportCached());
+    }
+
+    /**
+     * GET /invoice/export/{format}/{filter}
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exportFormatFilter(string $format, string $filter): Response
+    {
+        $response = $this->request()->exportFormatFilterCached($format, $filter);
+
+        if (is_array($response)) {
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+
+        return response($response, 200, [
+            'Content-Type' => 'application/force-download',
+            'Content-Disposition' => 'attachment; filename="invoice-export.'.$format.'"'
+        ]);
     }
 
     /**
@@ -92,6 +112,22 @@ class Invoice extends ControllerAbstract
 
     /**
      * GET /invoice/w
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function wIndex(): JsonResponse
+    {
+        return $this->json([
+            'invoice' => $this->request()->indexCached(),
+            'invoice_recurring' => (new Domains\InvoiceRecurring\Request($this->request, $this->user))->indexCached(),
+            'invoice_serie' => (new Domains\InvoiceSerie\Request($this->request, $this->user))->indexCached(),
+            'invoice_status' => (new Domains\InvoiceStatus\Request($this->request, $this->user))->indexCached(),
+            'payment' => (new Domains\Payment\Request($this->request, $this->user))->indexCached(),
+        ]);
+    }
+
+    /**
+     * GET /invoice/w/create
      *
      * @return \Illuminate\Http\JsonResponse
      */

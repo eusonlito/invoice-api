@@ -58,8 +58,10 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
 
     Route::get('/invoice', 'Invoice@index')->name('invoice.index');
     Route::get('/invoice/export', 'Invoice@export')->name('invoice.export');
+    Route::get('/invoice/export/{format}/{filter}', 'Invoice@exportFormatFilter')->name('invoice.export.format.filter');
     Route::get('/invoice/{id}', 'Invoice@detail')->name('invoice.detail');
-    Route::get('/invoice/w', 'Invoice@wCreate')->name('invoice.w.create');
+    Route::get('/invoice/w', 'Invoice@wIndex')->name('invoice.w.index');
+    Route::get('/invoice/w/create', 'Invoice@wCreate')->name('invoice.w.create');
     Route::get('/invoice/w/{id}', 'Invoice@wUpdate')->name('invoice.w.update');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');

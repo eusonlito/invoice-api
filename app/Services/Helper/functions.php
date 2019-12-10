@@ -43,6 +43,41 @@ function routeWeb(string $route, $params): string
     return str_replace(config('app.url').'/v1', config('app.web'), route($route, $params));
 }
 
+if (!function_exists('dateToDate')) {
+    /**
+     * @param string $date
+     * @param bool $with_time = false
+     *
+     * @return ?string
+     */
+    function dateToDate(string $date, bool $with_time = false): ?string
+    {
+        if (empty($date)) {
+            return $date;
+        }
+
+        [$day, $time] = preg_split('#[\s\.T]#', $date) + ['', ''];
+
+        if (strpos($day, ':')) {
+            [$day, $time] = [$time, $day];
+        }
+
+        if (!preg_match('#^[0-9]{2,4}[/\-][0-9]{2}[/\-][0-9]{2,4}#', $day, $matches)) {
+            return null;
+        }
+
+        $day = preg_split('#[/\-]#', $matches[0]);
+
+        if (strlen($day[0]) !== 4) {
+            $day = array_reverse($day);
+        }
+
+        $day = implode('-', $day);
+
+        return $with_time ? trim($day.' '.$time) : $day;
+    }
+}
+
 /**
  * @return \App\Services\Helper\Service
  */
