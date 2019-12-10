@@ -39,77 +39,45 @@
 
         <div class="clear"></div>
 
-        <div id="client">
-            <div class="billing {{ $invoice->clientAddressShipping ? '' : 'no-shipping' }}">
-                <div class="title">Facturación</div>
+        <table id="client">
+            <tr class="line">
+                <th class="header name">Cliente</th>
+                <td class="data name">{{ $invoice->billing_name }}</td>
+            </tr>
 
-                <div class="header">
-                    <p class="line name">Cliente</p>
-                    <p class="line address">Dirección</p>
-                    <p class="line city">Localidad</p>
+            <tr class="line">
+                <th class="header address">Dirección</th>
+                <td class="data address">{{ $invoice->billing_address }}</td>
+            </tr>
 
-                    @if ($invoice->clientAddressBilling->phone)
-                    <p class="line phone">Teléfono</p>
-                    @endif
+            <tr class="line">
+                <th class="header city">Localidad</th>
+                <td class="data city">{{ $invoice->billing_city }}</td>
+            </tr>
 
-                    @if ($invoice->clientAddressBilling->email)
-                    <p class="line email">Email</p>
-                    @endif
+            @if ($invoice->billing_phone)
 
-                    <p class="line tax_number">CIF</p>
-                </div>
+            <tr class="line">
+                <th class="header phone">Teléfono</th>
+                <td class="data phone">{{ $invoice->billing_phone }}</td>
+            </tr>
 
-                <div class="data">
-                    <p class="line name">{{ $invoice->clientAddressBilling->name }}</p>
-                    <p class="line address">{{ $invoice->clientAddressBilling->address }}</p>
-                    <p class="line city">{{ $invoice->clientAddressBilling->city }}</p>
-
-                    @if ($invoice->clientAddressBilling->phone)
-                    <p class="line phone">{{ $invoice->clientAddressBilling->phone }}</p>
-                    @endif
-
-                    @if ($invoice->clientAddressBilling->email)
-                    <p class="line email">{{ $invoice->clientAddressBilling->email }}</p>
-                    @endif
-
-                    <p class="line tax_number">{{ $invoice->clientAddressBilling->tax_number }}</p>
-                </div>
-            </div>
-
-            @if ($invoice->clientAddressShipping)
-            <div class="shipping">
-                <div class="title">Envío</div>
-
-                <div class="header">
-                    <p class="line name">Cliente</p>
-                    <p class="line address">Dirección</p>
-                    <p class="line city">Localidad</p>
-
-                    @if ($invoice->clientAddressShipping->phone)
-                    <p class="line phone">Teléfono</p>
-                    @endif
-
-                    @if ($invoice->clientAddressShipping->email)
-                    <p class="line email">Email</p>
-                    @endif
-                </div>
-
-                <div class="data">
-                    <p class="line name">{{ $invoice->clientAddressShipping->name }}</p>
-                    <p class="line address">{{ $invoice->clientAddressShipping->address }}</p>
-                    <p class="line city">{{ $invoice->clientAddressShipping->city }}</p>
-
-                    @if ($invoice->clientAddressShipping->phone)
-                    <p class="line phone">{{ $invoice->clientAddressShipping->phone }}</p>
-                    @endif
-
-                    @if ($invoice->clientAddressShipping->email)
-                    <p class="line email">{{ $invoice->clientAddressShipping->email }}</p>
-                    @endif
-                </div>
-            </div>
             @endif
-        </div>
+
+            @if ($invoice->billing_email)
+
+            <tr class="line">
+                <th class="header email">Email</th>
+                <td class="data email">{{ $invoice->billing_email }}</td>
+            </tr>
+
+            @endif
+
+            <tr class="line">
+                <th class="header tax_number">CIF/NIF</th>
+                <td class="data tax_number">{{ $invoice->billing_tax_number }}</td>
+            </tr>
+        </table>
 
         <div class="clear"></div>
 

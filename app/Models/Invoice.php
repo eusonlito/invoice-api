@@ -157,12 +157,23 @@ class Invoice extends ModelAbstract
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $q
+     * @param string $mode
+     *
+     * @return void
+     */
+    public function scopeOrder(Builder $q, string $mode)
+    {
+        $q->orderBy('date_at', $mode)->orderBy('number', $mode);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void
      */
     public function scopeList(Builder $q)
     {
-        $q->simple()->with(['serie', 'status'])->orderBy('date_at', 'DESC');
+        $q->simple()->with(['serie', 'status'])->order('DESC');
     }
 
     /**
@@ -196,9 +207,9 @@ class Invoice extends ModelAbstract
      */
     public function scopeExport(Builder $q)
     {
-        $q->detail()->with(['client', 'items' => static function ($q) {
-            $q->with(['product']);
-        }])->orderBy('date_at', 'ASC');
+        $q->detail()
+            ->with(['client', 'items' => static fn ($q) => $q->with(['product'])])
+            ->order('ASC');
     }
 
     /**
@@ -208,7 +219,7 @@ class Invoice extends ModelAbstract
      */
     public function scopeExportPlain(Builder $q)
     {
-        $q->detail()->orderBy('date_at', 'ASC');
+        $q->detail()->order('ASC');
     }
 
     /**
@@ -218,7 +229,7 @@ class Invoice extends ModelAbstract
      */
     public function scopeExportZip(Builder $q)
     {
-        $q->with(['file', 'user'])->orderBy('date_at', 'ASC');
+        $q->detail()->with(['file', 'user'])->order('ASC');
     }
 
     /**

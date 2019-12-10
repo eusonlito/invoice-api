@@ -83,12 +83,63 @@ class InvoiceTest extends TestAbstract
     /**
      * @return void
      */
+    public function testExportFormatFilterNoAuthFail(): void
+    {
+        $this->json('GET', $this->route('export.format.filter', 'json', '1'))
+            ->assertStatus(401);
+
+        $this->json('GET', $this->route('export.format.filter', 'csv', '1'))
+            ->assertStatus(401);
+
+        $this->json('GET', $this->route('export.format.filter', 'zip', '0'))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
     public function testExportSuccess(): void
     {
         $this->auth()
             ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return void
+     */
+    public function testExportFormatFilterSuccess(): void
+    {
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'json', '1'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'json', '0'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'csv', '1'))
+            ->assertStatus(200);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'csv', '0'))
+            ->assertStatus(200);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'zip', '1'))
+            ->assertStatus(412)
+            ->assertDontSee('exception.')
+            ->assertSee($this->t('exception.zip-files-empty'));
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'zip', '0'))
+            ->assertStatus(412)
+            ->assertDontSee('exception.')
+            ->assertSee($this->t('exception.zip-files-empty'));
     }
 
     /**
@@ -493,6 +544,38 @@ class InvoiceTest extends TestAbstract
             ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count + 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testExportFormatFilterAfterSuccess(): void
+    {
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'json', '1'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'json', '0'))
+            ->assertStatus(200)
+            ->assertJsonCount($this->count + 1);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'csv', '1'))
+            ->assertStatus(200);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'csv', '0'))
+            ->assertStatus(200);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'zip', '1'))
+            ->assertStatus(200);
+
+        $this->auth()
+            ->json('GET', $this->route('export.format.filter', 'zip', '0'))
+            ->assertStatus(200);
     }
 
     /**

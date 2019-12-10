@@ -17,7 +17,7 @@ class StoreGenerator
      */
     public static function generate(Model $row): Model
     {
-        $row->name = $row->invoice->number.'.pdf';
+        $row->name = str_slug($row->invoice->number.'-'.$row->invoice->clientAddressBilling->name).'.pdf';
         $row->file = static::save($row->invoice);
         $row->main = true;
 

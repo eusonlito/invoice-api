@@ -5,6 +5,7 @@ namespace Database\Seeds;
 use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class SeederAbstract extends Seeder
 {
@@ -46,11 +47,11 @@ class SeederAbstract extends Seeder
     protected function transaction(Closure $function)
     {
         DB::transaction(function () use ($function) {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
 
             $function();
 
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
         });
     }
 

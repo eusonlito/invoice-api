@@ -59,64 +59,29 @@ body {
 
 #client {
     margin: 40px 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
 }
 
-#client .billing,
-#client .shipping {
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-}
-
-#client .billing {
-    padding-right: 20px;
-}
-
-#client .shipping {
-    padding-left: 20px;
-}
-
-#client .billing.no-shipping {
-    padding-right: 0;
-}
-
-#client .billing.no-shipping .title {
-    display: none;
-}
-
-#client .title {
-    background: #EEE;
-    border-bottom: 1px solid #CCC;
-    padding: 3px 6px;
-    font-weight: bold;
-    text-align: center;
-}
-
-#client .header {
-    float: left;
-    width: 110px;
-    margin-right: 10px;
-}
-
-#client .name {
-    font-weight: bold;
-}
-
-#client .line {
-    padding: 3px 6px;
+#client .line .header,
+#client .line .data {
     margin-bottom: 2px;
 }
 
-#client .header .line {
+#client .line .header {
+    padding: 3px 40px 3px 6px;
+    text-align: left;
     background: #EEE;
+    white-space: nowrap;
     border-bottom: 1px solid #CCC;
 }
 
-#client .data .line {
+#client .line .data {
+    padding: 3px 20px 3px 15px;
     border-bottom: 1px solid #EEE;
+    width: 99%;
+}
+
+#client .line .name {
+    font-weight: bold;
 }
 
 #items {

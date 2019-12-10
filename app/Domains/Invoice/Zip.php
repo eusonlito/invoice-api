@@ -4,6 +4,7 @@ namespace App\Domains\Invoice;
 
 use Illuminate\Support\Collection;
 use App\Domains\InvoiceFile\Store as InvoiceFileStore;
+use App\Models;
 use App\Models\Invoice as Model;
 use App\Services\Zip\Write;
 
@@ -19,7 +20,9 @@ class Zip
         $zip = [];
 
         foreach ($list as $row) {
-            $zip[$row->number.'.pdf'] = static::row($row);
+            $file = static::file($row);
+
+            $zip[$file->name] = $file->file_absolute;
         }
 
         return Write::fromArray($zip, true);
@@ -28,16 +31,10 @@ class Zip
     /**
      * @param \App\Models\Invoice $row
      *
-     * @return string
+     * @return \App\Models\InvoiceFile
      */
-    protected static function row(Model $row): string
+    protected static function file(Model $row): Models\InvoiceFile
     {
-        if ($row->file && ($file = $row->file->file_absolute)) {
-            return $file;
-        }
-
-        return (new InvoiceFileStore($row->user, ['main' => true]))
-            ->create($row)
-            ->file_absolute;
+        return $row->file ?: (new InvoiceFileStore($row->user, ['main' => true]))->create($row);
     }
 }

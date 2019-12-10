@@ -4,6 +4,7 @@ namespace Database\Fake;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Fake extends Seeder
 {
@@ -15,7 +16,7 @@ class Fake extends Seeder
         $time = time();
 
         DB::transaction(function () {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
 
             $this->call(User::class);
             $this->call(Company::class);
@@ -30,7 +31,7 @@ class Fake extends Seeder
             $this->call(InvoiceStatus::class);
             $this->call(Invoice::class);
 
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
         });
 
         $this->command->info(sprintf('Seeding: Total Time %s seconds', time() - $time));

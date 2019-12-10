@@ -39,49 +39,37 @@
 
         <div class="clear"></div>
 
-        <div id="client">
-            <div class="billing ">
-                <div class="title">Facturación</div>
+        <table id="client">
+            <tr class="line">
+                <th class="header name">Cliente</th>
+                <td class="data name">Herrero y Granado SA</td>
+            </tr>
 
-                <div class="header">
-                    <p class="line name">Cliente</p>
-                    <p class="line address">Dirección</p>
-                    <p class="line city">Localidad</p>
-                    <p class="line phone">Teléfono</p>
-                    <p class="line email">Email</p>
-                    <p class="line tax_number">CIF</p>
-                </div>
+            <tr class="line">
+                <th class="header address">Dirección</th>
+                <td class="data address">Rúa Diana, 0, 79º A</td>
+            </tr>
 
-                <div class="data">
-                    <p class="line name">Herrero y Granado SA</p>
-                    <p class="line address">Rúa Diana, 0, 79º A</p>
-                    <p class="line city">La Sarabia</p>
-                    <p class="line phone">+34 997 46 8842</p>
-                    <p class="line email">ismael.arias@yahoo.com</p>
-                    <p class="line tax_number">B96671260</p>
-                </div>
-            </div>
+            <tr class="line">
+                <th class="header city">Localidad</th>
+                <td class="data city">La Sarabia</td>
+            </tr>
 
-            <div class="shipping">
-                <div class="title">Envío</div>
+            <tr class="line">
+                <th class="header phone">Teléfono</th>
+                <td class="data phone">+34 997 46 8842</td>
+            </tr>
 
-                <div class="header">
-                    <p class="line name">Cliente</p>
-                    <p class="line address">Dirección</p>
-                    <p class="line city">Localidad</p>
-                    <p class="line phone">Teléfono</p>
-                    <p class="line email">Email</p>
-                </div>
+            <tr class="line">
+                <th class="header email">Email</th>
+                <td class="data email">ismael.arias@yahoo.com</td>
+            </tr>
 
-                <div class="data">
-                    <p class="line name">Herrero y Granado SA</p>
-                    <p class="line address">Rúa Diana, 0, 79º A</p>
-                    <p class="line city">La Sarabia</p>
-                    <p class="line phone">+34 997 46 8842</p>
-                    <p class="line email">ismael.arias@yahoo.com</p>
-                </div>
-            </div>
-        </div>
+            <tr class="line">
+                <th class="header tax_number">CIF/NIF</th>
+                <td class="data tax_number">B96671260</td>
+            </tr>
+        </table>
 
         <div class="clear"></div>
 

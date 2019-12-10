@@ -18,5 +18,6 @@
     'user-not-confirmed-not-exists' => 'No existe ningún usuario pendiente de confirmar con estos datos.',
     'user-not-found' => 'Ups! Este usuario no parece existir.',
     'delete-related-clients' => 'No es posible el borrado mientras tenga clientes relacionados.',
-    'delete-related-invoices' => 'No es posible el borrado mientras tenga facturas relacionadas.'
+    'delete-related-invoices' => 'No es posible el borrado mientras tenga facturas relacionadas.',
+    'zip-files-empty' => 'No se puede crear el ZIP sin ningún fichero seleccionado',
 ];

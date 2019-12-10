@@ -3,6 +3,7 @@
 namespace App\Services\Zip;
 
 use ZipArchive;
+use App\Exceptions\UnexpectedValueException;
 
 class Write
 {
@@ -10,10 +11,16 @@ class Write
      * @param array $files
      * @param bool $cached
      *
+     * @throws \App\Exceptions\UnexpectedValueException
+     *
      * @return string
      */
     public static function fromArray(array $files, bool $cached): string
     {
+        if (empty($files)) {
+            throw new UnexpectedValueException(__('exception.zip-files-empty'));
+        }
+
         $file = static::file($files);
 
         if ($cached && is_file($file)) {

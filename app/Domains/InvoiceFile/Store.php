@@ -21,6 +21,8 @@ class Store extends StoreAbstract
             'user_id' => $this->user->id,
         ]);
 
+        $row->setRelation('invoice', $invoice);
+
         return $this->update($row);
     }
 
