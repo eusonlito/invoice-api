@@ -99,6 +99,18 @@ class Invoice extends ControllerAbstract
     }
 
     /**
+     * POST /invoice/{id}
+     *
+     * @uses POST array
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function duplicate(int $id): JsonResponse
+    {
+        return $this->json($this->request()->duplicate($id));
+    }
+
+    /**
      * DELETE /invoice/{id}
      *
      * @param int $id

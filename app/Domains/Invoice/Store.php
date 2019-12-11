@@ -165,6 +165,10 @@ class Store extends StoreAbstract
             ->byCompany($this->user->company)
             ->firstOrFail();
 
+        if ($related->id === $this->row->invoice_recurring_id) {
+            return;
+        }
+
         $this->row->invoice_recurring_id = $related->id;
         $this->row->recurring_at = $related->next($this->row->date_at);
     }

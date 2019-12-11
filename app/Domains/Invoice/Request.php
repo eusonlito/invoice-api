@@ -136,6 +136,16 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
+     * @return array
+     */
+    public function duplicate(int $id): array
+    {
+        return $this->fractal('detail', (new StoreDuplicate($this->user, $this->validator('duplicate')))->invoice($this->modelById($id)));
+    }
+
+    /**
+     * @param int $id
+     *
      * @return void
      */
     public function delete(int $id): void

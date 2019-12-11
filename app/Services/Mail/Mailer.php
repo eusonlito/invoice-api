@@ -42,7 +42,7 @@ class Mailer
     protected static function options(MailAbstract $mail, ?Models\User $user, array $emails): MailAbstract
     {
         $mail->to(static::filter($emails));
-        $mail->locale($user->language->iso ?: app()->getLocale());
+        $mail->locale($user->language->iso ?? app()->getLocale());
 
         return $mail;
     }

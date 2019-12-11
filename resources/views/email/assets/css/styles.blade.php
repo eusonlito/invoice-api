@@ -152,6 +152,10 @@ table table table {
     text-align: left;
 }
 
+.text-left {
+    text-align: left;
+}
+
 @media only screen and (max-width: 700px) {
     table[class="full_width"],
     table[class="table-inner"] {

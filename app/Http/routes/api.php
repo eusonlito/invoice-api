@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::post('/form/contact', 'Form@contact')->name('form.contact');
+
 Route::post('/user/auth', 'User@authCredentials')->name('user.auth.credentials');
 Route::post('/user', 'User@signup')->name('user.signup');
 Route::post('/user/confirm', 'User@confirmStart')->name('user.confirm.start');
@@ -64,6 +66,7 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::get('/invoice/w/create', 'Invoice@wCreate')->name('invoice.w.create');
     Route::get('/invoice/w/{id}', 'Invoice@wUpdate')->name('invoice.w.update');
     Route::post('/invoice', 'Invoice@create')->name('invoice.create');
+    Route::post('/invoice/{id}', 'Invoice@duplicate')->name('invoice.duplicate');
     Route::patch('/invoice/{id}', 'Invoice@update')->name('invoice.update');
     Route::patch('/invoice/{id}/paid', 'Invoice@paid')->name('invoice.paid');
     Route::delete('/invoice/{id}', 'Invoice@delete')->name('invoice.delete');

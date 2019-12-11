@@ -89,4 +89,23 @@ class Validator extends ValidatorAbstract
     {
         return static::configUpdate();
     }
+
+    /**
+     * @return array
+     */
+    public static function configDuplicate(): array
+    {
+        return [
+            'all' => false,
+
+            'rules' => [
+                'invoice_serie_id' => 'required|integer',
+            ],
+
+            'messages' => [
+                'invoice_serie_id.required' => __('validator.invoice_serie_id-required'),
+                'invoice_serie_id.integer' => __('validator.invoice_serie_id-integer'),
+            ]
+        ];
+    }
 }

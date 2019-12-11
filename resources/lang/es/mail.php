@@ -1,4 +1,11 @@
 <?php return [
+    'form' => [
+        'contact' => [
+            'subject' => 'Contacto y Feedback de :name',
+            'title' => 'Contacto y Feedback'
+        ]
+    ],
+
     'user' => [
         'confirm' => [
             'link' => 'Confirma tu cuenta',

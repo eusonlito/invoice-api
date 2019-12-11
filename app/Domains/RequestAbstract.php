@@ -38,11 +38,6 @@ abstract class RequestAbstract
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    abstract protected function model(): Builder;
-
-    /**
      * @param int $id
      *
      * @return \App\Models\ModelAbstract
