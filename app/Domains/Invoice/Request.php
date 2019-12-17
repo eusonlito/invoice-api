@@ -2,13 +2,32 @@
 
 namespace App\Domains\Invoice;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\UnexpectedValueException;
 use App\Models\Invoice as Model;
 use App\Domains\RequestAbstract;
 
 class Request extends RequestAbstract
 {
+    /**
+     * @const string
+     */
+    protected const FRACTAL = Fractal::class;
+
+    /**
+     * @const string
+     */
+    protected const MODEL = Model::class;
+
+    /**
+     * @const string
+     */
+    protected const STORE = Store::class;
+
+    /**
+     * @const string
+     */
+    protected const VALIDATOR = Validator::class;
+
     /**
      * @return array
      */
@@ -56,11 +75,11 @@ class Request extends RequestAbstract
         }
 
         if ($format === 'csv') {
-            return Csv::export($model->exportPlain()->get());
+            return Service\Csv::export($model->exportCsv()->get());
         }
 
         if ($format === 'zip') {
-            return Zip::export($model->exportZip()->get());
+            return Service\Zip::export($model->exportZip()->get());
         }
 
         return $this->fractal('export', $model->export()->get());
@@ -110,7 +129,7 @@ class Request extends RequestAbstract
      */
     public function create(): array
     {
-        return $this->fractal('detail', $this->store($this->validator('create'))->create());
+        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create());
     }
 
     /**
@@ -120,7 +139,7 @@ class Request extends RequestAbstract
      */
     public function update(int $id): array
     {
-        return $this->fractal('detail', $this->store($this->validator('update'))->update($this->modelById($id)));
+        return $this->fractal('detail', $this->store($this->modelById($id), $this->validator('update'))->update());
     }
 
     /**
@@ -130,7 +149,7 @@ class Request extends RequestAbstract
      */
     public function paid(int $id): array
     {
-        return $this->fractal('detail', $this->store()->paid($this->modelById($id)));
+        return $this->fractal('detail', $this->store($this->modelById($id))->paid());
     }
 
     /**
@@ -140,7 +159,7 @@ class Request extends RequestAbstract
      */
     public function duplicate(int $id): array
     {
-        return $this->fractal('detail', (new StoreDuplicate($this->user, $this->validator('duplicate')))->invoice($this->modelById($id)));
+        return $this->fractal('detail', $this->store($this->modelById($id), $this->validator('duplicate'))->duplicate());
     }
 
     /**
@@ -150,45 +169,6 @@ class Request extends RequestAbstract
      */
     public function delete(int $id): void
     {
-        $this->store()->delete($this->modelById($id));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function model(): Builder
-    {
-        return Model::byCompany($this->user->company);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return array
-     */
-    protected function fractal(string $name, $data): array
-    {
-        return Fractal::transform($name, $data);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return array
-     */
-    protected function validator(string $name): array
-    {
-        return Validator::validate($name, $this->request->all());
-    }
-
-    /**
-     * @param array $data = []
-     *
-     * @return \App\Domains\Invoice\Store
-     */
-    protected function store(array $data = []): Store
-    {
-        return $this->store ?? ($this->store = new Store($this->user, $data));
+        $this->store($this->modelById($id))->delete();
     }
 }

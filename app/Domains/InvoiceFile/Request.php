@@ -2,7 +2,6 @@
 
 namespace App\Domains\InvoiceFile;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models;
 use App\Models\InvoiceFile as Model;
@@ -10,6 +9,26 @@ use App\Domains\RequestAbstract;
 
 class Request extends RequestAbstract
 {
+    /**
+     * @const string
+     */
+    protected const FRACTAL = Fractal::class;
+
+    /**
+     * @const string
+     */
+    protected const MODEL = Model::class;
+
+    /**
+     * @const string
+     */
+    protected const STORE = Store::class;
+
+    /**
+     * @const string
+     */
+    protected const VALIDATOR = Validator::class;
+
     /**
      * @param int $id
      *
@@ -60,7 +79,7 @@ class Request extends RequestAbstract
         $invoice = $this->getInvoiceById($invoice_id);
 
         if (empty($invoice->file)) {
-            $invoice->file = $this->store(['main' => true])->create($invoice);
+            $invoice->file = $this->store(null, ['main' => true])->create($invoice);
         }
 
         return $invoice->file;
@@ -73,7 +92,7 @@ class Request extends RequestAbstract
      */
     public function download(int $id): Model
     {
-        return $this->modelById($id);
+        return $this->store($this->modelById($id))->download();
     }
 
     /**
@@ -83,7 +102,7 @@ class Request extends RequestAbstract
      */
     public function invoiceCreate(int $invoice_id): array
     {
-        return $this->fractal('detail', $this->store($this->validator('create'))->create($this->getInvoiceById($invoice_id)));
+        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create($this->getInvoiceById($invoice_id)));
     }
 
     /**
@@ -93,7 +112,7 @@ class Request extends RequestAbstract
      */
     public function delete(int $id): void
     {
-        $this->store()->delete($this->modelById($id));
+        $this->store($this->modelById($id))->delete();
     }
 
     /**
@@ -107,14 +126,6 @@ class Request extends RequestAbstract
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function model(): Builder
-    {
-        return Model::byCompany($this->user->company);
-    }
-
-    /**
      * @param int $invoice_id
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -122,36 +133,5 @@ class Request extends RequestAbstract
     protected function modelByInvoiceId(int $invoice_id): HasMany
     {
         return $this->getInvoiceById($invoice_id)->files();
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return array
-     */
-    protected function fractal(string $name, $data): array
-    {
-        return Fractal::transform($name, $data);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return array
-     */
-    protected function validator(string $name): array
-    {
-        return Validator::validate($name, $this->request->all());
-    }
-
-    /**
-     * @param array $data = []
-     *
-     * @return \App\Domains\InvoiceFile\Store
-     */
-    protected function store(array $data = []): Store
-    {
-        return $this->store ?? ($this->store = new Store($this->user, $data));
     }
 }

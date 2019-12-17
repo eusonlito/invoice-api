@@ -574,7 +574,7 @@ class Base extends Migration
 
         Schema::table('invoice', function (Blueprint $table) {
             $table->foreign('client_id')
-                ->references('id')->on('client_address')
+                ->references('id')->on('client')
                 ->onDelete('CASCADE');
 
             $table->foreign('client_address_billing_id')

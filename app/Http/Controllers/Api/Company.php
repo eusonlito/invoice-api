@@ -24,6 +24,18 @@ class Company extends ControllerAbstract
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function create(): JsonResponse
+    {
+        return $this->json($this->request()->create());
+    }
+
+    /**
+     * PATCH /company
+     *
+     * @uses POST array
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(): JsonResponse
     {
         return $this->json($this->request()->update());

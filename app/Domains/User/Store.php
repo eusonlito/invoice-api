@@ -2,25 +2,43 @@
 
 namespace App\Domains\User;
 
+use Illuminate\Http\Request;
 use App\Models\User as Model;
-use App\Domains\StoreAbstract;
 
-class Store extends StoreAbstract
+class Store extends Store\StoreAbstract
 {
     /**
      * @return \App\Models\User
      */
     public function authCredentials(): Model
     {
-        return $this->cacheFlushResponse('User', StoreAuth::byCredentials($this->data));
+        return $this->cacheFlushResponse('User', $this->storeAuth()->byCredentials());
     }
 
     /**
-     * @return string
+     * @return \App\Models\User
      */
-    public function authToken(): string
+    public function authUser(): Model
     {
-        return $this->cacheFlushResponse('User', StoreAuth::token());
+        return $this->cacheFlushResponse('User', $this->storeAuth()->byUser());
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \App\Models\User
+     */
+    public function authRefresh(Request $request): Model
+    {
+        return $this->cacheFlushResponse('User', $this->storeAuth()->refresh($request));
+    }
+
+    /**
+     * @return ?string
+     */
+    public function authToken(): ?string
+    {
+        return $this->cacheFlushResponse('User', $this->storeAuth()->token());
     }
 
     /**
@@ -28,7 +46,7 @@ class Store extends StoreAbstract
      */
     public function authLogout(): void
     {
-        StoreAuth::logout();
+        $this->storeAuth()->logout();
     }
 
     /**
@@ -36,7 +54,15 @@ class Store extends StoreAbstract
      */
     public function signup(): Model
     {
-        return $this->cacheFlushResponse('User', StoreSignup::start($this->data));
+        return $this->cacheFlushResponse('User', $this->storeSignup()->start());
+    }
+
+    /**
+     * @return \App\Models\User
+     */
+    public function confirmCheck(): Model
+    {
+        return $this->storeConfirm()->check();
     }
 
     /**
@@ -44,7 +70,7 @@ class Store extends StoreAbstract
      */
     public function confirmStart(): Model
     {
-        return $this->cacheFlushResponse('User', StoreConfirm::start($this->data['user']));
+        return $this->cacheFlushResponse('User', $this->storeConfirm()->start());
     }
 
     /**
@@ -54,7 +80,7 @@ class Store extends StoreAbstract
      */
     public function confirmFinish(string $hash): Model
     {
-        return $this->cacheFlushResponse('User', StoreConfirm::finish($hash));
+        return $this->cacheFlushResponse('User', $this->storeConfirm()->finish($hash));
     }
 
     /**
@@ -62,7 +88,7 @@ class Store extends StoreAbstract
      */
     public function updateProfile(): Model
     {
-        return $this->cacheFlushResponse('User', StoreProfile::profile($this->user, $this->data));
+        return $this->cacheFlushResponse('User', $this->storeProfile()->profile());
     }
 
     /**
@@ -70,7 +96,7 @@ class Store extends StoreAbstract
      */
     public function updatePassword(): Model
     {
-        return $this->cacheFlushResponse('User', StoreProfile::password($this->user, $this->data['password']));
+        return $this->cacheFlushResponse('User', $this->storeProfile()->password());
     }
 
     /**
@@ -78,7 +104,7 @@ class Store extends StoreAbstract
      */
     public function passwordResetStart(): ?Model
     {
-        return $this->cacheFlushResponse('User', StorePasswordReset::start($this->data['user']));
+        return $this->cacheFlushResponse('User', $this->storePasswordReset()->start());
     }
 
     /**
@@ -88,6 +114,46 @@ class Store extends StoreAbstract
      */
     public function passwordResetFinish(string $hash): Model
     {
-        return $this->cacheFlushResponse('User', StorePasswordReset::finish($hash, $this->data['password']));
+        return $this->cacheFlushResponse('User', $this->storePasswordReset()->finish($hash));
+    }
+
+    /**
+     * @return \App\Domains\User\Store\Auth
+     */
+    protected function storeAuth(): Store\Auth
+    {
+        return new Store\Auth($this->user, $this->row, $this->data);
+    }
+
+    /**
+     * @return \App\Domains\User\Store\Confirm
+     */
+    protected function storeConfirm(): Store\Confirm
+    {
+        return new Store\Confirm($this->user, $this->row, $this->data);
+    }
+
+    /**
+     * @return \App\Domains\User\Store\PasswordReset
+     */
+    protected function storePasswordReset(): Store\PasswordReset
+    {
+        return new Store\PasswordReset($this->user, $this->row, $this->data);
+    }
+
+    /**
+     * @return \App\Domains\User\Store\Profile
+     */
+    protected function storeProfile(): Store\Profile
+    {
+        return new Store\Profile($this->user, $this->row, $this->data);
+    }
+
+    /**
+     * @return \App\Domains\User\Store\Signup
+     */
+    protected function storeSignup(): Store\Signup
+    {
+        return new Store\Signup($this->user, $this->row, $this->data);
     }
 }

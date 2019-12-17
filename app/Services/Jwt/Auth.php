@@ -3,16 +3,16 @@
 namespace App\Services\Jwt;
 
 use Illuminate\Http\Request;
-use App\Models;
+use App\Models\User;
 
 class Auth
 {
     /**
      * @param array $credentials
      *
-     * @return ?string
+     * @return ?\App\Models\User
      */
-    public static function byCredentials(array $credentials): ?string
+    public static function byCredentials(array $credentials): ?User
     {
         if ($token = auth()->attempt($credentials)) {
             return static::byToken($token);
@@ -24,9 +24,9 @@ class Auth
     /**
      * @param \App\Models\User $user
      *
-     * @return string
+     * @return \App\Models\User
      */
-    public static function byUser(Models\User $user): string
+    public static function byUser(User $user): User
     {
         return static::byToken(static::tokenFromUser($user));
     }
@@ -34,15 +34,13 @@ class Auth
     /**
      * @param string $token
      *
-     * @return string
+     * @return \App\Models\User
      */
-    public static function byToken(string $token): string
+    public static function byToken(string $token): User
     {
         static::invalidate();
 
-        auth()->setToken($token)->authenticate();
-
-        return (string)$token;
+        return auth()->setToken($token)->authenticate();
     }
 
     /**
@@ -51,18 +49,6 @@ class Auth
     public static function logout()
     {
         static::invalidate();
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @throws \App\Exceptions\AuthenticationException
-     *
-     * @return Models\User
-     */
-    public static function authByRequest(Request $request): Models\User
-    {
-        return auth()->authenticate(static::tokenFromRequest($request));
     }
 
     /**
@@ -78,25 +64,11 @@ class Auth
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return ?string
-     */
-    public static function tokenFromRequest(Request $request): ?string
-    {
-        if (!$request->header('Authorization') && ($bearer = $request->input('bearer'))) {
-            $request->headers->set('Authorization', 'Bearer '.$bearer);
-        }
-
-        return auth()->setRequest($request)->getToken();
-    }
-
-    /**
      * @param \App\Models\User $user
      *
      * @return string
      */
-    public static function tokenFromUser(Models\User $user): string
+    public static function tokenFromUser(User $user): string
     {
         return (string)auth()->login($user);
     }
@@ -114,9 +86,9 @@ class Auth
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return ?string
+     * @return ?\App\Models\User
      */
-    public static function refresh(Request $request): ?string
+    public static function refresh(Request $request): ?User
     {
         $token = auth()->setRequest($request)->parseToken()->refresh();
 
@@ -124,10 +96,8 @@ class Auth
             return null;
         }
 
-        auth()->setToken($token);
-
         $request->headers->set('Authorization', 'Bearer '.$token);
 
-        return $token;
+        return auth()->setToken($token)->user();
     }
 }

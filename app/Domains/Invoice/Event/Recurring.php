@@ -19,6 +19,6 @@ class Recurring extends EventAbstract
      */
     public function __construct(Model $row)
     {
-        $this->row = $row;
+        $this->row = $row->withoutRelations();
     }
 }

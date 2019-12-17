@@ -5,7 +5,8 @@ namespace App\Http\Middlewares;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
-use App\Domains;
+use App\Domains\User\Store;
+use App\Models\User as Model;
 
 class UserConfirm
 {
@@ -17,23 +18,26 @@ class UserConfirm
      */
     public function handle(Request $request, Closure $next)
     {
+        $user = $request->user();
+
         try {
-            Domains\User\StoreConfirm::check($request->user());
+            (new Store($user, $user))->confirmCheck();
         } catch (Exception $e) {
-            return $this->logout($e);
+            return $this->logout($user, $e);
         }
 
         return $next($request);
     }
 
     /**
+     * @param \App\Models\User $user
      * @param \Exception $e
      *
      * @return void
      */
-    protected function logout(Exception $e)
+    protected function logout(Model $user, Exception $e)
     {
-        Domains\User\StoreAuth::logout();
+        (new Store($user, $user))->authLogout();
 
         throw $e;
     }

@@ -4,7 +4,7 @@ namespace App\Http\Middlewares;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Domains\User\StoreAuth;
+use App\Domains\User\Store;
 
 class UserRefresh
 {
@@ -16,7 +16,7 @@ class UserRefresh
      */
     public function handle(Request $request, Closure $next)
     {
-        StoreAuth::refresh($request);
+        (new Store())->authRefresh($request);
 
         return $next($request);
     }

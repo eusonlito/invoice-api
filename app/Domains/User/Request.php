@@ -9,6 +9,26 @@ use App\Domains\RequestAbstract;
 class Request extends RequestAbstract
 {
     /**
+     * @const string
+     */
+    protected const FRACTAL = Fractal::class;
+
+    /**
+     * @const string
+     */
+    protected const MODEL = Model::class;
+
+    /**
+     * @const string
+     */
+    protected const STORE = Store::class;
+
+    /**
+     * @const string
+     */
+    protected const VALIDATOR = Validator::class;
+
+    /**
      * @return array
      */
     public function detail(): array
@@ -29,11 +49,11 @@ class Request extends RequestAbstract
      */
     public function signup(): array
     {
-        $user = $this->store($this->validator('signup'))->signup();
+        $user = $this->store(null, $this->validator('signup'))->signup();
 
         return [
             'user' => $this->fractal('detail', $user),
-            'token' => $this->store()->authToken()
+            'token' => $this->store($user)->authToken()
         ];
     }
 
@@ -42,7 +62,7 @@ class Request extends RequestAbstract
      */
     public function confirmStart(): void
     {
-        $this->store($this->validator('confirmStart'))->confirmStart();
+        $this->store(null, $this->validator('confirmStart'))->confirmStart();
     }
 
     /**
@@ -60,11 +80,11 @@ class Request extends RequestAbstract
      */
     public function authCredentials(): array
     {
-        $user = $this->store($this->validator('authCredentials'))->authCredentials();
+        $user = $this->store(null, $this->validator('authCredentials'))->authCredentials();
 
         return [
             'user' => $this->fractal('detail', $user),
-            'token' => $this->store()->authToken()
+            'token' => $this->store($user)->authToken()
         ];
     }
 
@@ -73,7 +93,7 @@ class Request extends RequestAbstract
      */
     public function authRefresh(): array
     {
-        return ['token' => StoreAuth::token()];
+        return ['token' => $this->store($this->user)->authToken()];
     }
 
     /**
@@ -81,7 +101,7 @@ class Request extends RequestAbstract
      */
     public function authLogout(): void
     {
-        $this->store()->authLogout();
+        $this->store($this->user)->authLogout();
     }
 
     /**
@@ -89,7 +109,7 @@ class Request extends RequestAbstract
      */
     public function passwordResetStart(): ?array
     {
-        return $this->fractal('detail', $this->store($this->validator('passwordResetStart'))->passwordResetStart());
+        return $this->fractal('detail', $this->store(null, $this->validator('passwordResetStart'))->passwordResetStart());
     }
 
     /**
@@ -99,7 +119,7 @@ class Request extends RequestAbstract
      */
     public function passwordResetFinish(string $hash): array
     {
-        return $this->fractal('detail', $this->store($this->validator('passwordResetFinish'))->passwordResetFinish($hash));
+        return $this->fractal('detail', $this->store(null, $this->validator('passwordResetFinish'))->passwordResetFinish($hash));
     }
 
     /**
@@ -107,7 +127,7 @@ class Request extends RequestAbstract
      */
     public function updateProfile(): array
     {
-        return $this->fractal('detail', $this->store($this->validator('updateProfile'))->updateProfile());
+        return $this->fractal('detail', $this->store($this->user, $this->validator('updateProfile'))->updateProfile());
     }
 
     /**
@@ -115,7 +135,7 @@ class Request extends RequestAbstract
      */
     public function updatePassword(): array
     {
-        return $this->fractal('detail', $this->store($this->validator('updatePassword'))->updatePassword());
+        return $this->fractal('detail', $this->store($this->user, $this->validator('updatePassword'))->updatePassword());
     }
 
     /**
@@ -124,36 +144,5 @@ class Request extends RequestAbstract
     protected function model(): Builder
     {
         return Model::byId($this->user->id);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return ?array
-     */
-    protected function fractal(string $name, $data): ?array
-    {
-        return Fractal::transform($name, $data);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return array
-     */
-    protected function validator(string $name): array
-    {
-        return Validator::validate($name, $this->request->all());
-    }
-
-    /**
-     * @param array $data = []
-     *
-     * @return \App\Domains\User\Store
-     */
-    protected function store(array $data = []): Store
-    {
-        return $this->store ?? ($this->store = new Store($this->user, $data));
     }
 }

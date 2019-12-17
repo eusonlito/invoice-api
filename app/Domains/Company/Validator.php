@@ -9,6 +9,14 @@ class Validator extends ValidatorAbstract
     /**
      * @return array
      */
+    protected static function configCreate(): array
+    {
+        return static::configUpdate();
+    }
+
+    /**
+     * @return array
+     */
     public static function configUpdate(): array
     {
         return [

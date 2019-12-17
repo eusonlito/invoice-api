@@ -4,9 +4,8 @@ namespace App\Domains\InvoiceFile;
 
 use App\Models;
 use App\Models\InvoiceFile as Model;
-use App\Domains\StoreAbstract;
 
-class Store extends StoreAbstract
+class Store extends Store\StoreAbstract
 {
     /**
      * @param \App\Models\Invoice $invoice
@@ -15,56 +14,46 @@ class Store extends StoreAbstract
      */
     public function create(Models\Invoice $invoice): Model
     {
-        $row = new Model([
-            'invoice_id' => $invoice->id,
-            'company_id' => $this->user->company_id,
-            'user_id' => $this->user->id,
-        ]);
-
-        $row->setRelation('invoice', $invoice);
-
-        return $this->update($row);
+        return (new Store\Create($this->user, null, $this->data))->create($invoice);
     }
 
     /**
-     * @param \App\Models\InvoiceFile $row
-     *
      * @return \App\Models\InvoiceFile
      */
-    public function update(Model $row): Model
+    public function update(): Model
     {
-        $previous = $row->file;
-
-        if (empty($this->data['main'])) {
-            StoreUpload::file($row, $this->data['file']);
-        } else {
-            StoreGenerator::generate($row);
-        }
-
-        if ($previous) {
-            $row::disk()->delete($previous);
-        }
-
-        $this->cacheFlush('InvoiceFile', 'Invoice');
-
-        service()->log('invoice_file', 'update', $this->user->id, ['invoice_file_id' => $row->id]);
-
-        return $row;
+        return (new Store\Update($this->user, $this->row, $this->data))->update();
     }
 
     /**
-     * @param \App\Models\InvoiceFile $row
-     *
+     * @return \App\Models\InvoiceFile
+     */
+    public function generate(): Model
+    {
+        return (new Store\Generate($this->user, $this->row, $this->data))->generate();
+    }
+
+    /**
+     * @return \App\Models\InvoiceFile
+     */
+    public function upload(): Model
+    {
+        return (new Store\Upload($this->user, $this->row, $this->data))->upload();
+    }
+
+    /**
+     * @return \App\Models\InvoiceFile
+     */
+    public function download(): Model
+    {
+        return (new Store\Generate($this->user, $this->row, $this->data))->download();
+    }
+
+    /**
      * @return void
      */
-    public function delete(Model $row)
+    public function delete(): void
     {
-        $row->delete();
-
-        $row::disk()->delete($row->file);
-
-        $this->cacheFlush('InvoiceFile', 'Invoice');
-
-        service()->log('invoice_file', 'delete', $this->user->id);
+        (new Store\Delete($this->user, $this->row))->delete();
     }
 }

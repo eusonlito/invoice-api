@@ -2,12 +2,31 @@
 
 namespace App\Domains\Tax;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\Tax as Model;
 use App\Domains\RequestAbstract;
 
 class Request extends RequestAbstract
 {
+    /**
+     * @const string
+     */
+    protected const FRACTAL = Fractal::class;
+
+    /**
+     * @const string
+     */
+    protected const MODEL = Model::class;
+
+    /**
+     * @const string
+     */
+    protected const STORE = Store::class;
+
+    /**
+     * @const string
+     */
+    protected const VALIDATOR = Validator::class;
+
     /**
      * @return array
      */
@@ -81,7 +100,7 @@ class Request extends RequestAbstract
      */
     public function create(): array
     {
-        return $this->fractal('detail', $this->store($this->validator('create'))->create());
+        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create());
     }
 
     /**
@@ -91,7 +110,7 @@ class Request extends RequestAbstract
      */
     public function update(int $id): array
     {
-        return $this->fractal('detail', $this->store($this->validator('update'))->update($this->modelById($id)));
+        return $this->fractal('detail', $this->store($this->modelById($id), $this->validator('update'))->update());
     }
 
     /**
@@ -101,45 +120,6 @@ class Request extends RequestAbstract
      */
     public function delete(int $id): void
     {
-        $this->store()->delete($this->modelById($id));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function model(): Builder
-    {
-        return Model::byCompany($this->user->company);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return array
-     */
-    protected function fractal(string $name, $data): array
-    {
-        return Fractal::transform($name, $data);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return array
-     */
-    protected function validator(string $name): array
-    {
-        return Validator::validate($name, $this->request->all());
-    }
-
-    /**
-     * @param array $data = []
-     *
-     * @return \App\Domains\Tax\Store
-     */
-    protected function store(array $data = []): Store
-    {
-        return $this->store ?? ($this->store = new Store($this->user, $data));
+        $this->store($this->modelById($id))->delete();
     }
 }

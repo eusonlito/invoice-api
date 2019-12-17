@@ -217,7 +217,7 @@ class Invoice extends ModelAbstract
      *
      * @return void
      */
-    public function scopeExportPlain(Builder $q)
+    public function scopeExportCsv(Builder $q)
     {
         $q->detail()->order('ASC');
     }

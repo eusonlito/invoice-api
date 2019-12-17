@@ -56,6 +56,116 @@ class CompanyTest extends TestAbstract
     /**
      * @return void
      */
+    public function testCreateEmptyFail(): void
+    {
+        $this->auth()
+            ->json('POST', $this->route('create'))
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' name ')
+            ->assertDontSee(' address ')
+            ->assertDontSee(' city ')
+            ->assertDontSee(' state ')
+            ->assertDontSee(' postal code ')
+            ->assertDontSee(' tax number ')
+            ->assertDontSee(' phone ')
+            ->assertDontSee(' email ')
+            ->assertDontSee(' country id ')
+            ->assertSee($this->t('validator.name-required'))
+            ->assertSee($this->t('validator.address-required'))
+            ->assertSee($this->t('validator.city-required'))
+            ->assertSee($this->t('validator.state-required'))
+            ->assertSee($this->t('validator.postal_code-required'))
+            ->assertSee($this->t('validator.tax_number-required'))
+            ->assertSee($this->t('validator.phone-required'))
+            ->assertSee($this->t('validator.email-required'))
+            ->assertSee($this->t('validator.country_id-required'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateInvalidFail(): void
+    {
+        $fail = [
+            'email' => 'fail',
+            'country_id' => 99999
+        ];
+
+        $this->auth()
+            ->json('POST', $this->route('update'), $fail)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertDontSee(' email ')
+            ->assertDontSee(' country id ')
+            ->assertSee($this->t('validator.email-email'))
+            ->assertSee($this->t('validator.country_id-required'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateNoAuthFail(): void
+    {
+        $this->json('POST', $this->route('update'))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testUpdateFail(): void
+    {
+        $row = factory(Model::class)->make();
+
+        $this->auth()
+            ->json('PATCH', $this->route('update'), $row->toArray())
+            ->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateFirstSuccess(): void
+    {
+        $row = factory(Model::class)->make();
+
+        $this->auth($this->userFirst())
+            ->json('POST', $this->route('create'), $row->toArray())
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateSuccess(): void
+    {
+        $row = factory(Model::class)->make();
+
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateFail(): void
+    {
+        $row = factory(Model::class)->make();
+
+        $this->auth()
+            ->json('POST', $this->route('create'), $row->toArray())
+            ->assertStatus(403);
+    }
+
+    /**
+     * @return void
+     */
     public function testUpdateEmptyFail(): void
     {
         $this->auth()

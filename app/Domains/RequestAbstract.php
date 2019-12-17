@@ -4,7 +4,8 @@ namespace App\Domains;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Models;
+use App\Models\ModelAbstract;
+use App\Models\User;
 
 abstract class RequestAbstract
 {
@@ -18,7 +19,7 @@ abstract class RequestAbstract
     /**
      * @var ?\App\Models\User
      */
-    protected ?Models\User $user;
+    protected ?User $user;
 
     /**
      * @var \App\Domains\StoreAbstract
@@ -31,10 +32,20 @@ abstract class RequestAbstract
      *
      * @return self
      */
-    public function __construct(Request $request, ?Models\User $user)
+    public function __construct(Request $request, ?User $user)
     {
         $this->request = $request;
         $this->user = $user;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function model(): Builder
+    {
+        $class = static::MODEL;
+
+        return $class::byCompany($this->user->company);
     }
 
     /**
@@ -42,7 +53,7 @@ abstract class RequestAbstract
      *
      * @return \App\Models\ModelAbstract
      */
-    protected function modelById(int $id): Models\ModelAbstract
+    protected function modelById(int $id): ModelAbstract
     {
         return $this->model()->byId($id)->firstOrFail();
     }
@@ -52,8 +63,46 @@ abstract class RequestAbstract
      *
      * @return \App\Models\ModelAbstract
      */
-    protected function modelDetailById(int $id): Models\ModelAbstract
+    protected function modelDetailById(int $id): ModelAbstract
     {
         return $this->model()->detail()->byId($id)->firstOrFail();
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $data
+     *
+     * @return ?array
+     */
+    protected function fractal(string $name, $data): ?array
+    {
+        return forward_static_call([static::FRACTAL, 'transform'], $name, $data);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return array
+     */
+    protected function validator(string $name): array
+    {
+        return forward_static_call([static::VALIDATOR, 'validate'], $name, $this->request->all());
+    }
+
+    /**
+     * @param ?\App\Models\ModelAbstract $row = null
+     * @param array $data = []
+     *
+     * @return \App\Domains\StoreAbstract
+     */
+    protected function store(?ModelAbstract $row = null, array $data = []): StoreAbstract
+    {
+        if (isset($this->store)) {
+            return $this->store;
+        }
+
+        $class = static::STORE;
+
+        return $this->store = new $class($this->user, $row, $data);
     }
 }

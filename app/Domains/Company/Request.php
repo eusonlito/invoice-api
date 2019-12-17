@@ -9,6 +9,26 @@ use App\Domains\RequestAbstract;
 class Request extends RequestAbstract
 {
     /**
+     * @const string
+     */
+    protected const FRACTAL = Fractal::class;
+
+    /**
+     * @const string
+     */
+    protected const MODEL = Model::class;
+
+    /**
+     * @const string
+     */
+    protected const STORE = Store::class;
+
+    /**
+     * @const string
+     */
+    protected const VALIDATOR = Validator::class;
+
+    /**
      * @return array
      */
     public function detail(): array
@@ -27,9 +47,17 @@ class Request extends RequestAbstract
     /**
      * @return array
      */
+    public function create(): array
+    {
+        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create());
+    }
+
+    /**
+     * @return array
+     */
     public function update(): array
     {
-        return $this->fractal('detail', $this->store($this->validator('update'))->update());
+        return $this->fractal('detail', $this->store($this->model()->firstOrFail(), $this->validator('update'))->update());
     }
 
     /**
@@ -38,36 +66,5 @@ class Request extends RequestAbstract
     protected function model(): Builder
     {
         return Model::byId((int)$this->user->company_id);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return array
-     */
-    protected function fractal(string $name, $data): array
-    {
-        return Fractal::transform($name, $data);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return array
-     */
-    protected function validator(string $name): array
-    {
-        return Validator::validate($name, $this->request->all());
-    }
-
-    /**
-     * @param array $data = []
-     *
-     * @return \App\Domains\Company\Store
-     */
-    protected function store(array $data = []): Store
-    {
-        return $this->store ?? ($this->store = new Store($this->user, $data));
     }
 }

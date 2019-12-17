@@ -527,12 +527,88 @@ class InvoiceTest extends TestAbstract
     /**
      * @return void
      */
+    public function testDuplicateNoAuthFail(): void
+    {
+        $this->json('POST', $this->route('duplicate', $this->row()->id))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDuplicateNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())
+            ->json('POST', $this->route('duplicate', $this->row()->id))
+            ->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDuplicateEmptyFail(): void
+    {
+        $this->auth()
+            ->json('POST', $this->route('duplicate', $this->row()->id))
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertSee($this->t('validator.invoice_serie_id-required'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testDuplicateInvalidFail(): void
+    {
+        $fail = ['invoice_serie_id' => 'fail'];
+
+        $this->auth()
+            ->json('POST', $this->route('duplicate', $this->row()->id), $fail)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertSee($this->t('validator.invoice_serie_id-integer'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testDuplicateNotFoundFail(): void
+    {
+        $serie = Models\InvoiceSerie::where('user_id', $this->userFirst()->id)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        $this->auth()
+            ->json('POST', $this->route('duplicate', $this->row()->id), ['invoice_serie_id' => $serie->id])
+            ->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDuplicateSuccess(): void
+    {
+        $serie = Models\InvoiceSerie::where('user_id', $this->user()->id)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        $this->auth()
+            ->json('POST', $this->route('duplicate', $this->row()->id), ['invoice_serie_id' => $serie->id])
+            ->assertStatus(200)
+            ->assertJsonStructure($this->structure);
+    }
+
+    /**
+     * @return void
+     */
     public function testIndexAfterSuccess(): void
     {
         $this->auth()
             ->json('GET', $this->route('index'))
             ->assertStatus(200)
-            ->assertJsonCount($this->count + 1);
+            ->assertJsonCount($this->count + 2);
     }
 
     /**
@@ -543,7 +619,7 @@ class InvoiceTest extends TestAbstract
         $this->auth()
             ->json('GET', $this->route('export'))
             ->assertStatus(200)
-            ->assertJsonCount($this->count + 1);
+            ->assertJsonCount($this->count + 2);
     }
 
     /**
@@ -554,12 +630,12 @@ class InvoiceTest extends TestAbstract
         $this->auth()
             ->json('GET', $this->route('export.format.filter', 'json', '1'))
             ->assertStatus(200)
-            ->assertJsonCount($this->count + 1);
+            ->assertJsonCount($this->count + 2);
 
         $this->auth()
             ->json('GET', $this->route('export.format.filter', 'json', '0'))
             ->assertStatus(200)
-            ->assertJsonCount($this->count + 1);
+            ->assertJsonCount($this->count + 2);
 
         $this->auth()
             ->json('GET', $this->route('export.format.filter', 'csv', '1'))

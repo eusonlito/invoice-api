@@ -277,6 +277,131 @@ class InvoiceSerieTest extends TestAbstract
     /**
      * @return void
      */
+    public function testCssSuccess(): void
+    {
+        $this->auth()
+            ->json('GET', $this->route('css', $this->row()->id))
+            ->assertStatus(200)
+            ->assertSee('#company');
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssPreviewNoAuthFail(): void
+    {
+        $this->json('POST', $this->route('css.preview', $this->row()->id))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssPreviewNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())
+            ->json('POST', $this->route('css.preview', $this->row()->id))
+            ->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssPreviewEmptyFail(): void
+    {
+        $this->auth()
+            ->json('POST', $this->route('css.preview', $this->row()->id))
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertSee($this->t('validator.css-required'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssPreviewInvalidFail(): void
+    {
+        $fail = ['css' => preg_replace('/#[a-z]+/', '', $this->css())];
+
+        $this->auth()
+            ->json('POST', $this->route('css.preview', $this->row()->id), $fail)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertSee($this->t('validator.css-format'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssPreviewSuccess(): void
+    {
+        $this->auth()
+            ->json('POST', $this->route('css.preview', $this->row()->id), ['css' => $this->css()])
+            ->assertStatus(200);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssUpdateNoAuthFail(): void
+    {
+        $this->json('PATCH', $this->route('css.update', $this->row()->id))
+            ->assertStatus(401);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssUpdateNotAllowedFail(): void
+    {
+        $this->auth($this->userFirst())
+            ->json('PATCH', $this->route('css.update', $this->row()->id))
+            ->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssUpdateEmptyFail(): void
+    {
+        $this->auth()
+            ->json('PATCH', $this->route('css.update', $this->row()->id))
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertSee($this->t('validator.css-required'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssUpdateInvalidFail(): void
+    {
+        $fail = ['css' => preg_replace('/#[a-z]+/', '', $this->css())];
+
+        $this->auth()
+            ->json('PATCH', $this->route('css.update', $this->row()->id), $fail)
+            ->assertStatus(422)
+            ->assertDontSee('validator.')
+            ->assertDontSee('validation.')
+            ->assertSee($this->t('validator.css-format'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCssUpdateSuccess(): void
+    {
+        $this->auth()
+            ->json('PATCH', $this->route('css.update', $this->row()->id), ['css' => $this->css()])
+            ->assertStatus(200);
+    }
+
+    /**
+     * @return void
+     */
     public function testIndexAfterSuccess(): void
     {
         $this->auth()
@@ -313,5 +438,13 @@ class InvoiceSerieTest extends TestAbstract
     protected function row(): Model
     {
         return Model::orderBy('id', 'DESC')->first();
+    }
+
+    /**
+     * @return string
+     */
+    protected function css(): string
+    {
+        return file_get_contents(base_path('resources/views/pdf/pages/invoice/default.css'));
     }
 }

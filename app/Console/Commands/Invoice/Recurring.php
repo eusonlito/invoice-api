@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Invoice;
 
-use App\Domains\Invoice\StoreRecurring;
+use App\Domains\Invoice\Store\Recurring as StoreRecurring;
 
 class Recurring extends InvoiceAbstract
 {

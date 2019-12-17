@@ -27,6 +27,7 @@ Route::group(['middleware' => 'user'], static function () {
 
 Route::group(['middleware' => ['user', 'user.confirm']], static function () {
     Route::get('/company', 'Company@detail')->name('company.detail');
+    Route::post('/company', 'Company@create')->name('company.create');
     Route::patch('/company', 'Company@update')->name('company.update');
 
     Route::patch('/user', 'User@updateProfile')->name('user.update.profile');

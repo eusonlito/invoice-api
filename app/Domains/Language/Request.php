@@ -9,6 +9,16 @@ use App\Domains\RequestAbstract;
 class Request extends RequestAbstract
 {
     /**
+     * @const string
+     */
+    protected const FRACTAL = Fractal::class;
+
+    /**
+     * @const string
+     */
+    protected const MODEL = Model::class;
+
+    /**
      * @return array
      */
     public function index(): array
@@ -30,16 +40,5 @@ class Request extends RequestAbstract
     protected function model(): Builder
     {
         return Model::enabled();
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return array
-     */
-    protected function fractal(string $name, $data): array
-    {
-        return Fractal::transform($name, $data);
     }
 }

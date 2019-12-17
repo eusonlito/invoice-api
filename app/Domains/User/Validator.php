@@ -165,6 +165,7 @@ class Validator extends ValidatorAbstract
                 'password_repeat.required' => __('validator.password_repeat-required'),
                 'password_repeat.same' => __('validator.password_repeat-same'),
                 'conditions.required' => __('validator.conditions-required'),
+                'conditions.accepted' => __('validator.conditions-required'),
             ]
         ];
     }

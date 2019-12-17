@@ -2,7 +2,8 @@
 
 namespace App\Domains;
 
-use App\Models;
+use App\Models\ModelAbstract;
+use App\Models\User;
 
 abstract class StoreAbstract
 {
@@ -11,7 +12,7 @@ abstract class StoreAbstract
     /**
      * @var ?\App\Models\User
      */
-    protected ?Models\User $user;
+    protected ?User $user;
 
     /**
      * @var array
@@ -19,19 +20,16 @@ abstract class StoreAbstract
     protected array $data = [];
 
     /**
-     * @var \App\Models\ModelAbstract
-     */
-    protected Models\ModelAbstract $row;
-
-    /**
-     * @param ?\App\Models\User $user
+     * @param ?\App\Models\User $user = null
+     * @param ?\App\Models\ModelAbstract $row = null
      * @param array $data = []
      *
      * @return self
      */
-    public function __construct(?Models\User $user, array $data = [])
+    public function __construct(?User $user = null, ?ModelAbstract $row = null, array $data = [])
     {
         $this->user = $user;
+        $this->row = $row;
         $this->data = $data;
     }
 }

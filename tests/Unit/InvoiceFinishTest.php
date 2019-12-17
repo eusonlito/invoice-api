@@ -14,7 +14,7 @@ class InvoiceFinishTest extends TestAbstract
     /**
      * @var int
      */
-    protected int $count = 0;
+    protected int $count = 1;
 
     /**
      * @return void
@@ -65,6 +65,16 @@ class InvoiceFinishTest extends TestAbstract
             ->json('GET', $this->route('export'))
             ->assertStatus(200)
             ->assertJsonCount($this->count);
+    }
+
+    /**
+     * @return void
+     */
+    public function testFinishSuccess(): void
+    {
+        $this->auth()
+            ->json('DELETE', $this->route('delete', $this->row()->id))
+            ->assertStatus(200);
     }
 
     /**

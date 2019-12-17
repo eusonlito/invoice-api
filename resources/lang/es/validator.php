@@ -79,6 +79,7 @@
     'user-required' => 'El correo electrónico es obligatorio.',
     'value-numeric' => 'El valor debe ser numérico.',
     'css-format' => 'El CSS debe ser incluir todas las definiciones iniciales.',
+    'css-required' => 'El CSS es obligatorio',
     'every-required' => 'La periodicidad es obligatoria.',
     'every-in' => 'La opción de periodicidad no es válida.',
     'invoice_serie_id-integer' => 'La serie no es válida',

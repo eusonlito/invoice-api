@@ -2,70 +2,31 @@
 
 namespace App\Domains\Tax;
 
-use App\Exceptions;
 use App\Models\Tax as Model;
-use App\Domains\StoreAbstract;
 
-class Store extends StoreAbstract
+class Store extends Store\StoreAbstract
 {
     /**
      * @return \App\Models\Tax
      */
     public function create(): Model
     {
-        $row = new Model([
-            'company_id' => $this->user->company_id,
-            'user_id' => $this->user->id,
-        ]);
-
-        return $this->update($row);
+        return (new Store\Create($this->user, null, $this->data))->create();
     }
 
     /**
-     * @param \App\Models\Tax $row
-     *
      * @return \App\Models\Tax
      */
-    public function update(Model $row): Model
+    public function update(): Model
     {
-        if ($this->data['default'] && empty($row->default)) {
-            Model::byCompany($this->user->company)->where('default', true)->update(['default' => false]);
-        }
-
-        $row->name = $this->data['name'];
-        $row->value = (float)abs($this->data['value']);
-        $row->description = $this->data['description'];
-        $row->default = (bool)$this->data['default'];
-        $row->enabled = (bool)$this->data['enabled'];
-
-        $row->save();
-
-        $this->cacheFlush('Tax', 'Invoice');
-
-        service()->log('tax', 'update', $this->user->id, ['tax_id' => $row->id]);
-
-        return $row;
+        return (new Store\Update($this->user, $this->row, $this->data))->update();
     }
 
     /**
-     * @param \App\Models\Tax $row
-     *
      * @return void
      */
-    public function delete(Model $row): void
+    public function delete(): void
     {
-        if ($row->clients()->count()) {
-            throw new Exceptions\NotAllowedException(__('exception.delete-related-clients'));
-        }
-
-        if ($row->invoices()->count()) {
-            throw new Exceptions\NotAllowedException(__('exception.delete-related-invoices'));
-        }
-
-        $row->delete();
-
-        $this->cacheFlush('Tax', 'Invoice');
-
-        service()->log('tax', 'delete', $this->user->id);
+        (new Store\Delete($this->user, $this->row))->delete();
     }
 }
