@@ -23,6 +23,6 @@ class Create extends StoreAbstract
 
         $this->row->setRelation('invoice', $invoice);
 
-        return (new Store($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store::class)->update();
     }
 }

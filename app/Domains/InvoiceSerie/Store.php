@@ -11,7 +11,7 @@ class Store extends Store\StoreAbstract
      */
     public function create(): Model
     {
-        return (new Store\Create($this->user, null, $this->data))->create();
+        return $this->factory(Store\Create::class)->create();
     }
 
     /**
@@ -19,7 +19,7 @@ class Store extends Store\StoreAbstract
      */
     public function update(): Model
     {
-        return (new Store\Update($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Update::class)->update();
     }
 
     /**
@@ -27,7 +27,7 @@ class Store extends Store\StoreAbstract
      */
     public function certificate(): Model
     {
-        return (new Store\Certificate($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Certificate::class)->update();
     }
 
     /**
@@ -35,7 +35,7 @@ class Store extends Store\StoreAbstract
      */
     public function css(): string
     {
-        return (new Store\Css($this->user, $this->row, $this->data))->get();
+        return $this->factory(Store\Css::class)->get();
     }
 
     /**
@@ -43,7 +43,7 @@ class Store extends Store\StoreAbstract
      */
     public function cssPreview(): string
     {
-        return (new Store\Css($this->user, $this->row, $this->data))->preview();
+        return $this->factory(Store\Css::class)->preview();
     }
 
     /**
@@ -51,7 +51,7 @@ class Store extends Store\StoreAbstract
      */
     public function cssUpdate(): Model
     {
-        return (new Store\Css($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Css::class)->update();
     }
 
     /**
@@ -59,7 +59,7 @@ class Store extends Store\StoreAbstract
      */
     public function numberNext(): Model
     {
-        return (new Store\Number($this->user, $this->row, $this->data))->setNext();
+        return $this->factory(Store\Number::class)->setNext();
     }
 
     /**
@@ -67,6 +67,6 @@ class Store extends Store\StoreAbstract
      */
     public function delete(): void
     {
-        (new Store\Delete($this->user, $this->row))->delete();
+        $this->factory(Store\Delete::class)->delete();
     }
 }

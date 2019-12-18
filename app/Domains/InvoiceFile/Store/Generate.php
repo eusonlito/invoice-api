@@ -6,6 +6,7 @@ use App\Domains\InvoiceSerie\Store as InvoiceSerieStore;
 use App\Models;
 use App\Models\InvoiceFile as Model;
 use App\Services\Pdf\Pdf;
+use App\Services\Sign\SignFactory;
 
 class Generate extends StoreAbstract
 {

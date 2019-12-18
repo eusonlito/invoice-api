@@ -13,12 +13,11 @@ class Update extends StoreAbstract
     public function update(): Model
     {
         $previous = $this->row->file;
-        $store = new Store($this->user, $this->row, $this->data);
 
         if (empty($this->data['main'])) {
-            $store->upload();
+            $this->factory(Store::class)->upload();
         } else {
-            $store->generate();
+            $this->factory(Store::class)->generate();
         }
 
         if ($previous) {

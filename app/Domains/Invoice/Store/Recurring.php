@@ -26,7 +26,7 @@ class Recurring extends StoreAbstract
         $previous = clone $this->row;
         $previous->setRelations([]);
 
-        $this->row = (new Store($this->user, $previous, $previous->toArray()))->duplicate();
+        $this->row = $this->factory(Store::class)->duplicate();
 
         $this->row->date_at = $this->row->recurring_at;
         $this->row->recurring_at = $this->row->recurring->next($this->row->date_at);

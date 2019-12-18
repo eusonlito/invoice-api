@@ -14,7 +14,7 @@ class Store extends Store\StoreAbstract
      */
     public function create(Models\Invoice $invoice): Model
     {
-        return (new Store\Create($this->user, null, $this->data))->create($invoice);
+        return $this->factory(Store\Create::class)->create($invoice);
     }
 
     /**
@@ -22,7 +22,7 @@ class Store extends Store\StoreAbstract
      */
     public function update(): Model
     {
-        return (new Store\Update($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Update::class)->update();
     }
 
     /**
@@ -30,7 +30,7 @@ class Store extends Store\StoreAbstract
      */
     public function generate(): Model
     {
-        return (new Store\Generate($this->user, $this->row, $this->data))->generate();
+        return $this->factory(Store\Generate::class)->generate();
     }
 
     /**
@@ -38,7 +38,7 @@ class Store extends Store\StoreAbstract
      */
     public function upload(): Model
     {
-        return (new Store\Upload($this->user, $this->row, $this->data))->upload();
+        return $this->factory(Store\Upload::class)->upload();
     }
 
     /**
@@ -46,7 +46,7 @@ class Store extends Store\StoreAbstract
      */
     public function download(): Model
     {
-        return (new Store\Generate($this->user, $this->row, $this->data))->download();
+        return $this->factory(Store\Generate::class)->download();
     }
 
     /**
@@ -54,6 +54,6 @@ class Store extends Store\StoreAbstract
      */
     public function delete(): void
     {
-        (new Store\Delete($this->user, $this->row))->delete();
+        $this->factory(Store\Delete::class)->delete();
     }
 }

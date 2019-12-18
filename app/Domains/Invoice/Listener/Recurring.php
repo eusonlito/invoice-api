@@ -15,6 +15,6 @@ class Recurring extends ListenerAbstract
      */
     public function handle(Event $event)
     {
-        (new Store($event->row->user, $event->row))->recurring();
+        $this->factory(Store::class)->recurring();
     }
 }

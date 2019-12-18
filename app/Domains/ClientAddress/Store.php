@@ -14,7 +14,7 @@ class Store extends Store\StoreAbstract
      */
     public function create(Models\Client $client): Model
     {
-        return (new Store\Create($this->user, null, $this->data))->create($client);
+        return $this->factory(Store\Create::class)->create($client);
     }
 
     /**
@@ -22,7 +22,7 @@ class Store extends Store\StoreAbstract
      */
     public function update(): Model
     {
-        return (new Store\Update($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Update::class)->update();
     }
 
     /**
@@ -30,6 +30,6 @@ class Store extends Store\StoreAbstract
      */
     public function delete(): void
     {
-        (new Store\Delete($this->user, $this->row))->delete();
+        $this->factory(Store\Delete::class)->delete();
     }
 }

@@ -11,7 +11,7 @@ class Store extends Store\StoreAbstract
      */
     public function create(): Model
     {
-        return (new Store\Create($this->user, null, $this->data))->create();
+        return $this->factory(Store\Create::class)->create();
     }
 
     /**
@@ -19,7 +19,7 @@ class Store extends Store\StoreAbstract
      */
     public function update(): Model
     {
-        return (new Store\Update($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Update::class)->update();
     }
 
     /**
@@ -27,7 +27,7 @@ class Store extends Store\StoreAbstract
      */
     public function duplicate(): Model
     {
-        return (new Store\Duplicate($this->user, $this->row, $this->data))->duplicate();
+        return $this->factory(Store\Duplicate::class)->duplicate();
     }
 
     /**
@@ -35,7 +35,7 @@ class Store extends Store\StoreAbstract
      */
     public function paid(): Model
     {
-        return (new Store\Paid($this->user, $this->row, $this->data))->paid();
+        return $this->factory(Store\Paid::class)->paid();
     }
 
     /**
@@ -43,7 +43,7 @@ class Store extends Store\StoreAbstract
      */
     public function recurring(): Model
     {
-        return (new Store\Recurring($this->user, $this->row, $this->data))->recurring();
+        return $this->factory(Store\Recurring::class)->recurring();
     }
 
     /**
@@ -51,6 +51,6 @@ class Store extends Store\StoreAbstract
      */
     public function delete(): void
     {
-        (new Store\Delete($this->user, $this->row))->delete();
+        $this->factory(Store\Delete::class)->delete();
     }
 }

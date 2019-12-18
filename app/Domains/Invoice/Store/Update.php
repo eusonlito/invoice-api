@@ -383,10 +383,12 @@ class Update extends StoreAbstract
      */
     protected function fileMain()
     {
+        $store = new InvoiceFileStore($this->user, $this->row->file, ['main' => true]);
+
         if ($this->row->file) {
-            (new InvoiceFileStore($this->user, $this->row->file, ['main' => true]))->update();
+            $store->update();
         } else {
-            (new InvoiceFileStore($this->user, null, ['main' => true]))->create($this->row);
+            $store->create($this->row);
         }
     }
 

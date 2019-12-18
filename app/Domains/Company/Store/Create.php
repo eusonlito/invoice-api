@@ -18,7 +18,8 @@ class Create extends StoreAbstract
             throw new NotAllowedException();
         }
 
-        $this->row = (new Store($this->user, new Model(['user_id' => $this->user->id]), $this->data))->update();
+        $this->row = new Model(['user_id' => $this->user->id]);
+        $this->row = $this->factory(Store::class)->update();
 
         $this->user->company_id = $this->row->id;
         $this->user->save();

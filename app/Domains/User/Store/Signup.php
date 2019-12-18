@@ -83,7 +83,7 @@ class Signup extends StoreAbstract
      */
     public function auth(): self
     {
-        (new Store($this->row, $this->row))->authUser();
+        $this->factory(Store::class)->authUser();
 
         return $this;
     }

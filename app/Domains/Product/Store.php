@@ -11,7 +11,7 @@ class Store extends Store\StoreAbstract
      */
     public function create(): Model
     {
-        return (new Store\Create($this->user, null, $this->data))->create();
+        return $this->factory(Store\Create::class)->create();
     }
 
     /**
@@ -19,7 +19,7 @@ class Store extends Store\StoreAbstract
      */
     public function update(): Model
     {
-        return (new Store\Update($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store\Update::class)->update();
     }
 
     /**
@@ -27,6 +27,6 @@ class Store extends Store\StoreAbstract
      */
     public function delete(): void
     {
-        (new Store\Delete($this->user, $this->row))->delete();
+        $this->factory(Store\Delete::class)->delete();
     }
 }

@@ -122,7 +122,7 @@ class Store extends Store\StoreAbstract
      */
     protected function storeAuth(): Store\Auth
     {
-        return new Store\Auth($this->user, $this->row, $this->data);
+        return $this->factory(Store\Auth::class);
     }
 
     /**
@@ -130,7 +130,7 @@ class Store extends Store\StoreAbstract
      */
     protected function storeConfirm(): Store\Confirm
     {
-        return new Store\Confirm($this->user, $this->row, $this->data);
+        return $this->factory(Store\Confirm::class);
     }
 
     /**
@@ -138,7 +138,7 @@ class Store extends Store\StoreAbstract
      */
     protected function storePasswordReset(): Store\PasswordReset
     {
-        return new Store\PasswordReset($this->user, $this->row, $this->data);
+        return $this->factory(Store\PasswordReset::class);
     }
 
     /**
@@ -146,7 +146,7 @@ class Store extends Store\StoreAbstract
      */
     protected function storeProfile(): Store\Profile
     {
-        return new Store\Profile($this->user, $this->row, $this->data);
+        return $this->factory(Store\Profile::class);
     }
 
     /**
@@ -154,6 +154,6 @@ class Store extends Store\StoreAbstract
      */
     protected function storeSignup(): Store\Signup
     {
-        return new Store\Signup($this->user, $this->row, $this->data);
+        return $this->factory(Store\Signup::class);
     }
 }

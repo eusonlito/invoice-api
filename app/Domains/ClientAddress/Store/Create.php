@@ -21,6 +21,6 @@ class Create extends StoreAbstract
             'user_id' => $this->user->id,
         ]);
 
-        return (new Store($this->user, $this->row, $this->data))->update();
+        return $this->factory(Store::class)->update();
     }
 }

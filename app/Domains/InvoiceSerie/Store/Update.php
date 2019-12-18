@@ -23,7 +23,7 @@ class Update extends StoreAbstract
         $this->row->default = (bool)$this->data['default'];
         $this->row->enabled = (bool)$this->data['enabled'];
 
-        (new Store($this->user, $this->row, $this->data))->certificate();
+        $this->factory(Store::class)->certificate();
 
         $this->row->save();
 

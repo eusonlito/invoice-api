@@ -9,6 +9,6 @@ class Store extends Store\StoreAbstract
      */
     public function contact(): array
     {
-        return (new Store\Contact($this->user, null, $this->data))->contact();
+        return $this->factory(Store\Contact::class)->contact();
     }
 }

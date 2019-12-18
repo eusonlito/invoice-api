@@ -5,7 +5,7 @@ namespace Database\Fake;
 use DateInterval;
 use DateTime;
 use Illuminate\Support\Collection;
-use App\Domains\InvoiceSerie\StoreNumber;
+use App\Domains\InvoiceSerie\Store as InvoiceSerieStore;
 use App\Models;
 use App\Models\Invoice as Model;
 
@@ -146,7 +146,7 @@ class Invoice extends FakeAbstract
 
         $this->amount($date, $row, $items, $tax);
 
-        StoreNumber::setNext($invoiceSerie);
+        (new InvoiceSerieStore(null, $invoiceSerie))->numberNext();
     }
 
     /**

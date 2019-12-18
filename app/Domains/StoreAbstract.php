@@ -32,4 +32,14 @@ abstract class StoreAbstract
         $this->row = $row;
         $this->data = $data;
     }
+
+    /**
+     * @param string $class
+     *
+     * @return self
+     */
+    final protected function factory(string $class): self
+    {
+        return new $class($this->user, $this->row, $this->data);
+    }
 }
