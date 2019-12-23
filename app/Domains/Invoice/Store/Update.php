@@ -53,7 +53,7 @@ class Update extends StoreAbstract
         $this->fileMain();
         $this->configuration();
 
-        $this->cacheFlush('Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice', 'update', $this->user->id, ['invoice_id' => $this->row->id]);
 

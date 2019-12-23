@@ -9,6 +9,11 @@ use App\Domains\InvoiceFile\Request;
 class InvoiceFile extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /invoice-file/{id}
      *
      * @param int $id
@@ -80,13 +85,5 @@ class InvoiceFile extends ControllerAbstract
     public function delete(int $id): JsonResponse
     {
         return $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\InvoiceFile\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

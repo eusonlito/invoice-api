@@ -17,7 +17,7 @@ class Duplicate extends StoreAbstract
     {
         $previous = clone $this->row;
 
-        $this->row = new Model($previous->toArray());
+        $this->row = new Model($previous->withoutRelations()->toArray());
 
         $this->serie();
         $this->status();
@@ -32,7 +32,7 @@ class Duplicate extends StoreAbstract
 
         $this->row->save();
 
-        $this->cacheFlush('Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice', 'duplicate', $this->user->id, ['invoice_id' => $this->row->id]);
 
@@ -45,9 +45,8 @@ class Duplicate extends StoreAbstract
     protected function serie()
     {
         $this->row->invoice_serie_id = Models\InvoiceSerie::select('id')
-            ->byId($this->data['invoice_serie_id'])
             ->byCompany($this->user->company)
-            ->firstOrFail()
+            ->findOrFail($this->data['invoice_serie_id'])
             ->id;
     }
 

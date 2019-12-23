@@ -34,16 +34,4 @@ class ConfigurationTest extends TestAbstract
             ->assertStatus(200)
             ->assertJsonCount($this->count);
     }
-
-    /**
-     * @return void
-     */
-    public function testCacheSuccess(): void
-    {
-        $content = $this->get($this->route('cache.version'))
-            ->assertStatus(200)
-            ->getContent();
-
-        $this->assertEquals($content, '1');
-    }
 }

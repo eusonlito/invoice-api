@@ -28,7 +28,7 @@ class Paid extends StoreAbstract
 
         $this->row->save();
 
-        $this->cacheFlush('Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice', 'paid', $this->user->id, ['invoice_id' => $this->row->id]);
 

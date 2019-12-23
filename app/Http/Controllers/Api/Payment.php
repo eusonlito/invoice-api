@@ -8,6 +8,11 @@ use App\Domains\Payment\Request;
 class Payment extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /payment
      *
      * @return \Illuminate\Http\JsonResponse
@@ -85,13 +90,5 @@ class Payment extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\Payment\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

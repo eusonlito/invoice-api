@@ -8,6 +8,11 @@ use App\Domains\InvoiceRecurring\Request;
 class InvoiceRecurring extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /invoice-recurring
      *
      * @return \Illuminate\Http\JsonResponse
@@ -85,13 +90,5 @@ class InvoiceRecurring extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\InvoiceRecurring\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

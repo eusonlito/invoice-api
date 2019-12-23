@@ -3,22 +3,21 @@
 namespace App\Domains\Invoice\Event;
 
 use App\Events\EventAbstract;
-use App\Models\Invoice as Model;
 
 class Recurring extends EventAbstract
 {
     /**
-     * @var \App\Models\Invoice
+     * @var int
      */
-    public Model $row;
+    public int $id;
 
     /**
-     * @param \App\Models\Invoice $row
+     * @param int $id
      *
      * @return self
      */
-    public function __construct(Model $row)
+    public function __construct(int $id)
     {
-        $this->row = $row->withoutRelations();
+        $this->id = $id;
     }
 }

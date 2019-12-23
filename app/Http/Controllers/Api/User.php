@@ -8,6 +8,11 @@ use App\Domains\User\Request;
 class User extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * POST /user
      *
      * @uses POST array
@@ -129,13 +134,5 @@ class User extends ControllerAbstract
     public function updatePassword(): JsonResponse
     {
         return $this->json($this->request()->updatePassword());
-    }
-
-    /**
-     * @return \App\Domains\User\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

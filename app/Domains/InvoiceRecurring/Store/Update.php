@@ -19,7 +19,7 @@ class Update extends StoreAbstract
 
         $this->invoices();
 
-        $this->cacheFlush('InvoiceRecurring', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice_recurring', 'update', $this->user->id, ['invoice_recurring_id' => $this->row->id]);
 

@@ -8,6 +8,11 @@ use App\Domains\Tax\Request;
 class Tax extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /tax
      *
      * @return \Illuminate\Http\JsonResponse
@@ -85,13 +90,5 @@ class Tax extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\Tax\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

@@ -8,6 +8,11 @@ use App\Domains\Product\Request;
 class Product extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /product
      *
      * @return \Illuminate\Http\JsonResponse
@@ -85,13 +90,5 @@ class Product extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\Product\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

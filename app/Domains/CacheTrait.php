@@ -3,9 +3,25 @@
 namespace App\Domains;
 
 use Closure;
+use App\Services\Cache\User as CacheUser;
 
 trait CacheTrait
 {
+    /**
+     * @var \App\Services\Cache\User
+     */
+    protected CacheUser $cache;
+
+    /**
+     * @return self
+     */
+    final protected function cacheLoad(): self
+    {
+        $this->cache = new CacheUser($this->user);
+
+        return $this;
+    }
+
     /**
      * @param string $name
      * @param Closure $closure
@@ -19,26 +35,23 @@ trait CacheTrait
     }
 
     /**
-     * @param string ...$names
-     *
      * @return void
      */
-    final protected function cacheFlush(string ...$names)
+    final protected function cacheFlush(): void
     {
-        cache()->tags(array_map([$this, 'cachePrefix'], $names))->flush();
+        cache()->tags($this->cache->tag())->flush();
+
+        $this->cache->refresh();
     }
 
     /**
      * @param string $name
-     * @param mixed $response
      *
-     * @return mixed
+     * @return array
      */
-    final protected function cacheFlushResponse(string $name, $response)
+    final protected function cacheTags(string $name): array
     {
-        $this->cacheFlush($name);
-
-        return $response;
+        return [$this->cache->tag(), $this->cacheTag($name)];
     }
 
     /**
@@ -46,7 +59,7 @@ trait CacheTrait
      *
      * @return string
      */
-    final protected function cacheTags(string $name): string
+    final protected function cacheTag(string $name): string
     {
         return $this->cachePrefix(explode('\\', $name)[2]);
     }
@@ -68,6 +81,6 @@ trait CacheTrait
      */
     final protected function cachePrefix(string $name): string
     {
-        return (isset($this->user) ? (string)$this->user->company_id : '0').'|'.$name;
+        return $this->cache->version().'|'.$name;
     }
 }

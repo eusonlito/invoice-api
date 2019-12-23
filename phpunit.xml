@@ -12,6 +12,7 @@
          stopOnFailure="true">
     <testsuites>
         <testsuite name="Unit">
+            <file>./tests/Unit/CacheTest.php</file>
             <file>./tests/Unit/ConfigurationTest.php</file>
             <file>./tests/Unit/CountryTest.php</file>
 

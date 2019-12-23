@@ -22,11 +22,6 @@ abstract class RequestAbstract
     protected ?User $user;
 
     /**
-     * @var \App\Domains\StoreAbstract
-     */
-    protected StoreAbstract $store;
-
-    /**
      * @param \Illuminate\Http\Request $request
      * @param ?\App\Models\User $user
      *
@@ -36,6 +31,8 @@ abstract class RequestAbstract
     {
         $this->request = $request;
         $this->user = $user;
+
+        $this->cacheLoad();
     }
 
     /**
@@ -55,7 +52,7 @@ abstract class RequestAbstract
      */
     protected function modelById(int $id): ModelAbstract
     {
-        return $this->model()->byId($id)->firstOrFail();
+        return $this->model()->findOrFail($id);
     }
 
     /**
@@ -65,7 +62,7 @@ abstract class RequestAbstract
      */
     protected function modelDetailById(int $id): ModelAbstract
     {
-        return $this->model()->detail()->byId($id)->firstOrFail();
+        return $this->model()->detail()->findOrFail($id);
     }
 
     /**
@@ -97,12 +94,8 @@ abstract class RequestAbstract
      */
     protected function store(?ModelAbstract $row = null, array $data = []): StoreAbstract
     {
-        if (isset($this->store)) {
-            return $this->store;
-        }
-
         $class = static::STORE;
 
-        return $this->store = new $class($this->user, $row, $data);
+        return new $class($this->user, $row, $data);
     }
 }

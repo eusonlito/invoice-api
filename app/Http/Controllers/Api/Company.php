@@ -8,6 +8,11 @@ use App\Domains\Company\Request;
 class Company extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /company
      *
      * @return \Illuminate\Http\JsonResponse
@@ -39,13 +44,5 @@ class Company extends ControllerAbstract
     public function update(): JsonResponse
     {
         return $this->json($this->request()->update());
-    }
-
-    /**
-     * @return \App\Domains\Company\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

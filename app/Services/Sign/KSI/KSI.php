@@ -18,8 +18,8 @@ class KSI extends SignAbstract
     }
 
     /**
-     * @param string $file
      * @param string $certificate
+     * @param string $password = ''
      *
      * @return string
      */

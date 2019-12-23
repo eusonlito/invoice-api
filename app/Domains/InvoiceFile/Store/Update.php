@@ -24,7 +24,7 @@ class Update extends StoreAbstract
             $this->row::disk()->delete($previous);
         }
 
-        $this->cacheFlush('InvoiceFile', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice_file', 'update', $this->user->id, ['invoice_file_id' => $this->row->id]);
 

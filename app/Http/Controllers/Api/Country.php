@@ -8,6 +8,11 @@ use App\Domains\Country\Request;
 class Country extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /country
      *
      * @return \Illuminate\Http\JsonResponse
@@ -15,13 +20,5 @@ class Country extends ControllerAbstract
     public function index(): JsonResponse
     {
         return $this->json($this->request()->indexCached());
-    }
-
-    /**
-     * @return \App\Domains\Country\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

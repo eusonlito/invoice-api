@@ -12,7 +12,7 @@ class Store extends Store\StoreAbstract
      */
     public function authCredentials(): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeAuth()->byCredentials());
+        return tap($this->storeAuth()->byCredentials(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -20,7 +20,7 @@ class Store extends Store\StoreAbstract
      */
     public function authUser(): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeAuth()->byUser());
+        return tap($this->storeAuth()->byUser(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -30,7 +30,7 @@ class Store extends Store\StoreAbstract
      */
     public function authRefresh(Request $request): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeAuth()->refresh($request));
+        return tap($this->storeAuth()->refresh($request), fn () => $this->cacheFlush());
     }
 
     /**
@@ -38,7 +38,7 @@ class Store extends Store\StoreAbstract
      */
     public function authToken(): ?string
     {
-        return $this->cacheFlushResponse('User', $this->storeAuth()->token());
+        return tap($this->storeAuth()->token(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -54,7 +54,7 @@ class Store extends Store\StoreAbstract
      */
     public function signup(): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeSignup()->start());
+        return tap($this->storeSignup()->start(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -70,7 +70,7 @@ class Store extends Store\StoreAbstract
      */
     public function confirmStart(): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeConfirm()->start());
+        return tap($this->storeConfirm()->start(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -80,7 +80,7 @@ class Store extends Store\StoreAbstract
      */
     public function confirmFinish(string $hash): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeConfirm()->finish($hash));
+        return tap($this->storeConfirm()->finish($hash), fn () => $this->cacheFlush());
     }
 
     /**
@@ -88,7 +88,7 @@ class Store extends Store\StoreAbstract
      */
     public function updateProfile(): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeProfile()->profile());
+        return tap($this->storeProfile()->profile(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -96,7 +96,7 @@ class Store extends Store\StoreAbstract
      */
     public function updatePassword(): Model
     {
-        return $this->cacheFlushResponse('User', $this->storeProfile()->password());
+        return tap($this->storeProfile()->password(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -104,7 +104,7 @@ class Store extends Store\StoreAbstract
      */
     public function passwordResetStart(): ?Model
     {
-        return $this->cacheFlushResponse('User', $this->storePasswordReset()->start());
+        return tap($this->storePasswordReset()->start(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -114,7 +114,7 @@ class Store extends Store\StoreAbstract
      */
     public function passwordResetFinish(string $hash): Model
     {
-        return $this->cacheFlushResponse('User', $this->storePasswordReset()->finish($hash));
+        return tap($this->storePasswordReset()->finish($hash), fn () => $this->cacheFlush());
     }
 
     /**

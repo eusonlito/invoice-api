@@ -181,10 +181,12 @@ class Invoice extends ModelAbstract
      *
      * @return void
      */
-    public function scopePendingToRecurring(Builder $q)
+    public function scopeDetail(Builder $q)
     {
-        $q->where('recurring_at', '<=', date('Y-m-d'))
-            ->whereIn('invoice_recurring_id', InvoiceRecurring::select('id')->enabled());
+        $q->with([
+            'clientAddressBilling', 'clientAddressShipping', 'discount', 'files', 'items',
+            'payment', 'recurring', 'shipping', 'serie', 'status', 'tax'
+        ]);
     }
 
     /**
@@ -192,12 +194,10 @@ class Invoice extends ModelAbstract
      *
      * @return void
      */
-    public function scopeDetail(Builder $q)
+    public function scopePendingToRecurring(Builder $q)
     {
-        $q->with([
-            'clientAddressBilling', 'clientAddressShipping', 'discount', 'files', 'items',
-            'payment', 'recurring', 'shipping', 'serie', 'status', 'tax'
-        ]);
+        $q->where('recurring_at', '<=', date('Y-m-d'))
+            ->whereIn('invoice_recurring_id', InvoiceRecurring::select('id')->enabled());
     }
 
     /**

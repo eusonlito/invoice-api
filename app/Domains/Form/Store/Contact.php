@@ -2,6 +2,7 @@
 
 namespace App\Domains\Form\Store;
 
+use App\Domains\Form\Mail;
 use App\Services\Mail\Mailer;
 
 class Contact extends StoreAbstract

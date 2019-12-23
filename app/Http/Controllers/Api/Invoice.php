@@ -10,6 +10,11 @@ use App\Domains\Invoice\Request;
 class Invoice extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /invoice
      *
      * @return \Illuminate\Http\JsonResponse
@@ -178,13 +183,5 @@ class Invoice extends ControllerAbstract
             'shipping' => (new Domains\Shipping\Request($this->request, $this->user))->enabledCached(),
             'tax' => (new Domains\Tax\Request($this->request, $this->user))->enabledCached()
         ];
-    }
-
-    /**
-     * @return \App\Domains\Invoice\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

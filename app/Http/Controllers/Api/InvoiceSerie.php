@@ -9,6 +9,11 @@ use App\Domains\InvoiceSerie\Request;
 class InvoiceSerie extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /invoice-serie
      *
      * @return \Illuminate\Http\JsonResponse
@@ -128,13 +133,5 @@ class InvoiceSerie extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\InvoiceSerie\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

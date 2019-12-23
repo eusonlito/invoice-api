@@ -8,6 +8,11 @@ use App\Domains\Discount\Request;
 class Discount extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /discount
      *
      * @return \Illuminate\Http\JsonResponse
@@ -85,13 +90,5 @@ class Discount extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\Discount\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

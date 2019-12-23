@@ -21,7 +21,7 @@ class Delete extends StoreAbstract
 
         $this->row->delete();
 
-        $this->cacheFlush('Discount', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('discount', 'delete', $this->user->id);
     }

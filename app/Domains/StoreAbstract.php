@@ -31,15 +31,18 @@ abstract class StoreAbstract
         $this->user = $user;
         $this->row = $row;
         $this->data = $data;
+
+        $this->cacheLoad();
     }
 
     /**
      * @param string $class
+     * @param array $data = []
      *
      * @return self
      */
-    final protected function factory(string $class): self
+    final protected function factory(string $class, array $data = []): self
     {
-        return new $class($this->user, $this->row, $this->data);
+        return new $class($this->user, $this->row, $data ?: $this->data);
     }
 }

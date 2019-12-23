@@ -9,6 +9,11 @@ use App\Domains\Client\Request;
 class Client extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /client
      *
      * @return \Illuminate\Http\JsonResponse
@@ -113,13 +118,5 @@ class Client extends ControllerAbstract
             'shipping' => (new Domains\Shipping\Request($this->request, $this->user))->enabledCached(),
             'tax' => (new Domains\Tax\Request($this->request, $this->user))->enabledCached()
         ];
-    }
-
-    /**
-     * @return \App\Domains\Client\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

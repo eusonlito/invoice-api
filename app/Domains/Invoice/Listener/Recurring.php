@@ -5,6 +5,7 @@ namespace App\Domains\Invoice\Listener;
 use App\Domains\Invoice\Store;
 use App\Domains\Invoice\Event\Recurring as Event;
 use App\Listeners\ListenerAbstract;
+use App\Models\Invoice as Model;
 
 class Recurring extends ListenerAbstract
 {
@@ -15,6 +16,8 @@ class Recurring extends ListenerAbstract
      */
     public function handle(Event $event)
     {
-        $this->factory(Store::class)->recurring();
+        $row = Model::detail()->findOrFail($event->id);
+
+        (new Store($row->user, $row))->recurring();
     }
 }

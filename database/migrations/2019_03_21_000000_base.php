@@ -383,6 +383,22 @@ class Base extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
         });
 
+        Schema::create('notification', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->string('code');
+            $table->string('title');
+            $table->string('status');
+
+            $table->datetime('readed_at')->nullable();
+
+            $this->timestamps($table);
+
+            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('invoice_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+        });
+
         Schema::create('payment', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -740,6 +756,16 @@ class Base extends Migration
             $table->foreign('user_id')
                 ->references('id')->on('user')
                 ->onDelete('SET NULL');
+        });
+
+        Schema::table('notification', function (Blueprint $table) {
+            $table->foreign('company_id')
+                ->references('id')->on('company')
+                ->onDelete('CASCADE');
+
+            $table->foreign('user_id')
+                ->references('id')->on('user')
+                ->onDelete('CASCADE');
         });
 
         Schema::table('payment', function (Blueprint $table) {

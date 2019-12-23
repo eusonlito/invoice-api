@@ -13,7 +13,7 @@ class Delete extends StoreAbstract
 
         $this->row::disk()->delete($this->row->file);
 
-        $this->cacheFlush('InvoiceFile', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice_file', 'delete', $this->user->id);
     }

@@ -21,6 +21,6 @@ class Request extends RequestAbstract
      */
     public function contact(): array
     {
-        return $this->store($this->validator('contact'))->contact();
+        return $this->store(null, $this->validator('contact'))->contact();
     }
 }

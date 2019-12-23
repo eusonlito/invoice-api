@@ -21,7 +21,7 @@ class Update extends StoreAbstract
 
         $this->row->save();
 
-        $this->cacheFlush('Product', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('product', 'update', $this->user->id, ['product_id' => $this->row->id]);
 

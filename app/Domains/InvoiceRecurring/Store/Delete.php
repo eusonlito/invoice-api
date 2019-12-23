@@ -18,7 +18,7 @@ class Delete extends StoreAbstract
         $this->row->invoices()->update(['recurring_at' => null]);
         $this->row->delete();
 
-        $this->cacheFlush('InvoiceRecurring', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice_recurring', 'delete', $this->user->id);
     }

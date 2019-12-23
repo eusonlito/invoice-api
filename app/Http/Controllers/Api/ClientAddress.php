@@ -8,6 +8,11 @@ use App\Domains\ClientAddress\Request;
 class ClientAddress extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /client-address/enabled
      *
      * @return \Illuminate\Http\JsonResponse
@@ -79,13 +84,5 @@ class ClientAddress extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\ClientAddress\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

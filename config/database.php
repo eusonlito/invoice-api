@@ -46,10 +46,8 @@ return [
             'prefix_indexes' => true,
             'strict' => false,
             'engine' => null,
-            'timezone'  => '+00:00',
-            'options' => array_filter([
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET time_zone = "+00:00"',
-            ]),
+            'timezone'  => null,
+            'options' => [],
         ],
     ],
 

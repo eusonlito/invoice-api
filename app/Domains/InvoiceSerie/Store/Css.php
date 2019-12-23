@@ -55,7 +55,7 @@ class Css extends StoreAbstract
         $this->row::disk()->put($this->row->css, $this->validate($this->data['css']));
         $this->row->save();
 
-        $this->cacheFlush('InvoiceSerie', 'Invoice');
+        $this->cacheFlush();
 
         service()->log('invoice_serie', 'update-css', $this->user->id, ['invoice_serie_id' => $this->row->id]);
 

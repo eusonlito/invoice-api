@@ -8,6 +8,11 @@ use App\Domains\InvoiceStatus\Request;
 class InvoiceStatus extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * GET /invoice-status
      *
      * @return \Illuminate\Http\JsonResponse
@@ -85,13 +90,5 @@ class InvoiceStatus extends ControllerAbstract
     public function delete(int $id): void
     {
         $this->json($this->request()->delete($id));
-    }
-
-    /**
-     * @return \App\Domains\InvoiceStatus\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

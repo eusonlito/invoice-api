@@ -8,6 +8,11 @@ use App\Domains\Form\Request;
 class Form extends ControllerAbstract
 {
     /**
+     * @const
+     */
+    protected const REQUEST = Request::class;
+
+    /**
      * POST /form/contact
      *
      * @uses POST array
@@ -17,13 +22,5 @@ class Form extends ControllerAbstract
     public function contact(): JsonResponse
     {
         return $this->json($this->request()->contact());
-    }
-
-    /**
-     * @return \App\Domains\Form\Request
-     */
-    protected function request(): Request
-    {
-        return new Request($this->request, $this->user);
     }
 }

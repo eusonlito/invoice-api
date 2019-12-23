@@ -11,8 +11,8 @@ Route::post('/user/confirm/{hash}', 'User@confirmFinish')->name('user.confirm.fi
 Route::post('/user/password/reset', 'User@PasswordResetStart')->name('user.password.reset.start');
 Route::post('/user/password/reset/{hash}', 'User@PasswordResetFinish')->name('user.password.reset.finish');
 
+Route::get('/cache/version', 'Cache@version')->name('cache.version');
 Route::get('/configuration', 'Configuration@index')->name('configuration.index');
-Route::get('/configuration/cache/version', 'Configuration@cacheVersion')->name('configuration.cache.version');
 
 Route::get('/country', 'Country@index')->name('country.index');
 
@@ -105,6 +105,11 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::post('/invoice-status', 'InvoiceStatus@create')->name('invoice-status.create');
     Route::patch('/invoice-status/{id}', 'InvoiceStatus@update')->name('invoice-status.update');
     Route::delete('/invoice-status/{id}', 'InvoiceStatus@delete')->name('invoice-status.delete');
+
+    Route::get('/notification', 'Notification@index')->name('notification.index');
+    Route::get('/notification/count', 'Notification@count')->name('notification.count');
+    Route::get('/notification/last', 'Notification@last')->name('notification.last');
+    Route::patch('/notification', 'Notification@read')->name('notification.read');
 
     Route::get('/payment', 'Payment@index')->name('payment.index');
     Route::get('/payment/enabled', 'Payment@enabled')->name('payment.enabled');
