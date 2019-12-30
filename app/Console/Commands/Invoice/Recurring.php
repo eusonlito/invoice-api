@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands\Invoice;
 
-use App\Domains\Invoice\Store\Recurring as StoreRecurring;
+use App\Domains\Invoice\Event\Recurring as Event;
+use App\Models\Invoice as Model;
 
 class Recurring extends InvoiceAbstract
 {
@@ -21,6 +22,20 @@ class Recurring extends InvoiceAbstract
      */
     public function handle()
     {
-        StoreRecurring::pending();
+        Model::select('id', 'number')
+            ->pendingToRecurring()
+            ->get()
+            ->each(fn ($row) => $this->enqueue($row));
+    }
+
+    /**
+     * @param \App\Models\Invoice $row
+     * @return void
+     */
+    protected function enqueue(Model $row)
+    {
+        $this->info(sprintf('Procesing Invoice [%s] %s', $row->id, $row->number));
+
+        event(new Event($row->id));
     }
 }

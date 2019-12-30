@@ -2,23 +2,11 @@
 
 namespace App\Domains\Invoice\Store;
 
-use App\Domains\Invoice\Event\Recurring as Event;
 use App\Domains\Invoice\Store;
 use App\Domains\Notification\Store as NotificationStore;
-use App\Models\Invoice as Model;
 
 class Recurring extends StoreAbstract
 {
-    /**
-     * @return void
-     */
-    public static function pending()
-    {
-        foreach (Model::pendingToRecurring()->pluck('id') as $id) {
-            event(new Event($id));
-        }
-    }
-
     /**
      * @return void
      */

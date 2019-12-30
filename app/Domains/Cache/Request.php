@@ -3,7 +3,6 @@
 namespace App\Domains\Cache;
 
 use App\Domains\RequestAbstract;
-use App\Services\Cache\User as CacheUser;
 
 class Request extends RequestAbstract
 {

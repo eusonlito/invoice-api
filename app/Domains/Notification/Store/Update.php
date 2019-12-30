@@ -2,7 +2,6 @@
 
 namespace App\Domains\Notification\Store;
 
-use App\Domains\Notification\Store;
 use App\Models\Notification as Model;
 
 class Update extends StoreAbstract

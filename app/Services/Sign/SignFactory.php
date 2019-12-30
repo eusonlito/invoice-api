@@ -5,10 +5,10 @@ namespace App\Services\Sign;
 class SignFactory
 {
     /**
-     * @return App\Services\Sign\SignAbstract
+     * @return \App\Services\Sign\SignAbstract
      */
     public static function get(): SignAbstract
     {
-        return new KSI\KSI;
+        return new KSI\KSI();
     }
 }

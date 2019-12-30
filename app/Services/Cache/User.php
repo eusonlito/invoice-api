@@ -78,7 +78,7 @@ class User
         }
 
         $disk = service()->disk();
-        $file = $this->path($this->user);
+        $file = $this->path();
 
         return $disk->exists($file) ? $disk->get($file) : null;
     }
@@ -106,7 +106,7 @@ class User
      */
     protected function path(): string
     {
-        return static::PATH.'/'.$this->tag($this->user);
+        return static::PATH.'/'.$this->tag();
     }
 
     /**
