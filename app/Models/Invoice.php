@@ -202,6 +202,17 @@ class Invoice extends ModelAbstract
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $q
+     * @param string $date
+     *
+     * @return void
+     */
+    public function scopeUnpaidAt(Builder $q, string $date)
+    {
+        $q->whereNull('paid_at')->where('required_at', $date);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $q
      *
      * @return void
      */

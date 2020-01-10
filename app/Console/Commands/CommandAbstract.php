@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-abstract class CommandInterface extends Command
+abstract class CommandAbstract extends Command
 {
     /**
      * @param mixed $string

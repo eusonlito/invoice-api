@@ -24,7 +24,7 @@ class IpLock
             return true;
         }
 
-        throw new Exceptions\ValidatorException(__('exception.ip-lock', ['seconds' => config('app.ip_lock_time')]));
+        throw new Exceptions\ValidatorException(__('exception.ip-lock', ['seconds' => config('auth.lock.time')]));
     }
 
     /**

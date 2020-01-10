@@ -23,11 +23,11 @@ abstract class RequestAbstract
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param ?\App\Models\User $user
+     * @param ?\App\Models\User $user = null
      *
      * @return self
      */
-    public function __construct(Request $request, ?User $user)
+    public function __construct(Request $request, ?User $user = null)
     {
         $this->request = $request;
         $this->user = $user;

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Invoice;
 
-use App\Console\Commands\CommandInterface;
+use App\Console\Commands\CommandAbstract;
 
-abstract class InvoiceAbstract extends CommandInterface
+abstract class InvoiceAbstract extends CommandAbstract
 {
 }

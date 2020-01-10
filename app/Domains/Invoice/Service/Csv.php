@@ -21,7 +21,7 @@ class Csv
             $csv[] = static::row($row);
         }
 
-        return Write::fromArray($csv);
+        return $csv ? Write::fromArray($csv) : '';
     }
 
     /**

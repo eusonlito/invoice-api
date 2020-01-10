@@ -19,7 +19,7 @@ class Fractal extends FractalAbstract
             'id' => $row->id,
             'user' => $row->user,
             'name' => $row->name,
-            'language' => static::relationIfLoaded($row, 'language', Language::class),
+            'language' => Language::transform('simple', $row->language),
         ];
     }
 

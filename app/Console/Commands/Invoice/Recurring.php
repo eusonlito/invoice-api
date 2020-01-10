@@ -30,6 +30,7 @@ class Recurring extends InvoiceAbstract
 
     /**
      * @param \App\Models\Invoice $row
+     *
      * @return void
      */
     protected function enqueue(Model $row)

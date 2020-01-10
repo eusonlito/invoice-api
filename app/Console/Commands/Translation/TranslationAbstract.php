@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Translation;
 
-use App\Console\Commands\CommandInterface;
+use App\Console\Commands\CommandAbstract;
 
-abstract class TranslationAbstract extends CommandInterface
+abstract class TranslationAbstract extends CommandAbstract
 {
 }

@@ -27,8 +27,12 @@ abstract class ControllerAbstract extends BaseController
      */
     public function __construct(Request $request)
     {
-        $this->request = $request;
-        $this->user = app('user');
+        $this->middleware(function (Request $request, $next) {
+            $this->request = $request;
+            $this->user = app('user');
+
+            return $next($request);
+        });
     }
 
     /**
