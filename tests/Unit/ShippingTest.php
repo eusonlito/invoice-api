@@ -19,7 +19,10 @@ class ShippingTest extends TestAbstract
     /**
      * @var array
      */
-    protected array $structure = ['id', 'name', 'value', 'description', 'default', 'enabled'];
+    protected array $structure = [
+        'id', 'name', 'subtotal', 'tax_percent', 'tax_amount', 'value',
+        'description', 'default', 'enabled'
+    ];
 
     /**
      * @return void
@@ -94,7 +97,8 @@ class ShippingTest extends TestAbstract
      * Rules:
      *
      * 'name' => 'required|string',
-     * 'value' => 'numeric',
+     * 'subtotal' => 'numeric',
+     * 'tax_percent' => 'numeric',
      * 'description' => 'string',
      * 'default' => 'boolean',
      * 'enabled' => 'boolean',
@@ -119,15 +123,20 @@ class ShippingTest extends TestAbstract
      */
     public function testCreateInvalidFail(): void
     {
-        $fail = ['value' => 'fail'];
+        $fail = [
+            'subtotal' => 'fail',
+            'tax_percent' => 'fail'
+        ];
 
         $this->auth()
             ->json('POST', $this->route('create'), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
-            ->assertDontSee(' value ')
-            ->assertSee($this->t('validator.value-numeric'));
+            ->assertDontSee(' subtotal ')
+            ->assertDontSee(' tax_percent ')
+            ->assertSee($this->t('validator.subtotal-numeric'))
+            ->assertSee($this->t('validator.tax_percent-numeric'));
     }
 
     /**
@@ -137,7 +146,8 @@ class ShippingTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
         $row->name = 'Test 10';
-        $row->value = 10;
+        $row->subtotal = 10;
+        $row->tax_percent = 21;
         $row->description = 'Test Description';
         $row->default = true;
 
@@ -145,7 +155,10 @@ class ShippingTest extends TestAbstract
             ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure)
-            ->assertJson(['value' => 10]);
+            ->assertJson(['subtotal' => 10])
+            ->assertJson(['tax_percent' => 21.0])
+            ->assertJson(['tax_amount' => 2.10])
+            ->assertJson(['value' => 12.10]);
     }
 
     /**
@@ -155,7 +168,8 @@ class ShippingTest extends TestAbstract
     {
         $row = factory(Model::class)->make();
         $row->name = 'Test 10';
-        $row->value = 10;
+        $row->subtotal = 10;
+        $row->tax_percent = 21;
         $row->description = 'Test Description';
         $row->default = true;
 
@@ -163,7 +177,10 @@ class ShippingTest extends TestAbstract
             ->json('POST', $this->route('create'), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure)
-            ->assertJson(['value' => 10]);
+            ->assertJson(['subtotal' => 10])
+            ->assertJson(['tax_percent' => 21.0])
+            ->assertJson(['tax_amount' => 2.10])
+            ->assertJson(['value' => 12.10]);
     }
 
     /**
@@ -215,15 +232,20 @@ class ShippingTest extends TestAbstract
      */
     public function testUpdateInvalidFail(): void
     {
-        $fail = ['value' => 'fail'];
+        $fail = [
+            'subtotal' => 'fail',
+            'tax_percent' => 'fail'
+        ];
 
         $this->auth()
             ->json('PATCH', $this->route('update', $this->row()->id), $fail)
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
-            ->assertDontSee(' value ')
-            ->assertSee($this->t('validator.value-numeric'));
+            ->assertDontSee(' subtotal ')
+            ->assertDontSee(' tax_percent ')
+            ->assertSee($this->t('validator.subtotal-numeric'))
+            ->assertSee($this->t('validator.tax_percent-numeric'));
     }
 
     /**
@@ -254,13 +276,17 @@ class ShippingTest extends TestAbstract
     {
         $row = $this->row();
         $row->name = 'Test 8';
-        $row->value = 8;
+        $row->subtotal = 20;
+        $row->tax_percent = 10;
 
         $this->auth()
             ->json('PATCH', $this->route('update', $row->id), $row->toArray())
             ->assertStatus(200)
             ->assertJsonStructure($this->structure)
-            ->assertJson(['value' => 8]);
+            ->assertJson(['subtotal' => 20])
+            ->assertJson(['tax_percent' => 10])
+            ->assertJson(['tax_amount' => 2])
+            ->assertJson(['value' => 22]);
     }
 
     /**

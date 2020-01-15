@@ -16,7 +16,10 @@ class Update extends StoreAbstract
         }
 
         $this->row->name = $this->data['name'];
-        $this->row->value = (float)abs($this->data['value']);
+        $this->row->subtotal = (float)abs($this->data['subtotal']);
+        $this->row->tax_percent = (float)abs($this->data['tax_percent']);
+        $this->row->tax_amount = $this->row->subtotal * $this->row->tax_percent / 100;
+        $this->row->value = $this->row->subtotal + $this->row->tax_amount;
         $this->row->description = $this->data['description'];
         $this->row->default = (bool)$this->data['default'];
         $this->row->enabled = (bool)$this->data['enabled'];

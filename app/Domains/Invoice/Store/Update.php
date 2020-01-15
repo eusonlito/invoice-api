@@ -25,7 +25,6 @@ class Update extends StoreAbstract
         $this->row->comment_private = $this->data['comment_private'];
 
         $this->row->amount_paid = $this->float($this->data['amount_paid']);
-        $this->row->amount_shipping = $this->float($this->data['amount_shipping']);
 
         $this->company();
         $this->clientAddressBilling();
@@ -315,6 +314,7 @@ class Update extends StoreAbstract
         $this->row->amount_subtotal = $this->float($this->row->items->sum('amount_subtotal'));
 
         $this->amountDiscount();
+        $this->amountShipping();
         $this->amountTax();
         $this->amountTotal();
         $this->amountPaidDue();
@@ -338,6 +338,19 @@ class Update extends StoreAbstract
             $this->row->percent_discount = $value;
             $this->row->amount_discount = $this->float($this->row->amount_subtotal * $this->row->percent_discount / 100);
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function amountShipping()
+    {
+        $subtotal = $this->float($this->data['amount_shipping_subtotal']);
+
+        $this->row->amount_shipping_subtotal = $subtotal;
+        $this->row->amount_shipping_tax_percent = $this->float($this->data['amount_shipping_tax_percent']);
+        $this->row->amount_shipping_tax_amount = $subtotal * $this->row->amount_shipping_tax_percent / 100;
+        $this->row->amount_shipping = $subtotal + $this->row->amount_shipping_tax_amount;
     }
 
     /**

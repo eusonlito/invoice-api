@@ -13,7 +13,10 @@ class Shipping extends FakeAbstract
     {
         factory(Model::class)->create([
             'name' => 'Correos Express',
-            'value' => 5,
+            'subtotal' => 5,
+            'tax_percent' => 21,
+            'tax_amount' => (5 * 0.21),
+            'value' => (5 * 1.21),
             'default' => true,
             'company_id' => 1,
             'user_id' => 1
@@ -21,7 +24,10 @@ class Shipping extends FakeAbstract
 
         factory(Model::class)->create([
             'name' => 'SEUR 24',
-            'value' => 10,
+            'subtotal' => 10,
+            'tax_percent' => 21,
+            'tax_amount' => (10 * 0.21),
+            'value' => (10 * 1.21),
             'default' => false,
             'company_id' => 1,
             'user_id' => 1

@@ -24,7 +24,9 @@ class InvoiceTest extends TestAbstract
         'id', 'number', 'billing_name', 'date_at', 'paid_at', 'created_at', 'company_name',
         'company_city', 'company_state', 'company_country', 'billing_city', 'billing_state',
         'billing_country', 'shipping_name', 'shipping_city', 'shipping_state', 'quantity',
-        'percent_tax', 'amount_subtotal', 'amount_tax', 'required_at', 'comment_public',
+        'percent_tax', 'amount_subtotal', 'amount_tax', 'amount_shipping_subtotal',
+        'amount_shipping_tax_percent', 'amount_shipping_tax_amount', 'amount_shipping',
+        'required_at', 'comment_public',
         'clientAddressBilling' => ['id', 'name'],
         'clientAddressShipping' => ['id', 'name'],
         'discount' => ['id', 'name'],
@@ -170,7 +172,8 @@ class InvoiceTest extends TestAbstract
      * 'percent_discount' => 'numeric',
      * 'percent_tax' => 'numeric',
      * 'amount_due' => 'numeric',
-     * 'amount_shipping' => 'numeric',
+     * 'amount_shipping_subtotal' => 'numeric',
+     * 'amount_shipping_tax_percent' => 'numeric',
      * 'amount_paid' => 'numeric',
      * 'comment_public' => 'string',
      * 'comment_private' => 'string',
@@ -228,7 +231,8 @@ class InvoiceTest extends TestAbstract
             'percent_discount' => 'fail',
             'percent_tax' => 'fail',
             'amount_due' => 'fail',
-            'amount_shipping' => 'fail',
+            'amount_shipping_subtotal' => 'fail',
+            'amount_shipping_tax_percent' => 'fail',
             'amount_paid' => 'fail',
 
             'client_address_billing_id' => 'fail',
@@ -253,7 +257,8 @@ class InvoiceTest extends TestAbstract
             ->assertSee($this->t('validator.percent_discount-numeric'))
             ->assertSee($this->t('validator.percent_tax-numeric'))
             ->assertSee($this->t('validator.amount_due-numeric'))
-            ->assertSee($this->t('validator.amount_shipping-numeric'))
+            ->assertSee($this->t('validator.amount_shipping_subtotal-numeric'))
+            ->assertSee($this->t('validator.amount_shipping_tax_percent-numeric'))
             ->assertSee($this->t('validator.amount_paid-numeric'))
             ->assertSee($this->t('validator.client_address_billing_id-integer'))
             ->assertSee($this->t('validator.client_address_shipping_id-integer'))
@@ -313,10 +318,13 @@ class InvoiceTest extends TestAbstract
                 'amount_subtotal' => 56.44,
                 'amount_discount' => 9.59,
                 'amount_tax' => 10.72,
-                'amount_shipping' => 10.0,
-                'amount_total' => 67.57,
+                'amount_shipping_subtotal' => 10.0,
+                'amount_shipping_tax_percent' => 21.0,
+                'amount_shipping_tax_amount' => 2.1,
+                'amount_shipping' => 12.1,
+                'amount_total' => 69.67,
                 'amount_paid' => 20.0,
-                'amount_due' => 47.57,
+                'amount_due' => 49.67,
             ]);
     }
 
@@ -337,15 +345,18 @@ class InvoiceTest extends TestAbstract
             ->assertJsonStructure($this->structure)
             ->assertJson([
                 'quantity' => 9,
-                'percent_discount' => 15.0,
-                'percent_tax' => 21.0,
-                'amount_subtotal' => 170.0,
+                'percent_discount' => 15,
+                'percent_tax' => 21,
+                'amount_subtotal' => 170,
                 'amount_discount' => 25.5,
                 'amount_tax' => 35.7,
-                'amount_shipping' => 8.0,
-                'amount_total' => 188.2,
-                'amount_paid' => 20.0,
-                'amount_due' => 168.2,
+                'amount_shipping_subtotal' => 20,
+                'amount_shipping_tax_percent' => 10,
+                'amount_shipping_tax_amount' => 2,
+                'amount_shipping' => 22,
+                'amount_total' => 202.2,
+                'amount_paid' => 20,
+                'amount_due' => 182.2,
             ]);
     }
 
@@ -425,7 +436,8 @@ class InvoiceTest extends TestAbstract
             'percent_discount' => 'fail',
             'percent_tax' => 'fail',
             'amount_due' => 'fail',
-            'amount_shipping' => 'fail',
+            'amount_shipping_subtotal' => 'fail',
+            'amount_shipping_tax_percent' => 'fail',
             'amount_paid' => 'fail',
 
             'client_address_billing_id' => 'fail',
@@ -450,7 +462,8 @@ class InvoiceTest extends TestAbstract
             ->assertSee($this->t('validator.percent_discount-numeric'))
             ->assertSee($this->t('validator.percent_tax-numeric'))
             ->assertSee($this->t('validator.amount_due-numeric'))
-            ->assertSee($this->t('validator.amount_shipping-numeric'))
+            ->assertSee($this->t('validator.amount_shipping_subtotal-numeric'))
+            ->assertSee($this->t('validator.amount_shipping_tax_percent-numeric'))
             ->assertSee($this->t('validator.amount_paid-numeric'))
             ->assertSee($this->t('validator.client_address_billing_id-integer'))
             ->assertSee($this->t('validator.client_address_shipping_id-integer'))
@@ -713,7 +726,8 @@ class InvoiceTest extends TestAbstract
 
         $row->percent_discount = $discount->value;
         $row->percent_tax = $tax->value;
-        $row->amount_shipping = $shipping->value;
+        $row->amount_shipping_subtotal = $shipping->subtotal;
+        $row->amount_shipping_tax_percent = $shipping->tax_percent;
         $row->amount_paid = 20;
 
         $row->client_id = $client->id;

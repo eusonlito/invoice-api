@@ -79,6 +79,9 @@ class Fractal extends FractalAbstract
             'amount_subtotal' => $row->amount_subtotal,
             'amount_discount' => $row->amount_discount,
             'amount_tax' => $row->amount_tax,
+            'amount_shipping_subtotal' => $row->amount_shipping_subtotal,
+            'amount_shipping_tax_percent' => $row->amount_shipping_tax_percent,
+            'amount_shipping_tax_amount' => $row->amount_shipping_tax_amount,
             'amount_shipping' => $row->amount_shipping,
 
             'required_at' => $row->required_at,

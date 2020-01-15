@@ -230,8 +230,16 @@ class Invoice extends FakeAbstract
         }
 
         $row->amount_tax = $items->sum('amount_tax');
+
+        $row->amount_shipping_subtotal = $shipping->subtotal;
+        $row->amount_shipping_tax_percent = $shipping->tax_percent;
+        $row->amount_shipping_tax_amount = $shipping->tax_amount;
         $row->amount_shipping = $shipping->value;
-        $row->amount_total = $row->amount_subtotal + $row->amount_tax + $row->amount_shipping - $row->amount_discount;
+
+        $row->amount_total = $row->amount_subtotal
+            + $row->amount_tax
+            + $row->amount_shipping
+            - $row->amount_discount;
 
         if ($status->paid) {
             $row->amount_paid = $row->amount_total;

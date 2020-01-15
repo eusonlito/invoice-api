@@ -17,7 +17,11 @@ class Fractal extends FractalAbstract
         return [
             'id' => $row->id,
             'name' => $row->name,
+            'subtotal' => $row->subtotal,
+            'tax_percent' => $row->tax_percent,
+            'tax_amount' => $row->tax_amount,
             'value' => $row->value,
+            'tax' => $row->tax,
             'default' => $row->default,
             'enabled' => $row->enabled,
         ];

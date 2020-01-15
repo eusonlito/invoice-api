@@ -21,6 +21,9 @@ class Shipping extends ModelAbstract
      * @var array
      */
     protected $casts = [
+        'subtotal' => 'float',
+        'tax_percent' => 'float',
+        'tax_amount' => 'float',
         'value' => 'float',
         'default' => 'boolean',
         'enabled' => 'boolean',

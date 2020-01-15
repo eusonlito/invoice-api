@@ -139,7 +139,7 @@ class Base extends Migration
 
             $table->string('name');
             $table->string('type');
-            $table->unsignedDecimal('value');
+            $table->unsignedDecimal('value', 10, 2)->default(0);
 
             $table->text('description');
 
@@ -211,6 +211,9 @@ class Base extends Migration
             $table->unsignedDecimal('amount_subtotal', 10, 2)->default(0);
             $table->unsignedDecimal('amount_discount', 10, 2)->default(0);
             $table->unsignedDecimal('amount_tax', 10, 2)->default(0);
+            $table->unsignedDecimal('amount_shipping_subtotal', 10, 2)->default(0);
+            $table->unsignedDecimal('amount_shipping_tax_percent', 5, 2)->default(0);
+            $table->unsignedDecimal('amount_shipping_tax_amount', 10, 2)->default(0);
             $table->unsignedDecimal('amount_shipping', 10, 2)->default(0);
             $table->unsignedDecimal('amount_total', 10, 2)->default(0);
             $table->unsignedDecimal('amount_paid', 10, 2)->default(0);
@@ -434,7 +437,12 @@ class Base extends Migration
             $table->bigIncrements('id');
 
             $table->string('name');
-            $table->unsignedDecimal('value')->default(0);
+
+            $table->unsignedDecimal('subtotal', 10, 2)->default(0);
+            $table->unsignedDecimal('tax_percent', 5, 2)->default(0);
+            $table->unsignedDecimal('tax_amount', 5, 2)->default(0);
+            $table->unsignedDecimal('value', 10, 2)->default(0);
+
             $table->text('description');
 
             $table->boolean('default')->default(0);
@@ -450,7 +458,7 @@ class Base extends Migration
             $table->bigIncrements('id');
 
             $table->string('name');
-            $table->unsignedDecimal('value');
+            $table->unsignedDecimal('value', 5, 2)->default(0);
             $table->text('description');
 
             $table->boolean('default')->default(0);

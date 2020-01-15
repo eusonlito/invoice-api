@@ -16,7 +16,8 @@ class Validator extends ValidatorAbstract
 
             'rules' => [
                 'name' => 'required|string',
-                'value' => 'numeric',
+                'subtotal' => 'numeric',
+                'tax_percent' => 'numeric',
                 'description' => 'string',
                 'default' => 'boolean',
                 'enabled' => 'boolean',
@@ -24,7 +25,8 @@ class Validator extends ValidatorAbstract
 
             'messages' => [
                 'name.required' => __('validator.name-required'),
-                'value.numeric' => __('validator.value-numeric'),
+                'subtotal.numeric' => __('validator.subtotal-numeric'),
+                'tax_percent.numeric' => __('validator.tax_percent-numeric'),
                 'default.boolean' => __('validator.default-boolean'),
                 'enabled.boolean' => __('validator.enabled-boolean'),
             ]

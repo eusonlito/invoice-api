@@ -125,6 +125,11 @@
                 <p class="line tax">{{ $invoice->tax->name }}</p>
                 @endif
 
+                @if ($invoice->amount_shipping)
+                <p class="line shipping-subtotal">{{ $invoice->shipping->name ?? 'Envío' }}</p>
+                <p class="line shipping-tax">IVA Envío</p>
+                @endif
+
                 <p class="line total">Total</p>
             </div>
 
@@ -137,6 +142,16 @@
 
                 @if ($invoice->tax)
                 <p class="line tax">{{ money($invoice->amount_tax) }}</p>
+                @endif
+
+                @if ($invoice->amount_shipping)
+
+                <p class="line shipping-subtotal">{{ money($invoice->amount_shipping_subtotal) }}</p>
+                <p class="line shipping-tax">
+                    {{ $invoice->amount_shipping_tax_percent }}%
+                    - {{ money($invoice->amount_shipping_tax_amount) }}
+                </p>
+
                 @endif
 
                 <p class="line total">{{ money($invoice->amount_total) }}</p>

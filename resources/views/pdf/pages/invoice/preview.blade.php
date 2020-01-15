@@ -129,6 +129,8 @@
                 <p class="line subtotal">Subtotal</p>
                 <p class="line discount">IRPF 19%</p>
                 <p class="line tax">IVA 10%</p>
+                <p class="line shipping-subtotal">SEUR 24</p>
+                <p class="line shipping-tax">IVA Envío</p>
                 <p class="line total">Total</p>
             </div>
 
@@ -136,6 +138,8 @@
                 <p class="line subtotal">713,70€</p>
                 <p class="line discount">135,60€</p>
                 <p class="line tax">71,37€</p>
+                <p class="line shipping-subtotal">10,00€</p>
+                <p class="line shipping-tax">21% - 2,10€</p>
                 <p class="line total">659,47€</p>
             </div>
         </div>
