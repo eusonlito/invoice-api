@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Domains\InvoiceSerie;
+namespace App\Domains\Tax;
 
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
-use App\Models\InvoiceSerie as Model;
+use App\Domains\RepositoryAbstract;
+use App\Models\Tax as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string
@@ -50,7 +50,7 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return \App\Models\InvoiceSerie
+     * @return \App\Tax\Model
      */
     public function detail(int $id): Model
     {
@@ -58,7 +58,7 @@ class Request extends RequestAbstract
     }
 
     /**
-     * @return \App\Models\InvoiceSerie
+     * @return \App\Tax\Model
      */
     public function create(): Model
     {
@@ -68,43 +68,11 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return \App\Models\InvoiceSerie
+     * @return \App\Tax\Model
      */
     public function update(int $id): Model
     {
         return $this->store($this->modelById($id), $this->validator('update'))->update();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
-    public function css(int $id): string
-    {
-        return $this->store($this->modelById($id))->css();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
-    public function cssPreview(int $id): string
-    {
-        return $this->store($this->modelById($id), $this->validator('css'))->cssPreview();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
-    public function cssUpdate(int $id): string
-    {
-        $this->store($this->modelById($id), $this->validator('css'))->cssUpdate();
-
-        return $this->request->input('css');
     }
 
     /**

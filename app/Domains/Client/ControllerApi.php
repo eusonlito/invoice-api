@@ -15,7 +15,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /client
@@ -25,7 +25,7 @@ class ControllerApi extends ControllerApiAbstract
     public function index(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->index());
+            return $this->fractal('simple', $this->repository()->index());
         }));
     }
 
@@ -37,7 +37,7 @@ class ControllerApi extends ControllerApiAbstract
     public function export(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('export', $this->request()->export());
+            return $this->fractal('export', $this->repository()->export());
         }));
     }
 
@@ -51,7 +51,7 @@ class ControllerApi extends ControllerApiAbstract
     public function detail(int $id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($id) {
-            return $this->fractal('detail', $this->request()->detail($id));
+            return $this->fractal('detail', $this->repository()->detail($id));
         }));
     }
 
@@ -64,7 +64,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function create(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->create()));
+        return $this->json($this->fractal('detail', $this->repository()->create()));
     }
 
     /**
@@ -78,7 +78,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function update(int $id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->update($id)));
+        return $this->json($this->fractal('detail', $this->repository()->update($id)));
     }
 
     /**
@@ -90,7 +90,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function delete(int $id): void
     {
-        $this->request()->delete($id);
+        $this->repository()->delete($id);
     }
 
     /**
@@ -116,7 +116,7 @@ class ControllerApi extends ControllerApiAbstract
     {
         return $this->json($this->cache(__METHOD__, function () use ($id) {
             return $this->w() + [
-                'client' => $this->fractal('detail', $this->request()->detail($id))
+                'client' => $this->fractal('detail', $this->repository()->detail($id))
             ];
         }));
     }
@@ -127,10 +127,10 @@ class ControllerApi extends ControllerApiAbstract
     protected function w(): array
     {
         return [
-            'discount' => $this->fractalFrom('Discount', 'detail', $this->requestFrom('Discount')->enabled()),
-            'payment' => $this->fractalFrom('Payment', 'detail', $this->requestFrom('Payment')->enabled()),
-            'shipping' => $this->fractalFrom('Shipping', 'detail', $this->requestFrom('Shipping')->enabled()),
-            'tax' => $this->fractalFrom('Tax', 'detail', $this->requestFrom('Tax')->enabled()),
+            'discount' => $this->fractalFrom('Discount', 'detail', $this->repositoryFrom('Discount')->enabled()),
+            'payment' => $this->fractalFrom('Payment', 'detail', $this->repositoryFrom('Payment')->enabled()),
+            'shipping' => $this->fractalFrom('Shipping', 'detail', $this->repositoryFrom('Shipping')->enabled()),
+            'tax' => $this->fractalFrom('Tax', 'detail', $this->repositoryFrom('Tax')->enabled()),
         ];
     }
 }

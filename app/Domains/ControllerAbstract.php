@@ -21,11 +21,9 @@ abstract class ControllerAbstract extends BaseControllerAbstract
     protected ?User $user;
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return self
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
         $this->middleware(function (Request $request, $next) {
             $this->request = $request;
@@ -38,11 +36,11 @@ abstract class ControllerAbstract extends BaseControllerAbstract
     }
 
     /**
-     * @return \App\Domains\RequestAbstract
+     * @return \App\Domains\RepositoryAbstract
      */
-    protected function request(): RequestAbstract
+    protected function repository(): RepositoryAbstract
     {
-        $class = static::REQUEST;
+        $class = static::REPOSITORY;
 
         return new $class($this->request, $this->user);
     }
@@ -50,11 +48,11 @@ abstract class ControllerAbstract extends BaseControllerAbstract
     /**
      * @param string $class
      *
-     * @return \App\Domains\RequestAbstract
+     * @return \App\Domains\RepositoryAbstract
      */
-    protected function requestFrom(string $class): RequestAbstract
+    protected function repositoryFrom(string $class): RepositoryAbstract
     {
-        $class = __NAMESPACE__.'\\'.$class.'\\Request';
+        $class = __NAMESPACE__.'\\'.$class.'\\Repository';
 
         return new $class($this->request, $this->user);
     }

@@ -16,7 +16,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /invoice
@@ -26,7 +26,7 @@ class ControllerApi extends ControllerApiAbstract
     public function index(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->index());
+            return $this->fractal('simple', $this->repository()->index());
         }));
     }
 
@@ -38,7 +38,7 @@ class ControllerApi extends ControllerApiAbstract
     public function export(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('export', $this->request()->export());
+            return $this->fractal('export', $this->repository()->export());
         }));
     }
 
@@ -49,16 +49,17 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function exportFormatFilter(string $format, string $filter): Response
     {
-        if ($format === 'zip') {
-            $response = $this->request()->exportFormatFilter($format, $filter);
-        } elseif ($format === 'csv') {
-            $response = $this->cache(__METHOD__, function () use ($format, $filter) {
-                return $this->request()->exportFormatFilter($format, $filter);
-            });
-        } else {
-            $response = $this->cache(__METHOD__, function () use ($format, $filter) {
-                return $this->fractal('detail', $this->request()->exportFormatFilter($format, $filter));
-            });
+        switch ($format) {
+            case 'zip':
+                $response = $this->exportFormatFilterZip($filter);
+                break;
+
+            case 'csv':
+                $response = $this->exportFormatFilterCsv($filter);
+                break;
+
+            default:
+                $response = $this->exportFormatFilterJson($filter);
         }
 
         if (is_array($response)) {
@@ -72,6 +73,40 @@ class ControllerApi extends ControllerApiAbstract
     }
 
     /**
+     * @param string $filter
+     *
+     * @return string
+     */
+    protected function exportFormatFilterZip(string $filter): string
+    {
+        return $this->repository()->exportFormatFilter('zip', $filter);
+    }
+
+    /**
+     * @param string $filter
+     *
+     * @return string
+     */
+    protected function exportFormatFilterCsv(string $filter): string
+    {
+        return $this->cache(__METHOD__, function () use ($filter) {
+            return $this->repository()->exportFormatFilter('csv', $filter);
+        });
+    }
+
+    /**
+     * @param string $filter
+     *
+     * @return array
+     */
+    protected function exportFormatFilterJson(string $filter): array
+    {
+        return $this->cache(__METHOD__, function () use ($filter) {
+            return $this->fractal('detail', $this->repository()->exportFormatFilter('json', $filter));
+        });
+    }
+
+    /**
      * GET /invoice/{id}
      *
      * @param int $id
@@ -81,7 +116,7 @@ class ControllerApi extends ControllerApiAbstract
     public function detail(int $id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($id) {
-            return $this->fractal('detail', $this->request()->detail($id));
+            return $this->fractal('detail', $this->repository()->detail($id));
         }));
     }
 
@@ -94,7 +129,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function create(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->create()));
+        return $this->json($this->fractal('detail', $this->repository()->create()));
     }
 
     /**
@@ -108,7 +143,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function update(int $id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->update($id)));
+        return $this->json($this->fractal('detail', $this->repository()->update($id)));
     }
 
     /**
@@ -120,7 +155,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function paid(int $id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->paid($id)));
+        return $this->json($this->fractal('detail', $this->repository()->paid($id)));
     }
 
     /**
@@ -132,7 +167,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function duplicate(int $id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->duplicate($id)));
+        return $this->json($this->fractal('detail', $this->repository()->duplicate($id)));
     }
 
     /**
@@ -144,7 +179,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function delete(int $id): void
     {
-        $this->request()->delete($id);
+        $this->repository()->delete($id);
     }
 
     /**
@@ -156,11 +191,11 @@ class ControllerApi extends ControllerApiAbstract
     {
         return $this->json($this->cache(__METHOD__, function () {
             return [
-                'invoice' => $this->fractal('simple', $this->request()->index()),
-                'invoice_recurring' => $this->fractalFrom('InvoiceRecurring', 'simple', $this->requestFrom('InvoiceRecurring')->index()),
-                'invoice_serie' => $this->fractalFrom('InvoiceSerie', 'simple', $this->requestFrom('InvoiceSerie')->index()),
-                'invoice_status' => $this->fractalFrom('InvoiceStatus', 'simple', $this->requestFrom('InvoiceStatus')->index()),
-                'payment' => $this->fractalFrom('Payment', 'simple', $this->requestFrom('Payment')->index()),
+                'invoice' => $this->fractal('simple', $this->repository()->index()),
+                'invoice_recurring' => $this->fractalFrom('InvoiceRecurring', 'simple', $this->repositoryFrom('InvoiceRecurring')->index()),
+                'invoice_serie' => $this->fractalFrom('InvoiceSerie', 'simple', $this->repositoryFrom('InvoiceSerie')->index()),
+                'invoice_status' => $this->fractalFrom('InvoiceStatus', 'simple', $this->repositoryFrom('InvoiceStatus')->index()),
+                'payment' => $this->fractalFrom('Payment', 'simple', $this->repositoryFrom('Payment')->index()),
             ];
         }));
     }
@@ -188,7 +223,7 @@ class ControllerApi extends ControllerApiAbstract
     {
         return $this->json($this->cache(__METHOD__, function () use ($id) {
             return $this->w() + [
-                'invoice' => $this->fractal('detail', $this->request()->detail($id))
+                'invoice' => $this->fractal('detail', $this->repository()->detail($id))
             ];
         }));
     }
@@ -199,15 +234,15 @@ class ControllerApi extends ControllerApiAbstract
     protected function w(): array
     {
         return [
-            'client_address' => $this->fractalFrom('ClientAddress', 'simple', $this->requestFrom('ClientAddress')->enabled()),
-            'discount' => $this->fractalFrom('Discount', 'simple', $this->requestFrom('Discount')->enabled()),
-            'invoice_recurring' => $this->fractalFrom('InvoiceRecurring', 'simple', $this->requestFrom('InvoiceRecurring')->enabled()),
-            'invoice_serie' => $this->fractalFrom('InvoiceSerie', 'simple', $this->requestFrom('InvoiceSerie')->enabled()),
-            'invoice_status' => $this->fractalFrom('InvoiceStatus', 'simple', $this->requestFrom('InvoiceStatus')->enabled()),
-            'payment' => $this->fractalFrom('Payment', 'simple', $this->requestFrom('Payment')->enabled()),
-            'product' => $this->fractalFrom('Product', 'simple', $this->requestFrom('Product')->enabled()),
-            'shipping' => $this->fractalFrom('Shipping', 'simple', $this->requestFrom('Shipping')->enabled()),
-            'tax' => $this->fractalFrom('Tax', 'simple', $this->requestFrom('Tax')->enabled()),
+            'client_address' => $this->fractalFrom('ClientAddress', 'simple', $this->repositoryFrom('ClientAddress')->enabled()),
+            'discount' => $this->fractalFrom('Discount', 'simple', $this->repositoryFrom('Discount')->enabled()),
+            'invoice_recurring' => $this->fractalFrom('InvoiceRecurring', 'simple', $this->repositoryFrom('InvoiceRecurring')->enabled()),
+            'invoice_serie' => $this->fractalFrom('InvoiceSerie', 'simple', $this->repositoryFrom('InvoiceSerie')->enabled()),
+            'invoice_status' => $this->fractalFrom('InvoiceStatus', 'simple', $this->repositoryFrom('InvoiceStatus')->enabled()),
+            'payment' => $this->fractalFrom('Payment', 'simple', $this->repositoryFrom('Payment')->enabled()),
+            'product' => $this->fractalFrom('Product', 'simple', $this->repositoryFrom('Product')->enabled()),
+            'shipping' => $this->fractalFrom('Shipping', 'simple', $this->repositoryFrom('Shipping')->enabled()),
+            'tax' => $this->fractalFrom('Tax', 'simple', $this->repositoryFrom('Tax')->enabled()),
         ];
     }
 }

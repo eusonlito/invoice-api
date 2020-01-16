@@ -10,7 +10,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /configuration
@@ -20,7 +20,7 @@ class ControllerApi extends ControllerApiAbstract
     public function index(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->request()->index();
+            return $this->repository()->index();
         }));
     }
 }

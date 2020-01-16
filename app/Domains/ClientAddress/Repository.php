@@ -4,11 +4,11 @@ namespace App\Domains\ClientAddress;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 use App\Models;
 use App\Models\ClientAddress as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string

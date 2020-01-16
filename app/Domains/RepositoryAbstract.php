@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ModelAbstract;
 use App\Models\User;
 
-abstract class RequestAbstract
+abstract class RepositoryAbstract
 {
     /**
      * @var \Illuminate\Http\Request

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Domains\Payment;
+namespace App\Domains\Product;
 
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
-use App\Models\Payment as Model;
+use App\Domains\RepositoryAbstract;
+use App\Models\Product as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string
@@ -50,7 +50,7 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return \App\Payment\Model
+     * @return \App\Product\Model
      */
     public function detail(int $id): Model
     {
@@ -58,7 +58,7 @@ class Request extends RequestAbstract
     }
 
     /**
-     * @return \App\Payment\Model
+     * @return \App\Product\Model
      */
     public function create(): Model
     {
@@ -68,7 +68,7 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return \App\Payment\Model
+     * @return \App\Product\Model
      */
     public function update(int $id): Model
     {

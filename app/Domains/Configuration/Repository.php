@@ -3,10 +3,10 @@
 namespace App\Domains\Configuration;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 use App\Models\Configuration as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @return array

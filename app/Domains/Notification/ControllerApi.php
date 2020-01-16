@@ -16,7 +16,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /notification
@@ -26,7 +26,7 @@ class ControllerApi extends ControllerApiAbstract
     public function index(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->index());
+            return $this->fractal('simple', $this->repository()->index());
         }));
     }
 
@@ -38,7 +38,7 @@ class ControllerApi extends ControllerApiAbstract
     public function count(): Response
     {
         return response($this->cache(__METHOD__, function () {
-            return $this->request()->count();
+            return $this->repository()->count();
         }));
     }
 
@@ -50,7 +50,7 @@ class ControllerApi extends ControllerApiAbstract
     public function last(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->last());
+            return $this->fractal('simple', $this->repository()->last());
         }));
     }
 
@@ -61,6 +61,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function read(): void
     {
-        $this->request()->read();
+        $this->repository()->read();
     }
 }

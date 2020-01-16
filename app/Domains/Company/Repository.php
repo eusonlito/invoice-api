@@ -3,10 +3,10 @@
 namespace App\Domains\Company;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 use App\Models\Company as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string

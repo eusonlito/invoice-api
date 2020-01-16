@@ -15,7 +15,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * POST /user
@@ -27,8 +27,8 @@ class ControllerApi extends ControllerApiAbstract
     public function signup(): JsonResponse
     {
         return $this->json([
-            'user' => $this->fractal('detail', $this->request()->signup()),
-            'token' => $this->request()->authToken()
+            'user' => $this->fractal('detail', $this->repository()->signup()),
+            'token' => $this->repository()->authToken()
         ]);
     }
 
@@ -41,7 +41,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function confirmStart(): void
     {
-        $this->request()->confirmStart();
+        $this->repository()->confirmStart();
     }
 
     /**
@@ -53,7 +53,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function confirmFinish(string $hash): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->confirmFinish($hash)));
+        return $this->json($this->fractal('detail', $this->repository()->confirmFinish($hash)));
     }
 
     /**
@@ -64,7 +64,7 @@ class ControllerApi extends ControllerApiAbstract
     public function detail(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('detail', $this->request()->detail());
+            return $this->fractal('detail', $this->repository()->detail());
         }));
     }
 
@@ -76,8 +76,8 @@ class ControllerApi extends ControllerApiAbstract
     public function authCredentials(): JsonResponse
     {
         return $this->json([
-            'user' => $this->fractal('detail', $this->request()->authCredentials()),
-            'token' => $this->request()->authToken()
+            'user' => $this->fractal('detail', $this->repository()->authCredentials()),
+            'token' => $this->repository()->authToken()
         ]);
     }
 
@@ -88,7 +88,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function authRefresh(): JsonResponse
     {
-        return $this->json(['token' => $this->request()->authToken()]);
+        return $this->json(['token' => $this->repository()->authToken()]);
     }
 
     /**
@@ -98,7 +98,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function authLogout(): void
     {
-        $this->request()->authLogout();
+        $this->repository()->authLogout();
     }
 
     /**
@@ -108,7 +108,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function passwordResetStart(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->passwordResetStart()));
+        return $this->json($this->fractal('detail', $this->repository()->passwordResetStart()));
     }
 
     /**
@@ -122,7 +122,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function passwordResetFinish(string $hash): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->passwordResetFinish($hash)));
+        return $this->json($this->fractal('detail', $this->repository()->passwordResetFinish($hash)));
     }
 
     /**
@@ -134,7 +134,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function updateProfile(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->updateProfile()));
+        return $this->json($this->fractal('detail', $this->repository()->updateProfile()));
     }
 
     /**
@@ -146,6 +146,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function updatePassword(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->updatePassword()));
+        return $this->json($this->fractal('detail', $this->repository()->updatePassword()));
     }
 }

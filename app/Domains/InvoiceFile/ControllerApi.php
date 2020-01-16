@@ -16,7 +16,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /invoice-file/{id}
@@ -28,7 +28,7 @@ class ControllerApi extends ControllerApiAbstract
     public function detail(int $id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($id) {
-            return $this->fractal('detail', $this->request()->detail($id));
+            return $this->fractal('detail', $this->repository()->detail($id));
         }));
     }
 
@@ -42,7 +42,7 @@ class ControllerApi extends ControllerApiAbstract
     public function invoice(int $invoice_id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($invoice_id) {
-            return $this->fractal('detail', $this->request()->invoice($invoice_id));
+            return $this->fractal('detail', $this->repository()->invoice($invoice_id));
         }));
     }
 
@@ -55,7 +55,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function main(int $invoice_id): BinaryFileResponse
     {
-        $row = $this->request()->invoiceMain($invoice_id);
+        $row = $this->repository()->invoiceMain($invoice_id);
 
         return response()->download($row->file_absolute, $row->name);
     }
@@ -69,7 +69,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function download(int $id): BinaryFileResponse
     {
-        $row = $this->request()->download($id);
+        $row = $this->repository()->download($id);
 
         return response()->download($row->file_absolute, $row->name);
     }
@@ -83,7 +83,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function create(int $invoice_id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->invoiceCreate($invoice_id)));
+        return $this->json($this->fractal('detail', $this->repository()->invoiceCreate($invoice_id)));
     }
 
     /**
@@ -93,6 +93,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function delete(int $id): void
     {
-        $this->request()->delete($id);
+        $this->repository()->delete($id);
     }
 }

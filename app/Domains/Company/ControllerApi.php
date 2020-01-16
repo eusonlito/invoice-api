@@ -15,7 +15,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /company
@@ -25,7 +25,7 @@ class ControllerApi extends ControllerApiAbstract
     public function detail(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('detail', $this->request()->detail());
+            return $this->fractal('detail', $this->repository()->detail());
         }));
     }
 
@@ -38,7 +38,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function create(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->create()));
+        return $this->json($this->fractal('detail', $this->repository()->create()));
     }
 
     /**
@@ -50,6 +50,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function update(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->update()));
+        return $this->json($this->fractal('detail', $this->repository()->update()));
     }
 }

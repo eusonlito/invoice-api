@@ -10,7 +10,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * POST /form/contact
@@ -21,6 +21,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function contact(): JsonResponse
     {
-        return $this->json($this->request()->contact());
+        return $this->json($this->repository()->contact());
     }
 }

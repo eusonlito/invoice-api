@@ -3,11 +3,11 @@
 namespace App\Domains\Invoice;
 
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 use App\Exceptions\UnexpectedValueException;
 use App\Models\Invoice as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string

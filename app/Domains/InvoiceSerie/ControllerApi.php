@@ -16,7 +16,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /invoice-serie
@@ -26,7 +26,7 @@ class ControllerApi extends ControllerApiAbstract
     public function index(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->index());
+            return $this->fractal('simple', $this->repository()->index());
         }));
     }
 
@@ -38,7 +38,7 @@ class ControllerApi extends ControllerApiAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->enabled());
+            return $this->fractal('simple', $this->repository()->enabled());
         }));
     }
 
@@ -50,7 +50,7 @@ class ControllerApi extends ControllerApiAbstract
     public function export(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('export', $this->request()->export());
+            return $this->fractal('export', $this->repository()->export());
         }));
     }
 
@@ -64,7 +64,7 @@ class ControllerApi extends ControllerApiAbstract
     public function detail(int $id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($id) {
-            return $this->fractal('detail', $this->request()->detail($id));
+            return $this->fractal('detail', $this->repository()->detail($id));
         }));
     }
 
@@ -77,7 +77,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function css(int $id): Response
     {
-        return response($this->request()->css($id));
+        return response($this->repository()->css($id));
     }
 
     /**
@@ -89,7 +89,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function create(): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->create()));
+        return $this->json($this->fractal('detail', $this->repository()->create()));
     }
 
     /**
@@ -103,7 +103,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function update(int $id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->update($id)));
+        return $this->json($this->fractal('detail', $this->repository()->update($id)));
     }
 
     /**
@@ -117,7 +117,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function cssPreview(int $id): Response
     {
-        return response($this->request()->cssPreview($id), 200, [
+        return response($this->repository()->cssPreview($id), 200, [
             'Content-Type' => 'application/pdf'
         ]);
     }
@@ -133,7 +133,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function cssUpdate(int $id): Response
     {
-        return response($this->request()->cssUpdate($id));
+        return response($this->repository()->cssUpdate($id));
     }
 
     /**
@@ -145,6 +145,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function delete(int $id): void
     {
-        $this->request()->delete($id);
+        $this->repository()->delete($id);
     }
 }

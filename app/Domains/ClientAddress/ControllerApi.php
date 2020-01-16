@@ -15,7 +15,7 @@ class ControllerApi extends ControllerApiAbstract
     /**
      * @const string
      */
-    protected const REQUEST = Request::class;
+    protected const REPOSITORY = Repository::class;
 
     /**
      * GET /client-address/enabled
@@ -25,7 +25,7 @@ class ControllerApi extends ControllerApiAbstract
     public function enabled(): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () {
-            return $this->fractal('simple', $this->request()->enabled());
+            return $this->fractal('simple', $this->repository()->enabled());
         }));
     }
 
@@ -39,7 +39,7 @@ class ControllerApi extends ControllerApiAbstract
     public function client(int $client_id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($client_id) {
-            return $this->fractal('simple', $this->request()->client($client_id));
+            return $this->fractal('simple', $this->repository()->client($client_id));
         }));
     }
 
@@ -53,7 +53,7 @@ class ControllerApi extends ControllerApiAbstract
     public function clientEnabled(int $client_id): JsonResponse
     {
         return $this->json($this->cache(__METHOD__, function () use ($client_id) {
-            return $this->fractal('simple', $this->request()->clientEnabled($client_id));
+            return $this->fractal('simple', $this->repository()->clientEnabled($client_id));
         }));
     }
 
@@ -68,7 +68,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function create(int $client_id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->create($client_id)));
+        return $this->json($this->fractal('detail', $this->repository()->create($client_id)));
     }
 
     /**
@@ -82,7 +82,7 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function update(int $id): JsonResponse
     {
-        return $this->json($this->fractal('detail', $this->request()->update($id)));
+        return $this->json($this->fractal('detail', $this->repository()->update($id)));
     }
 
     /**
@@ -94,6 +94,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function delete(int $id): void
     {
-        $this->request()->delete($id);
+        $this->repository()->delete($id);
     }
 }

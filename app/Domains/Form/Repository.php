@@ -2,9 +2,9 @@
 
 namespace App\Domains\Form;
 
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string

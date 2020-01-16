@@ -4,10 +4,10 @@ namespace App\Domains\Country;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 use App\Models\Country as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Domains\Client;
+namespace App\Domains\Discount;
 
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
-use App\Models\Client as Model;
+use App\Domains\RepositoryAbstract;
+use App\Models\Discount as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string
@@ -34,6 +34,14 @@ class Request extends RequestAbstract
     /**
      * @return \Illuminate\Support\Collection
      */
+    public function enabled(): Collection
+    {
+        return $this->model()->enabled()->list()->get();
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function export(): Collection
     {
         return $this->model()->export()->get();
@@ -42,7 +50,7 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return \App\Models\Client
+     * @return \App\Discount\Model
      */
     public function detail(int $id): Model
     {
@@ -50,7 +58,7 @@ class Request extends RequestAbstract
     }
 
     /**
-     * @return \App\Models\Client
+     * @return \App\Discount\Model
      */
     public function create(): Model
     {
@@ -60,7 +68,7 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return \App\Models\Client
+     * @return \App\Discount\Model
      */
     public function update(int $id): Model
     {

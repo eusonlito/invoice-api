@@ -3,10 +3,10 @@
 namespace App\Domains\Notification;
 
 use Illuminate\Support\Collection;
-use App\Domains\RequestAbstract;
+use App\Domains\RepositoryAbstract;
 use App\Models\Notification as Model;
 
-class Request extends RequestAbstract
+class Repository extends RepositoryAbstract
 {
     /**
      * @const string
