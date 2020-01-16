@@ -13,19 +13,19 @@ trait Demo
     {
         parent::boot();
 
-        static::deleting(static function(ModelAbstract $model): bool {
+        static::deleting(static function (ModelAbstract $model): bool {
             return false;
         });
 
-        static::creating(static function(ModelAbstract $model): bool {
+        static::creating(static function (ModelAbstract $model): bool {
             return false;
         });
 
-        static::saving(static function(ModelAbstract $model): bool {
+        static::saving(static function (ModelAbstract $model): bool {
             return false;
         });
 
-        static::updating(static function(ModelAbstract $model): bool {
+        static::updating(static function (ModelAbstract $model): bool {
             return false;
         });
     }

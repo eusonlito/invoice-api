@@ -3,35 +3,23 @@
 namespace App\Domains\Country;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Country as Model;
+use Illuminate\Support\Collection;
 use App\Domains\RequestAbstract;
+use App\Models\Country as Model;
 
 class Request extends RequestAbstract
 {
     /**
      * @const string
      */
-    protected const FRACTAL = Fractal::class;
-
-    /**
-     * @const string
-     */
     protected const MODEL = Model::class;
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function index(): array
+    public function index(): Collection
     {
-        return $this->fractal('simple', $this->model()->list()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function indexCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->index());
+        return $this->model()->list()->get();
     }
 
     /**

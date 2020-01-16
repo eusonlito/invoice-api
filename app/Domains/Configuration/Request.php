@@ -3,8 +3,8 @@
 namespace App\Domains\Configuration;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Configuration as Model;
 use App\Domains\RequestAbstract;
+use App\Models\Configuration as Model;
 
 class Request extends RequestAbstract
 {
@@ -14,22 +14,6 @@ class Request extends RequestAbstract
     public function index(): array
     {
         return $this->model()->pluck('value', 'key')->toArray();
-    }
-
-    /**
-     * @return array
-     */
-    public function indexCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->index());
-    }
-
-    /**
-     * @return string
-     */
-    public function cacheVersion(): string
-    {
-        return config('cache.version');
     }
 
     /**

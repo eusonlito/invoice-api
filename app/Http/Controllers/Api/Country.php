@@ -2,23 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
-use App\Domains\Country\Request;
+use App\Domains\Country\ControllerApi;
 
-class Country extends ControllerAbstract
+class Country extends ControllerApi
 {
-    /**
-     * @const
-     */
-    protected const REQUEST = Request::class;
-
-    /**
-     * GET /country
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(): JsonResponse
-    {
-        return $this->json($this->request()->indexCached());
-    }
 }

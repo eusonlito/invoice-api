@@ -2,17 +2,13 @@
 
 namespace App\Domains\Invoice;
 
+use Illuminate\Support\Collection;
+use App\Domains\RequestAbstract;
 use App\Exceptions\UnexpectedValueException;
 use App\Models\Invoice as Model;
-use App\Domains\RequestAbstract;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -29,45 +25,33 @@ class Request extends RequestAbstract
     protected const VALIDATOR = Validator::class;
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function index(): array
+    public function index(): Collection
     {
-        return $this->fractal('simple', $this->model()->list()->filterByInput($this->request->input())->get());
+        return $this->model()->list()->filterByInput($this->request->input())->get();
     }
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function indexCached(): array
+    public function export(): Collection
     {
-        return $this->cache(__METHOD__, fn () => $this->index());
-    }
-
-    /**
-     * @return array
-     */
-    public function export(): array
-    {
-        return $this->fractal('export', $this->model()->export()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function exportCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->export());
+        return $this->model()->export()->get();
     }
 
     /**
      * @param string $format
      * @param string $filter
      *
-     * @return array|string
+     * @return \Illuminate\Support\Collection|string
      */
     public function exportFormatFilter(string $format, string $filter)
     {
+        if (in_array($format, ['json', 'csv', 'zip'], true) === false) {
+            throw new UnexpectedValueException();
+        }
+
         $model = $this->model();
 
         if ($filter) {
@@ -82,84 +66,55 @@ class Request extends RequestAbstract
             return Service\Zip::export($model->exportZip()->get());
         }
 
-        return $this->fractal('export', $model->export()->get());
-    }
-
-    /**
-     * @param string $format
-     * @param string $filter
-     *
-     * @return array|string
-     */
-    public function exportFormatFilterCached(string $format, string $filter)
-    {
-        if (in_array($format, ['json', 'csv', 'zip'], true) === false) {
-            throw new UnexpectedValueException();
-        }
-
-        if ($format === 'zip') {
-            return $this->exportFormatFilter($format, $filter);
-        }
-
-        return $this->cache(__METHOD__, fn () => $this->exportFormatFilter($format, $filter));
+        return $model->export()->get();
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\Invoice
      */
-    public function detail(int $id): array
+    public function detail(int $id): Model
     {
-        return $this->fractal('detail', $this->modelDetailById($id));
+        return $this->modelDetailById($id);
+    }
+
+    /**
+     * @return \App\Models\Invoice
+     */
+    public function create(): Model
+    {
+        return $this->store(null, $this->validator('create'))->create();
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\Invoice
      */
-    public function detailCached(int $id): array
+    public function update(int $id): Model
     {
-        return $this->cache(__METHOD__, fn () => $this->detail($id));
-    }
-
-    /**
-     * @return array
-     */
-    public function create(): array
-    {
-        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create());
+        return $this->store($this->modelById($id), $this->validator('update'))->update();
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\Invoice
      */
-    public function update(int $id): array
+    public function paid(int $id): Model
     {
-        return $this->fractal('detail', $this->store($this->modelById($id), $this->validator('update'))->update());
+        return $this->store($this->modelById($id))->paid();
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\Invoice
      */
-    public function paid(int $id): array
+    public function duplicate(int $id): Model
     {
-        return $this->fractal('detail', $this->store($this->modelById($id))->paid());
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
-    public function duplicate(int $id): array
-    {
-        return $this->fractal('detail', $this->store($this->modelById($id), $this->validator('duplicate'))->duplicate());
+        return $this->store($this->modelById($id), $this->validator('duplicate'))->duplicate();
     }
 
     /**

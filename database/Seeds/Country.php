@@ -2,8 +2,6 @@
 
 namespace Database\Seeds;
 
-use Exception;
-use Illuminate\Support\Facades\DB;
 use App\Models;
 
 class Country extends SeederAbstract

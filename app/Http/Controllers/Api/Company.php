@@ -2,47 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
-use App\Domains\Company\Request;
+use App\Domains\Company\ControllerApi;
 
-class Company extends ControllerAbstract
+class Company extends ControllerApi
 {
-    /**
-     * @const
-     */
-    protected const REQUEST = Request::class;
-
-    /**
-     * GET /company
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function detail(): JsonResponse
-    {
-        return $this->json($this->request()->detailCached());
-    }
-
-    /**
-     * POST /company
-     *
-     * @uses POST array
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create(): JsonResponse
-    {
-        return $this->json($this->request()->create());
-    }
-
-    /**
-     * PATCH /company
-     *
-     * @uses POST array
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(): JsonResponse
-    {
-        return $this->json($this->request()->update());
-    }
 }

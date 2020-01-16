@@ -254,27 +254,27 @@ class Invoice extends ModelAbstract
      */
     public function scopeFilterByInput(Builder $q, array $input)
     {
-        if ($filter = $input['date_start'] ??= false) {
-            $q->where('date_at', '>=', dateToDate($filter));
+        if ($filter = dateToDate($input['date_start'] ?? '' ?: '')) {
+            $q->where('date_at', '>=', $filter);
         }
 
-        if ($filter = $input['date_end'] ??= false) {
-            $q->where('date_at', '<=', dateToDate($filter));
+        if ($filter = dateToDate($input['date_end'] ?? '' ?: '')) {
+            $q->where('date_at', '<=', $filter);
         }
 
-        if ($filter = $input['invoice_recurring_id'] ??= false) {
+        if ($filter = $input['invoice_recurring_id'] ?? false) {
             $q->where('invoice_recurring_id', (int)$filter);
         }
 
-        if ($filter = $input['invoice_serie_id'] ??= false) {
+        if ($filter = $input['invoice_serie_id'] ?? false) {
             $q->where('invoice_serie_id', (int)$filter);
         }
 
-        if ($filter = $input['invoice_status_id'] ??= false) {
+        if ($filter = $input['invoice_status_id'] ?? false) {
             $q->where('invoice_status_id', (int)$filter);
         }
 
-        if ($filter = $input['payment_id'] ??= false) {
+        if ($filter = $input['payment_id'] ?? false) {
             $q->where('payment_id', (int)$filter);
         }
     }

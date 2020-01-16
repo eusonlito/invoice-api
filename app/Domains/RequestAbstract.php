@@ -9,8 +9,6 @@ use App\Models\User;
 
 abstract class RequestAbstract
 {
-    use CacheTrait;
-
     /**
      * @var \Illuminate\Http\Request
      */
@@ -31,8 +29,6 @@ abstract class RequestAbstract
     {
         $this->request = $request;
         $this->user = $user;
-
-        $this->cacheLoad();
     }
 
     /**
@@ -63,17 +59,6 @@ abstract class RequestAbstract
     protected function modelDetailById(int $id): ModelAbstract
     {
         return $this->model()->detail()->findOrFail($id);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $data
-     *
-     * @return ?array
-     */
-    protected function fractal(string $name, $data): ?array
-    {
-        return forward_static_call([static::FRACTAL, 'transform'], $name, $data);
     }
 
     /**

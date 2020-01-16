@@ -3,16 +3,11 @@
 namespace App\Domains\Company;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Company as Model;
 use App\Domains\RequestAbstract;
+use App\Models\Company as Model;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -29,35 +24,27 @@ class Request extends RequestAbstract
     protected const VALIDATOR = Validator::class;
 
     /**
-     * @return array
+     * @return \App\Models\Company
      */
-    public function detail(): array
+    public function detail(): Model
     {
-        return $this->fractal('detail', $this->model()->firstOrFail());
+        return $this->model()->firstOrFail();
     }
 
     /**
-     * @return array
+     * @return \App\Models\Company
      */
-    public function detailCached(): array
+    public function create(): Model
     {
-        return $this->cache(__METHOD__, fn () => $this->detail());
+        return $this->store(null, $this->validator('create'))->create();
     }
 
     /**
-     * @return array
+     * @return \App\Models\Company
      */
-    public function create(): array
+    public function update(): Model
     {
-        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create());
-    }
-
-    /**
-     * @return array
-     */
-    public function update(): array
-    {
-        return $this->fractal('detail', $this->store($this->model()->firstOrFail(), $this->validator('update'))->update());
+        return $this->store($this->model()->firstOrFail(), $this->validator('update'))->update();
     }
 
     /**

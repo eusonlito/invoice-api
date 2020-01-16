@@ -2,23 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
-use App\Domains\Configuration\Request;
+use App\Domains\Configuration\ControllerApi;
 
-class Configuration extends ControllerAbstract
+class Configuration extends ControllerApi
 {
-    /**
-     * @const
-     */
-    protected const REQUEST = Request::class;
-
-    /**
-     * GET /configuration
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(): JsonResponse
-    {
-        return $this->json($this->request()->indexCached());
-    }
 }

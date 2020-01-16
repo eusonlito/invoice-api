@@ -2,23 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Response;
-use App\Domains\Cache\Request;
+use App\Domains\Cache\ControllerApi;
 
-class Cache extends ControllerAbstract
+class Cache extends ControllerApi
 {
-    /**
-     * @const
-     */
-    protected const REQUEST = Request::class;
-
-    /**
-     * GET /cache/version
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function version(): Response
-    {
-        return response($this->request()->versionCached());
-    }
 }

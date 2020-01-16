@@ -15,7 +15,7 @@ class Store extends Store\StoreAbstract
     }
 
     /**
-     * @return \App\Models\InvoiceSerie
+     * @return \App\Models\Notification
      */
     public function create(): Model
     {
@@ -23,7 +23,7 @@ class Store extends Store\StoreAbstract
     }
 
     /**
-     * @return \App\Models\InvoiceSerie
+     * @return \App\Models\Notification
      */
     public function update(): Model
     {

@@ -3,17 +3,13 @@
 namespace App\Domains\InvoiceFile;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use App\Domains\RequestAbstract;
 use App\Models;
 use App\Models\InvoiceFile as Model;
-use App\Domains\RequestAbstract;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -32,41 +28,21 @@ class Request extends RequestAbstract
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\InvoiceFile
      */
-    public function detail(int $id): array
+    public function detail(int $id): Model
     {
-        return $this->fractal('detail', $this->modelDetailById($id));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
-    public function detailCached(int $id): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->detail($id));
+        return $this->modelDetailById($id);
     }
 
     /**
      * @param int $invoice_id
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function invoice(int $invoice_id): array
+    public function invoice(int $invoice_id): Collection
     {
-        return $this->fractal('detail', $this->modelByInvoiceId($invoice_id)->get());
-    }
-
-    /**
-     * @param int $invoice_id
-     *
-     * @return array
-     */
-    public function invoiceCached(int $invoice_id): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->invoice($invoice_id));
+        return $this->modelByInvoiceId($invoice_id)->get();
     }
 
     /**
@@ -98,11 +74,11 @@ class Request extends RequestAbstract
     /**
      * @param int $invoice_id
      *
-     * @return array
+     * @return \App\Models\InvoiceFile
      */
-    public function invoiceCreate(int $invoice_id): array
+    public function invoiceCreate(int $invoice_id): Model
     {
-        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create($this->getInvoiceById($invoice_id)));
+        return $this->store(null, $this->validator('create'))->create($this->getInvoiceById($invoice_id));
     }
 
     /**

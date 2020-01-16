@@ -2,16 +2,12 @@
 
 namespace App\Domains\InvoiceSerie;
 
-use App\Models\InvoiceSerie as Model;
+use Illuminate\Support\Collection;
 use App\Domains\RequestAbstract;
+use App\Models\InvoiceSerie as Model;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -28,89 +24,55 @@ class Request extends RequestAbstract
     protected const VALIDATOR = Validator::class;
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function index(): array
+    public function index(): Collection
     {
-        return $this->fractal('simple', $this->model()->list()->get());
+        return $this->model()->list()->get();
     }
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function indexCached(): array
+    public function enabled(): Collection
     {
-        return $this->cache(__METHOD__, fn () => $this->index());
+        return $this->model()->enabled()->list()->get();
     }
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function enabled(): array
+    public function export(): Collection
     {
-        return $this->fractal('simple', $this->model()->enabled()->list()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function export(): array
-    {
-        return $this->fractal('export', $this->model()->export()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function exportCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->export());
-    }
-
-    /**
-     * @return array
-     */
-    public function enabledCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->enabled());
+        return $this->model()->export()->get();
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\InvoiceSerie
      */
-    public function detail(int $id): array
+    public function detail(int $id): Model
     {
-        return $this->fractal('detail', $this->modelDetailById($id));
+        return $this->modelDetailById($id);
+    }
+
+    /**
+     * @return \App\Models\InvoiceSerie
+     */
+    public function create(): Model
+    {
+        return $this->store(null, $this->validator('create'))->create();
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\InvoiceSerie
      */
-    public function detailCached(int $id): array
+    public function update(int $id): Model
     {
-        return $this->cache(__METHOD__, fn () => $this->detail($id));
-    }
-
-    /**
-     * @return array
-     */
-    public function create(): array
-    {
-        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create());
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
-    public function update(int $id): array
-    {
-        return $this->fractal('detail', $this->store($this->modelById($id), $this->validator('update'))->update());
+        return $this->store($this->modelById($id), $this->validator('update'))->update();
     }
 
     /**

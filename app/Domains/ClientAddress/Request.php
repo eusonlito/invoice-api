@@ -3,17 +3,13 @@
 namespace App\Domains\ClientAddress;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use App\Domains\RequestAbstract;
 use App\Models;
 use App\Models\ClientAddress as Model;
-use App\Domains\RequestAbstract;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -30,79 +26,51 @@ class Request extends RequestAbstract
     protected const VALIDATOR = Validator::class;
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function enabled(): array
+    public function enabled(): Collection
     {
-        return $this->fractal('simple', $this->model()->enabled()->list()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function enabledCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->enabled());
+        return $this->model()->enabled()->list()->get();
     }
 
     /**
      * @param int $client_id
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function client(int $client_id): array
+    public function client(int $client_id): Collection
     {
-        return $this->fractal('simple', $this->modelByClientId($client_id)->get());
+        return $this->modelByClientId($client_id)->get();
     }
 
     /**
      * @param int $client_id
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function clientCached(int $client_id): array
+    public function clientEnabled(int $client_id): Collection
     {
-        return $this->cache(__METHOD__, fn () => $this->client($client_id));
+        return $this->modelByClientId($client_id)->enabled()->get();
     }
 
     /**
      * @param int $client_id
      *
-     * @return array
+     * @return \App\Models\ClientAddress
      */
-    public function clientEnabled(int $client_id): array
+    public function create(int $client_id): Model
     {
-        return $this->fractal('simple', $this->modelByClientId($client_id)->enabled()->get());
-    }
-
-    /**
-     * @param int $client_id
-     *
-     * @return array
-     */
-    public function clientEnabledCached(int $client_id): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->clientEnabled($client_id));
-    }
-
-    /**
-     * @param int $client_id
-     *
-     * @return array
-     */
-    public function create(int $client_id): array
-    {
-        return $this->fractal('detail', $this->store(null, $this->validator('create'))->create($this->getClientById($client_id)));
+        return $this->store(null, $this->validator('create'))->create($this->getClientById($client_id));
     }
 
     /**
      * @param int $id
      *
-     * @return array
+     * @return \App\Models\ClientAddress
      */
-    public function update(int $id): array
+    public function update(int $id): Model
     {
-        return $this->fractal('detail', $this->store($this->modelDetailById($id), $this->validator('update'))->update());
+        return $this->store($this->modelDetailById($id), $this->validator('update'))->update();
     }
 
     /**

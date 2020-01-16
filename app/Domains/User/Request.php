@@ -3,16 +3,11 @@
 namespace App\Domains\User;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\User as Model;
 use App\Domains\RequestAbstract;
+use App\Models\User as Model;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -29,71 +24,53 @@ class Request extends RequestAbstract
     protected const VALIDATOR = Validator::class;
 
     /**
-     * @return array
+     * @return \App\Models\User
      */
-    public function detail(): array
+    public function detail(): Model
     {
-        return $this->fractal('detail', $this->model()->firstOrFail());
+        return $this->model()->firstOrFail();
     }
 
     /**
-     * @return array
+     * @return \App\Models\User
      */
-    public function detailCached(): array
+    public function signup(): Model
     {
-        return $this->cache(__METHOD__, fn () => $this->detail());
+        return $this->store(null, $this->validator('signup'))->signup();
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function signup(): array
+    public function authToken(): string
     {
-        $user = $this->store(null, $this->validator('signup'))->signup();
-
-        return [
-            'user' => $this->fractal('detail', $user),
-            'token' => $this->store($user)->authToken()
-        ];
+        return (string)$this->store($this->user)->authToken();
     }
 
     /**
-     * @return void
+     * @return \App\Models\User
      */
-    public function confirmStart(): void
+    public function confirmStart(): Model
     {
-        $this->store(null, $this->validator('confirmStart'))->confirmStart();
+        return $this->store(null, $this->validator('confirmStart'))->confirmStart();
     }
 
     /**
      * @param string $hash
      *
-     * @return array
+     * @return \App\Models\User
      */
-    public function confirmFinish(string $hash): array
+    public function confirmFinish(string $hash): Model
     {
-        return ['confirmed_at' => $this->store()->confirmFinish($hash)->confirmed_at];
+        return $this->store()->confirmFinish($hash);
     }
 
     /**
-     * @return array
+     * @return \App\Models\User
      */
-    public function authCredentials(): array
+    public function authCredentials(): Model
     {
-        $user = $this->store(null, $this->validator('authCredentials'))->authCredentials();
-
-        return [
-            'user' => $this->fractal('detail', $user),
-            'token' => $this->store($user)->authToken()
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function authRefresh(): array
-    {
-        return ['token' => $this->store($this->user)->authToken()];
+        return $this->store(null, $this->validator('authCredentials'))->authCredentials();
     }
 
     /**
@@ -105,37 +82,37 @@ class Request extends RequestAbstract
     }
 
     /**
-     * @return ?array
+     * @return ?\App\Models\User
      */
-    public function passwordResetStart(): ?array
+    public function passwordResetStart(): ?Model
     {
-        return $this->fractal('detail', $this->store(null, $this->validator('passwordResetStart'))->passwordResetStart());
+        return $this->store(null, $this->validator('passwordResetStart'))->passwordResetStart();
     }
 
     /**
      * @param string $hash
      *
-     * @return array
+     * @return \App\Models\User
      */
-    public function passwordResetFinish(string $hash): array
+    public function passwordResetFinish(string $hash): Model
     {
-        return $this->fractal('detail', $this->store(null, $this->validator('passwordResetFinish'))->passwordResetFinish($hash));
+        return $this->store(null, $this->validator('passwordResetFinish'))->passwordResetFinish($hash);
     }
 
     /**
-     * @return array
+     * @return \App\Models\User
      */
-    public function updateProfile(): array
+    public function updateProfile(): Model
     {
-        return $this->fractal('detail', $this->store($this->user, $this->validator('updateProfile'))->updateProfile());
+        return $this->store($this->user, $this->validator('updateProfile'))->updateProfile();
     }
 
     /**
-     * @return array
+     * @return \App\Models\User
      */
-    public function updatePassword(): array
+    public function updatePassword(): Model
     {
-        return $this->fractal('detail', $this->store($this->user, $this->validator('updatePassword'))->updatePassword());
+        return $this->store($this->user, $this->validator('updatePassword'))->updatePassword();
     }
 
     /**

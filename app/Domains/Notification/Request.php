@@ -2,16 +2,12 @@
 
 namespace App\Domains\Notification;
 
-use App\Models\Notification as Model;
+use Illuminate\Support\Collection;
 use App\Domains\RequestAbstract;
+use App\Models\Notification as Model;
 
 class Request extends RequestAbstract
 {
-    /**
-     * @const string
-     */
-    protected const FRACTAL = Fractal::class;
-
     /**
      * @const string
      */
@@ -31,43 +27,19 @@ class Request extends RequestAbstract
     }
 
     /**
-     * @return int
+     * @return \Illuminate\Support\Collection
      */
-    public function countCached(): int
+    public function index(): Collection
     {
-        return (int)$this->cache(__METHOD__, fn () => $this->count());
+        return $this->model()->list()->get();
     }
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function index(): array
+    public function last(): Collection
     {
-        return $this->fractal('simple', $this->model()->list()->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function indexCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->index());
-    }
-
-    /**
-     * @return array
-     */
-    public function last(): array
-    {
-        return $this->fractal('simple', $this->model()->list()->limit(5)->get());
-    }
-
-    /**
-     * @return array
-     */
-    public function lastCached(): array
-    {
-        return $this->cache(__METHOD__, fn () => $this->last());
+        return $this->model()->list()->limit(5)->get();
     }
 
     /**

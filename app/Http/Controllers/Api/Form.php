@@ -2,25 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
-use App\Domains\Form\Request;
+use App\Domains\Form\ControllerApi;
 
-class Form extends ControllerAbstract
+class Form extends ControllerApi
 {
-    /**
-     * @const
-     */
-    protected const REQUEST = Request::class;
-
-    /**
-     * POST /form/contact
-     *
-     * @uses POST array
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function contact(): JsonResponse
-    {
-        return $this->json($this->request()->contact());
-    }
 }
