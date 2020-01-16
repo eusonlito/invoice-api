@@ -66,7 +66,7 @@ abstract class RepositoryAbstract
      *
      * @return array
      */
-    protected function validator(string $name): array
+    final protected function validator(string $name): array
     {
         return forward_static_call([static::VALIDATOR, 'validate'], $name, $this->request->all());
     }
@@ -77,7 +77,7 @@ abstract class RepositoryAbstract
      *
      * @return \App\Domains\StoreAbstract
      */
-    protected function store(?ModelAbstract $row = null, array $data = []): StoreAbstract
+    final protected function store(?ModelAbstract $row = null, array $data = []): StoreAbstract
     {
         $class = static::STORE;
 

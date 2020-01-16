@@ -38,7 +38,7 @@ abstract class ControllerAbstract extends BaseControllerAbstract
     /**
      * @return \App\Domains\RepositoryAbstract
      */
-    protected function repository(): RepositoryAbstract
+    final protected function repository(): RepositoryAbstract
     {
         $class = static::REPOSITORY;
 
@@ -46,13 +46,13 @@ abstract class ControllerAbstract extends BaseControllerAbstract
     }
 
     /**
-     * @param string $class
+     * @param string $domain
      *
      * @return \App\Domains\RepositoryAbstract
      */
-    protected function repositoryFrom(string $class): RepositoryAbstract
+    final protected function repositoryFrom(string $domain): RepositoryAbstract
     {
-        $class = __NAMESPACE__.'\\'.$class.'\\Repository';
+        $class = __NAMESPACE__.'\\'.$domain.'\\Repository';
 
         return new $class($this->request, $this->user);
     }

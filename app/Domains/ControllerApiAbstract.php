@@ -13,21 +13,21 @@ abstract class ControllerApiAbstract extends ControllerAbstract
      *
      * @return ?array
      */
-    protected function fractal(string $name, $data): ?array
+    final protected function fractal(string $name, $data): ?array
     {
         return forward_static_call([static::FRACTAL, 'transform'], $name, $data);
     }
 
     /**
-     * @param string $class
+     * @param string $domain
      * @param string $name
      * @param mixed $data
      *
      * @return ?array
      */
-    protected function fractalFrom(string $class, string $name, $data): ?array
+    final protected function fractalFrom(string $domain, string $name, $data): ?array
     {
-        return forward_static_call([__NAMESPACE__.'\\'.$class.'\\Fractal', 'transform'], $name, $data);
+        return forward_static_call([__NAMESPACE__.'\\'.$domain.'\\Fractal', 'transform'], $name, $data);
     }
 
     /**
