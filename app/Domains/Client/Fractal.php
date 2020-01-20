@@ -40,6 +40,7 @@ class Fractal extends FractalAbstract
         return [
             'web' => $row->web,
             'tax_number' => $row->tax_number,
+            'type' => $row->type,
             'contact_phone' => $row->contact_phone,
             'contact_email' => $row->contact_email,
             'comment' => $row->comment,

@@ -22,6 +22,7 @@ class Update extends StoreAbstract
         $this->row->contact_surname = $this->data['contact_surname'];
         $this->row->web = $this->data['web'];
         $this->row->tax_number = $this->data['tax_number'];
+        $this->row->type = $this->data['type'];
         $this->row->contact_phone = $this->data['contact_phone'];
         $this->row->contact_email = $this->data['contact_email'];
         $this->row->comment = $this->data['comment'];

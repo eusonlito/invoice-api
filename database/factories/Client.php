@@ -12,6 +12,7 @@ $factory->define(Model::class, static function (Generator $faker): array {
         'email' => $faker->email,
         'web' => $faker->url,
         'tax_number' => $faker->vat,
+        'type' => 'company',
 
         'contact_name' => $faker->firstName,
         'contact_surname' => $faker->lastName,

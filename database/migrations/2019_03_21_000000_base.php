@@ -47,6 +47,7 @@ class Base extends Migration
             $table->string('email')->default('');
             $table->string('web')->default('');
             $table->string('tax_number')->default('');
+            $table->string('type')->default('company');
 
             $table->string('contact_name')->default('');
             $table->string('contact_surname')->default('');

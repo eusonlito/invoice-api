@@ -22,7 +22,7 @@ class ClientTest extends TestAbstract
      */
     protected array $structure = [
         'id', 'name', 'phone', 'email', 'contact_name', 'contact_surname',
-        'created_at', 'web', 'tax_number', 'contact_phone', 'contact_email',
+        'created_at', 'web', 'tax_number', 'type', 'contact_phone', 'contact_email',
         'comment', 'discount', 'payment', 'shipping', 'tax'
     ];
 
@@ -75,7 +75,8 @@ class ClientTest extends TestAbstract
      * 'contact_name' => 'string',
      * 'contact_surname' => 'string',
      * 'web' => 'string',
-     * 'tax_number' => 'required|string',
+     * 'tax_number' => 'required|in:company,freelance',
+     * 'type' => 'required|string',
      * 'contact_phone' => 'string',
      * 'contact_email' => 'email|string',
      * 'comment' => 'string',
@@ -90,15 +91,17 @@ class ClientTest extends TestAbstract
      */
     public function testCreateEmptyFail(): void
     {
-        $this->auth()
-            ->json('POST', $this->route('create'))
+        dd($this->auth()
+            ->json('POST', $this->route('create')))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')
             ->assertDontSee(' name ')
             ->assertDontSee(' tax number ')
+            ->assertDontSee(' type ')
             ->assertSee($this->t('validator.name-required'))
-            ->assertSee($this->t('validator.tax_number-required'));
+            ->assertSee($this->t('validator.tax_number-required'))
+            ->assertSee($this->t('validator.type-required'));
     }
 
     /**
@@ -113,6 +116,7 @@ class ClientTest extends TestAbstract
             'payment_id' => 'fail',
             'shipping_id' => 'fail',
             'tax_id' => 'fail',
+            'type' => 'fail'
         ];
 
         $this->auth()
@@ -126,12 +130,14 @@ class ClientTest extends TestAbstract
             ->assertDontSee(' payment id ')
             ->assertDontSee(' shipping id ')
             ->assertDontSee(' tax id ')
+            ->assertDontSee(' type ')
             ->assertSee($this->t('validator.email-email'))
             ->assertSee($this->t('validator.contact_email-email'))
             ->assertSee($this->t('validator.discount_id-integer'))
             ->assertSee($this->t('validator.payment_id-integer'))
             ->assertSee($this->t('validator.shipping_id-integer'))
-            ->assertSee($this->t('validator.tax_id-integer'));
+            ->assertSee($this->t('validator.tax_id-integer'))
+            ->assertSee($this->t('validator.type-in'));
     }
 
     /**
@@ -260,7 +266,8 @@ class ClientTest extends TestAbstract
             ->assertDontSee(' name ')
             ->assertDontSee(' tax number ')
             ->assertSee($this->t('validator.name-required'))
-            ->assertSee($this->t('validator.tax_number-required'));
+            ->assertSee($this->t('validator.tax_number-required'))
+            ->assertSee($this->t('validator.type-required'));
     }
 
     /**
@@ -275,6 +282,7 @@ class ClientTest extends TestAbstract
             'payment_id' => 'fail',
             'shipping_id' => 'fail',
             'tax_id' => 'fail',
+            'type' => 'fail',
         ];
 
         $this->auth()
@@ -293,7 +301,8 @@ class ClientTest extends TestAbstract
             ->assertSee($this->t('validator.discount_id-integer'))
             ->assertSee($this->t('validator.payment_id-integer'))
             ->assertSee($this->t('validator.shipping_id-integer'))
-            ->assertSee($this->t('validator.tax_id-integer'));
+            ->assertSee($this->t('validator.tax_id-integer'))
+            ->assertSee($this->t('validator.type-in'));
     }
 
     /**

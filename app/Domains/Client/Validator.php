@@ -30,6 +30,7 @@ class Validator extends ValidatorAbstract
                 'contact_surname' => 'string',
                 'web' => 'string',
                 'tax_number' => 'required|string',
+                'type' => 'required|in:company,freelance',
                 'contact_phone' => 'string',
                 'contact_email' => 'email|string',
                 'comment' => 'string',
@@ -48,6 +49,8 @@ class Validator extends ValidatorAbstract
                 'payment_id.integer' => __('validator.payment_id-integer'),
                 'shipping_id.integer' => __('validator.shipping_id-integer'),
                 'tax_id.integer' => __('validator.tax_id-integer'),
+                'type.required' => __('validator.type-required'),
+                'type.in' => __('validator.type-in'),
             ]
         ];
     }
