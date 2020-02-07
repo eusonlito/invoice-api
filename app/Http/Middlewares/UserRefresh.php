@@ -16,7 +16,7 @@ class UserRefresh
      */
     public function handle(Request $request, Closure $next)
     {
-        (new Store())->authRefresh($request);
+        (new Store($request))->authRefresh($request);
 
         return $next($request);
     }

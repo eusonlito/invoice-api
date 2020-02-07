@@ -14,6 +14,6 @@ class ControllerApi extends ControllerApiAbstract
      */
     public function version(): Response
     {
-        return response($this->cache(__METHOD__, fn () => $this->cache->version()));
+        return response($this->cache(__METHOD__, fn () => $this->cacheVersion()));
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Domains\ClientAddress;
 
 use App\Models\ClientAddress as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

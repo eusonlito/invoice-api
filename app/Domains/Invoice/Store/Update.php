@@ -3,6 +3,7 @@
 namespace App\Domains\Invoice\Store;
 
 use App\Domains\InvoiceFile\Store as InvoiceFileStore;
+use App\Domains\InvoiceItem\Store as InvoiceItemStore;
 use App\Domains\InvoiceSerie\Store as InvoiceSerieStore;
 use App\Exceptions;
 use App\Models;
@@ -264,46 +265,33 @@ class Update extends StoreAbstract
         unset($this->data['items']['*']);
 
         foreach ($this->data['items'] as $i => $data) {
-            if (empty($data['id']) || !($item = $items->get($data['id']))) {
-                $item = new Models\InvoiceItem($data);
-            }
-
-            $this->item($i, $item->fill($data), $products->get($data['reference']));
+            $this->item($i, $data, $items->get($data['id'] ?? null), $products->get($data['reference']));
         }
 
         $this->row->quantity = $this->row->items->sum('quantity');
     }
 
     /**
-     * @param \App\Models\InvoiceItem $item
+     * @param int $line
+     * @param array $data
+     * @param ?\App\Models\InvoiceItem $item
      * @param ?\App\Models\Product $product
      *
      * @return void
      */
-    protected function item(int $line, Models\InvoiceItem $item, ?Models\Product $product)
+    protected function item(int $line, array $data, ?Models\InvoiceItem $item, ?Models\Product $product)
     {
-        $item->line = $line;
-        $item->quantity = $this->float($item->quantity);
-        $item->percent_discount = (int)$item->percent_discount;
-        $item->percent_tax = $this->row->tax ? $this->float($this->row->tax->value) : 0;
-        $item->amount_price = $this->float($item->amount_price);
-        $item->amount_subtotal = 0;
-        $item->amount_discount = 0;
-        $item->amount_tax = 0;
-        $item->amount_total = 0;
-        $item->invoice_id = $this->row->id;
-        $item->user_id = $this->row->user_id;
-        $item->product_id = $product ? $product->id : null;
+        $data['line'] = $line;
+        $data['product_id'] = $product->id ?? null;
+        $data['percent_tax'] = $this->row->tax->value ?? 0;
 
-        if ($item->amount_price && $item->quantity) {
-            $item->amount_subtotal = $this->float($item->amount_price * $item->quantity);
-            $item->amount_discount = $this->float($item->amount_subtotal * $item->percent_discount / 100);
-            $item->amount_subtotal = $this->float($item->amount_subtotal - $item->amount_discount);
-            $item->amount_tax = $this->float($item->amount_subtotal * $item->percent_tax / 100);
-            $item->amount_total = $this->float($item->amount_subtotal + $item->amount_tax);
+        $store = new InvoiceItemStore($this->request, $this->user, $item, $data);
+
+        if ($item) {
+            $store->update();
+        } else {
+            $store->create($this->row);
         }
-
-        $item->save();
     }
 
     /**
@@ -396,7 +384,7 @@ class Update extends StoreAbstract
      */
     protected function fileMain()
     {
-        $store = new InvoiceFileStore($this->user, $this->row->file, ['main' => true]);
+        $store = new InvoiceFileStore($this->request, $this->user, $this->row->file, ['main' => true]);
 
         if ($this->row->file) {
             $store->update();
@@ -410,7 +398,7 @@ class Update extends StoreAbstract
      */
     protected function configuration()
     {
-        (new InvoiceSerieStore($this->user, $this->row->serie))->numberNext();
+        (new InvoiceSerieStore($this->request, $this->user, $this->row->serie))->numberNext();
     }
 
     /**

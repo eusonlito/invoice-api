@@ -3,7 +3,7 @@
 namespace App\Domains\Tax;
 
 use App\Models\Tax as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

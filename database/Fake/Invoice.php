@@ -146,7 +146,7 @@ class Invoice extends FakeAbstract
 
         $this->amount($date, $row, $items, $tax);
 
-        (new InvoiceSerieStore(null, $invoiceSerie))->numberNext();
+        (new InvoiceSerieStore(null, null, $invoiceSerie))->numberNext();
     }
 
     /**
@@ -194,6 +194,7 @@ class Invoice extends FakeAbstract
             'amount_subtotal' => $amount_subtotal,
             'amount_total' => ($amount_subtotal + $amount_tax),
 
+            'company_id' => 1,
             'invoice_id' => $row->id,
             'product_id' => $product->id,
             'user_id' => 1,

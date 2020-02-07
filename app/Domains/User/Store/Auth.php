@@ -45,7 +45,7 @@ class Auth extends StoreAbstract
      */
     public function token(): ?string
     {
-        return AuthJwt::token();
+        return tap(AuthJwt::token(), fn () => $this->cacheFlush());
     }
 
     /**
@@ -56,6 +56,7 @@ class Auth extends StoreAbstract
         $this->checkEnabled();
         $this->registerSession('login');
         $this->loadRelations();
+        $this->cacheFlush();
 
         return $this->row;
     }
@@ -67,7 +68,7 @@ class Auth extends StoreAbstract
      */
     public function refresh(Request $request): ?Model
     {
-        return AuthJwt::refresh($request);
+        return tap(AuthJwt::refresh($request), fn () => $this->cacheFlush());
     }
 
     /**
@@ -78,6 +79,8 @@ class Auth extends StoreAbstract
         $this->registerSession('logout');
 
         AuthJwt::logout();
+
+        $this->cacheFlush();
     }
 
     /**

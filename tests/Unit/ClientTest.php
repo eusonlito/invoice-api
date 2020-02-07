@@ -91,8 +91,8 @@ class ClientTest extends TestAbstract
      */
     public function testCreateEmptyFail(): void
     {
-        dd($this->auth()
-            ->json('POST', $this->route('create')))
+        $this->auth()
+            ->json('POST', $this->route('create'))
             ->assertStatus(422)
             ->assertDontSee('validator.')
             ->assertDontSee('validation.')

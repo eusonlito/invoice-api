@@ -35,6 +35,10 @@ class Zip
      */
     protected static function file(Model $row): Models\InvoiceFile
     {
-        return $row->file ?: (new InvoiceFileStore($row->user, null, ['main' => true]))->create($row);
+        if ($row->file) {
+            return $row->file;
+        }
+
+        return (new InvoiceFileStore(null, $row->user, null, ['main' => true]))->create($row);
     }
 }

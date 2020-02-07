@@ -3,7 +3,7 @@
 namespace App\Domains\InvoiceStatus;
 
 use App\Models\InvoiceStatus as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

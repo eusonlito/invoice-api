@@ -2,9 +2,9 @@
 
 namespace App\Domains\InvoiceItem;
 
-use App\Models\InvoiceItem as Model;
-use App\Domains\FractalAbstract;
 use App\Domains\Product\Fractal as Product;
+use App\Models\InvoiceItem as Model;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

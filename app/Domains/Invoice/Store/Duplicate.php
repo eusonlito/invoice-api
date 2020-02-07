@@ -98,7 +98,7 @@ class Duplicate extends StoreAbstract
      */
     protected function file()
     {
-        (new InvoiceFileStore($this->user, null, ['main' => true]))->create($this->row);
+        (new InvoiceFileStore($this->request, $this->user, null, ['main' => true]))->create($this->row);
     }
 
     /**
@@ -106,6 +106,6 @@ class Duplicate extends StoreAbstract
      */
     protected function configuration()
     {
-        (new InvoiceSerieStore($this->user, $this->row->serie, ['main' => true]))->numberNext();
+        (new InvoiceSerieStore($this->request, $this->user, $this->row->serie, ['main' => true]))->numberNext();
     }
 }

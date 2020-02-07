@@ -28,6 +28,8 @@ class Profile extends StoreAbstract
 
         $this->row->save();
 
+        $this->cacheFlush();
+
         service()->log('user', 'user-update-profile', $this->row->id);
 
         return $this->row;

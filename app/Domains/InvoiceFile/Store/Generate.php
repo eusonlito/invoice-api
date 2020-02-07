@@ -50,7 +50,7 @@ class Generate extends StoreAbstract
     protected function html(Models\Invoice $invoice): string
     {
         return (string)view('pdf.pages.invoice.detail', [
-            'css' => (new InvoiceSerieStore($this->user, $invoice->serie))->css(),
+            'css' => (new InvoiceSerieStore($this->request, $this->user, $invoice->serie))->css(),
             'invoice' => $invoice
         ]);
     }

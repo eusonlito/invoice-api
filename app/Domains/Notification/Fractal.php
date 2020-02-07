@@ -3,7 +3,7 @@
 namespace App\Domains\Notification;
 
 use App\Models\Notification as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

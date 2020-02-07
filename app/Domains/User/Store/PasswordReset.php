@@ -36,6 +36,8 @@ class PasswordReset extends StoreAbstract
             'user_id' => $this->row->id
         ]);
 
+        $this->cacheFlush();
+
         service()->log('user', 'password-reset-start', $this->row->id);
 
         Mail::passwordResetStart($this->row, $reset);
@@ -61,6 +63,8 @@ class PasswordReset extends StoreAbstract
 
         $reset->finished_at = date('Y-m-d H:i:s');
         $reset->save();
+
+        $this->cacheFlush();
 
         service()->log('user', 'password-reset-finish', $this->row->id);
 

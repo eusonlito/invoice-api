@@ -3,21 +3,23 @@
 namespace App\Domains;
 
 use Closure;
-use App\Services\Cache\User as CacheUser;
+use App\Services\Cache\Domain as Cache;
 
 trait CacheTrait
 {
     /**
-     * @var \App\Services\Cache\User
+     * @var ?\App\Services\Cache\Domain = null
      */
-    protected CacheUser $cache;
+    protected ?Cache $cache = null;
 
     /**
      * @return self
      */
     final protected function cacheLoad(): self
     {
-        $this->cache = new CacheUser($this->user);
+        if (config('cache.enabled') && ($ttl = config('cache.ttl'))) {
+            $this->cache = new Cache($this->request, $this->user, $ttl);
+        }
 
         return $this;
     }
@@ -25,13 +27,16 @@ trait CacheTrait
     /**
      * @param string $name
      * @param Closure $closure
-     * @param int $time = 3600
      *
-     * @return array|string
+     * @return mixed
      */
-    final protected function cache(string $name, Closure $closure, int $time = 3600)
+    final protected function cache(string $name, Closure $closure)
     {
-        return cache()->tags($this->cacheTags($name))->remember($this->cacheName($name), $time, $closure);
+        if ($this->cache) {
+            return $this->cache->get($name, $closure);
+        }
+
+        return $closure();
     }
 
     /**
@@ -39,48 +44,20 @@ trait CacheTrait
      */
     final protected function cacheFlush(): void
     {
-        cache()->tags($this->cache->tag())->flush();
-
-        $this->cache->refresh();
+        if ($this->cache) {
+            $this->cache->flush();
+        }
     }
 
     /**
-     * @param string $name
-     *
-     * @return array
-     */
-    final protected function cacheTags(string $name): array
-    {
-        return [$this->cache->tag(), $this->cacheTag($name)];
-    }
-
-    /**
-     * @param string $name
-     *
      * @return string
      */
-    final protected function cacheTag(string $name): string
+    final protected function cacheVersion(): string
     {
-        return $this->cachePrefix(explode('\\', $name)[2]);
-    }
+        if ($this->cache) {
+            return $this->cache->version();
+        }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    final protected function cacheName(string $name): string
-    {
-        return md5($this->cachePrefix($name).'|'.$this->request->fullUrl());
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    final protected function cachePrefix(string $name): string
-    {
-        return $this->cache->version().'|'.$name;
+        return '';
     }
 }

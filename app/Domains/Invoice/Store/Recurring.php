@@ -38,7 +38,7 @@ class Recurring extends StoreAbstract
      */
     protected function notification()
     {
-        (new NotificationStore($this->user, null, [
+        (new NotificationStore($this->request, $this->user, null, [
             'code' => 'invoice.recurring',
             'title' => __('notification.invoice.recurring.title', ['number' => $this->row->number]),
             'status' => 'success',

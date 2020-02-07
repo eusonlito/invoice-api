@@ -280,6 +280,7 @@ class Base extends Migration
 
             $this->timestamps($table);
 
+            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('user_id');
@@ -662,6 +663,10 @@ class Base extends Migration
         });
 
         Schema::table('invoice_item', function (Blueprint $table) {
+            $table->foreign('company_id')
+                ->references('id')->on('company')
+                ->onDelete('CASCADE');
+
             $table->foreign('invoice_id')
                 ->references('id')->on('invoice')
                 ->onDelete('CASCADE');

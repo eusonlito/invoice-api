@@ -18,6 +18,6 @@ class Recurring extends ListenerAbstract
     {
         $row = Model::detail()->findOrFail($event->id);
 
-        (new Store($row->user, $row))->recurring();
+        (new Store(null, $row->user, $row))->recurring();
     }
 }

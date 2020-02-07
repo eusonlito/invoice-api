@@ -12,7 +12,7 @@ class Delete extends StoreAbstract
     public function delete(): void
     {
         foreach ($this->row->files as $each) {
-            (new InvoiceFileStore($this->user, $each))->delete();
+            (new InvoiceFileStore($this->request, $this->user, $each))->delete();
         }
 
         $this->row->delete();

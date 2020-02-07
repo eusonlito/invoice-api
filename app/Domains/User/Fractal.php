@@ -2,9 +2,9 @@
 
 namespace App\Domains\User;
 
-use App\Models\User as Model;
-use App\Domains\FractalAbstract;
 use App\Domains\Language\Fractal as Language;
+use App\Models\User as Model;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

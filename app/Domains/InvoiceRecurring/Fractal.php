@@ -3,7 +3,7 @@
 namespace App\Domains\InvoiceRecurring;
 
 use App\Models\InvoiceRecurring as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

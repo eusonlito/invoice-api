@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'enabled' => (bool)env('CACHE_ENABLED'),
+
+    'ttl' => (int)env('CACHE_TTL'),
 
     /*
     |--------------------------------------------------------------------------

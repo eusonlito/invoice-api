@@ -3,7 +3,7 @@
 namespace App\Domains\Shipping;
 
 use App\Models\Shipping as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

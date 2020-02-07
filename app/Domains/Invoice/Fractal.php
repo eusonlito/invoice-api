@@ -2,8 +2,6 @@
 
 namespace App\Domains\Invoice;
 
-use App\Models\Invoice as Model;
-use App\Domains\FractalAbstract;
 use App\Domains\Client\Fractal as Client;
 use App\Domains\ClientAddress\Fractal as ClientAddress;
 use App\Domains\Discount\Fractal as Discount;
@@ -15,6 +13,8 @@ use App\Domains\InvoiceStatus\Fractal as InvoiceStatus;
 use App\Domains\Payment\Fractal as Payment;
 use App\Domains\Shipping\Fractal as Shipping;
 use App\Domains\Tax\Fractal as Tax;
+use App\Models\Invoice as Model;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

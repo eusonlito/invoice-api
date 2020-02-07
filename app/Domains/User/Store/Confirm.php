@@ -44,6 +44,8 @@ class Confirm extends StoreAbstract
 
         Mail::confirmStart($this->row);
 
+        $this->cacheFlush();
+
         return $this->row;
     }
 
@@ -70,6 +72,8 @@ class Confirm extends StoreAbstract
 
         $this->row->confirmed_at = date('Y-m-d H:i:s');
         $this->row->save();
+
+        $this->cacheFlush();
 
         service()->log('user', 'confirm', $this->row->id);
 

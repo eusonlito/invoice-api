@@ -37,7 +37,7 @@ class Unpaid extends InvoiceAbstract
     {
         $this->info(sprintf('Notify Invoice Unpaid [%s] %s', $row->id, $row->number));
 
-        (new NotificationStore($row->user, null, [
+        (new NotificationStore(null, $row->user, null, [
             'code' => 'invoice.unpaid',
             'title' => __('notification.invoice.unpaid.title', ['number' => $row->number]),
             'status' => 'danger',

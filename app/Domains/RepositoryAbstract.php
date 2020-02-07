@@ -25,7 +25,7 @@ abstract class RepositoryAbstract
      *
      * @return self
      */
-    public function __construct(Request $request, ?User $user = null)
+    final public function __construct(Request $request, ?User $user = null)
     {
         $this->request = $request;
         $this->user = $user;
@@ -81,6 +81,6 @@ abstract class RepositoryAbstract
     {
         $class = static::STORE;
 
-        return new $class($this->user, $row, $data);
+        return new $class($this->request, $this->user, $row, $data);
     }
 }

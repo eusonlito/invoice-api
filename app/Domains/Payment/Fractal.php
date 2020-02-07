@@ -3,7 +3,7 @@
 namespace App\Domains\Payment;
 
 use App\Models\Payment as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

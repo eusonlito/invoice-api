@@ -22,6 +22,7 @@ $factory->define(Model::class, static function (): array {
         'amount_subtotal' => null,
         'amount_total' => null,
 
+        'company_id' => null,
         'invoice_id' => null,
         'product_id' => null,
         'user_id' => null,

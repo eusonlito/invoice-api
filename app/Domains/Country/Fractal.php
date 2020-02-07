@@ -3,7 +3,7 @@
 namespace App\Domains\Country;
 
 use App\Models\Country as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

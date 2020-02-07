@@ -21,23 +21,24 @@ class UserConfirm
         $user = $request->user();
 
         try {
-            (new Store($user, $user))->confirmCheck();
+            (new Store($request, $user, $user))->confirmCheck();
         } catch (Exception $e) {
-            return $this->logout($user, $e);
+            return $this->logout($request, $user, $e);
         }
 
         return $next($request);
     }
 
     /**
+     * @param  \Illuminate\Http\Request  $request
      * @param \App\Models\User $user
      * @param \Exception $e
      *
      * @return void
      */
-    protected function logout(Model $user, Exception $e)
+    protected function logout(Request $request, Model $user, Exception $e)
     {
-        (new Store($user, $user))->authLogout();
+        (new Store($request, $user, $user))->authLogout();
 
         throw $e;
     }

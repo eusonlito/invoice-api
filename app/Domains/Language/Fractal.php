@@ -3,7 +3,7 @@
 namespace App\Domains\Language;
 
 use App\Models\Language as Model;
-use App\Domains\FractalAbstract;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

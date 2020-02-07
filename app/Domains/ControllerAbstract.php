@@ -23,7 +23,7 @@ abstract class ControllerAbstract extends BaseControllerAbstract
     /**
      * @return self
      */
-    public function __construct()
+    final public function __construct()
     {
         $this->middleware(function (Request $request, $next) {
             $this->request = $request;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Domains;
+namespace App\Services\Response;
 
 use Illuminate\Support\Collection;
 use App\Models\ModelAbstract;

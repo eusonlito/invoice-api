@@ -2,13 +2,13 @@
 
 namespace App\Domains\Client;
 
-use App\Models\Client as Model;
-use App\Domains\FractalAbstract;
 use App\Domains\ClientAddress\Fractal as ClientAddress;
 use App\Domains\Discount\Fractal as Discount;
 use App\Domains\Payment\Fractal as Payment;
 use App\Domains\Shipping\Fractal as Shipping;
 use App\Domains\Tax\Fractal as Tax;
+use App\Models\Client as Model;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {

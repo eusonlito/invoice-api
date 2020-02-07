@@ -2,9 +2,9 @@
 
 namespace App\Domains\Company;
 
-use App\Models\Company as Model;
-use App\Domains\FractalAbstract;
 use App\Domains\Country\Fractal as Country;
+use App\Models\Company as Model;
+use App\Services\Response\FractalAbstract;
 
 class Fractal extends FractalAbstract
 {
