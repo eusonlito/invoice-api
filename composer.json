@@ -11,7 +11,7 @@
         "friendsofphp/php-cs-fixer": "^2.16",
         "fzaninotto/faker": "master",
         "h4cc/wkhtmltopdf-amd64": "^0.12",
-        "laravel/framework": "^6.5",
+        "laravel/framework": "^6.18",
         "laravel/helpers": "^1.1",
         "mikehaertl/phpwkhtmltopdf": "^2.4",
         "predis/predis": "^1.1",
