@@ -8,8 +8,8 @@ Route::post('/user/auth', 'User@authCredentials')->name('user.auth.credentials')
 Route::post('/user', 'User@signup')->name('user.signup');
 Route::post('/user/confirm', 'User@confirmStart')->name('user.confirm.start');
 Route::post('/user/confirm/{hash}', 'User@confirmFinish')->name('user.confirm.finish');
-Route::post('/user/password/reset', 'User@PasswordResetStart')->name('user.password.reset.start');
-Route::post('/user/password/reset/{hash}', 'User@PasswordResetFinish')->name('user.password.reset.finish');
+Route::post('/user/password/reset', 'User@passwordResetStart')->name('user.password.reset.start');
+Route::post('/user/password/reset/{hash}', 'User@passwordResetFinish')->name('user.password.reset.finish');
 
 Route::get('/cache/version', 'Cache@version')->name('cache.version');
 Route::get('/configuration', 'Configuration@index')->name('configuration.index');
