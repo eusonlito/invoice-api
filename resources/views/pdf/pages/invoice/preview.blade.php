@@ -47,22 +47,12 @@
 
             <tr class="line">
                 <th class="header address">Dirección</th>
-                <td class="data address">Rúa Diana, 0, 79º A</td>
+                <td class="data address">Rúa Diana, 2, 79º A</td>
             </tr>
 
             <tr class="line">
                 <th class="header city">Localidad</th>
-                <td class="data city">La Sarabia</td>
-            </tr>
-
-            <tr class="line">
-                <th class="header phone">Teléfono</th>
-                <td class="data phone">+34 997 46 8842</td>
-            </tr>
-
-            <tr class="line">
-                <th class="header email">Email</th>
-                <td class="data email">ismael.arias@yahoo.com</td>
+                <td class="data city">15179 - Oleiros, A Coruña</td>
             </tr>
 
             <tr class="line">

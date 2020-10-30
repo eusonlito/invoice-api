@@ -11,7 +11,7 @@ class InvoiceSerie extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Factura',
             'number_prefix' => date('Y-'),
             'default' => true,
@@ -19,7 +19,7 @@ class InvoiceSerie extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Presupuesto',
             'number_prefix' => ('PRE-'.date('Y-')),
             'default' => false,
@@ -27,7 +27,7 @@ class InvoiceSerie extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Proforma',
             'number_prefix' => ('PRO-'.date('Y-')),
             'default' => false,
@@ -35,7 +35,7 @@ class InvoiceSerie extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Rectificativa',
             'number_prefix' => ('REC-'.date('Y-')),
             'default' => false,

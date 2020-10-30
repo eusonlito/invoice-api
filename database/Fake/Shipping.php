@@ -11,7 +11,7 @@ class Shipping extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Correos Express',
             'subtotal' => 5,
             'tax_percent' => 21,
@@ -22,7 +22,7 @@ class Shipping extends FakeAbstract
             'user_id' => 1
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'SEUR 24',
             'subtotal' => 10,
             'tax_percent' => 21,

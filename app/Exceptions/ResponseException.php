@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use ErrorException;
 use RuntimeException;
 use Exception;
+use Throwable;
 
 use Illuminate\Auth\AuthenticationException as BaseAuthenticationException;
 use Illuminate\Database\QueryException;
@@ -22,11 +23,11 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 class ResponseException extends ExceptionAbstract
 {
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return self
      */
-    public static function fromException(Exception $e): self
+    public static function fromException(Throwable $e): self
     {
         return new self(
             static::getMessageFromException($e),
@@ -37,11 +38,11 @@ class ResponseException extends ExceptionAbstract
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return string
      */
-    protected static function getMessageFromException(Exception $e): string
+    protected static function getMessageFromException(Throwable $e): string
     {
         if ($e instanceof TokenExpiredException) {
             return __('exception.token-expired');
@@ -91,11 +92,11 @@ class ResponseException extends ExceptionAbstract
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return string
      */
-    protected static function getStatusFromException(Exception $e): string
+    protected static function getStatusFromException(Throwable $e): string
     {
         if (method_exists($e, 'getStatus') && ($status = $e->getStatus())) {
             return $status;
@@ -157,11 +158,11 @@ class ResponseException extends ExceptionAbstract
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return int
      */
-    protected static function getCodeFromException(Exception $e): int
+    protected static function getCodeFromException(Throwable $e): int
     {
         if ($e instanceof ModelNotFoundException) {
             return 404;
@@ -177,11 +178,11 @@ class ResponseException extends ExceptionAbstract
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return bool
      */
-    protected static function isAuthException(Exception $e): bool
+    protected static function isAuthException(Throwable $e): bool
     {
         return ($e instanceof TokenExpiredException)
             || ($e instanceof TokenBlacklistedException)
@@ -191,11 +192,11 @@ class ResponseException extends ExceptionAbstract
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return bool
      */
-    protected static function isSystemException(Exception $e): bool
+    protected static function isSystemException(Throwable $e): bool
     {
         return ($e instanceof FatalThrowableError)
             || ($e instanceof ErrorException)

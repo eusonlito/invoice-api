@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use App\Domains\User\Store;
@@ -35,11 +36,11 @@ class Handler extends ExceptionHandler
     /**
      * Report an exception
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      *
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         parent::report($e);
 
@@ -52,11 +53,11 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return void
      */
-    protected function reportRequest(Exception $e)
+    protected function reportRequest(Throwable $e)
     {
         if (config('logging.channels.request.enabled') !== true) {
             return;
@@ -75,11 +76,11 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return void
      */
-    protected function reportSentry(Exception $e)
+    protected function reportSentry(Throwable $e)
     {
         if (app()->bound('sentry')) {
             app('sentry')->captureException($e);
@@ -90,11 +91,11 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  mixed  $request
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      *
      * @return \Symfony\Component\HttpFoundation\Response|void
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         return $this->renderJson($e);
     }
@@ -102,11 +103,11 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an JSON HTTP response.
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function renderJson(Exception $e): JsonResponse
+    protected function renderJson(Throwable $e): JsonResponse
     {
         $e = ResponseException::fromException($e);
 

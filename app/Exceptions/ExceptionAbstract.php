@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Throwable;
 
 abstract class ExceptionAbstract extends Exception
 {
@@ -14,16 +15,16 @@ abstract class ExceptionAbstract extends Exception
     /**
      * @param ?string $message = null
      * @param ?int $code = 0
-     * @param ?\Exception $previous = null
+     * @param ?\Throwable $previous = null
      * @param ?string $status = null
      *
      * @return self
      */
-    public function __construct(?string $message = null, ?int $code = 0, ?Exception $previous = null, ?string $status = null)
+    public function __construct(?string $message = null, ?int $code = 0, ?Throwable $previous = null, ?string $status = null)
     {
-        $this->setStatus($status ?: '');
+        $this->setStatus((string)$status);
 
-        parent::__construct($message ?: '', $code ?: $this->code, $previous);
+        parent::__construct((string)$message, $code ?: $this->code, $previous);
     }
 
     /**

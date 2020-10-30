@@ -135,7 +135,7 @@ class InvoiceRecurringTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->every = 'month';
         $row->default = true;
@@ -151,7 +151,7 @@ class InvoiceRecurringTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->every = 'month';
         $row->default = true;

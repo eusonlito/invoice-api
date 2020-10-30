@@ -136,7 +136,7 @@ class ProductTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->reference = '';
         $row->name = 'Test 25';
         $row->price = 25;
@@ -153,7 +153,7 @@ class ProductTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->reference = '';
         $row->name = 'Test 25';
         $row->price = 25;

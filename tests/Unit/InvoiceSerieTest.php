@@ -145,7 +145,7 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->number_prefix = 'T';
         $row->default = true;
@@ -161,7 +161,7 @@ class InvoiceSerieTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->number_prefix = 'T';
         $row->default = true;

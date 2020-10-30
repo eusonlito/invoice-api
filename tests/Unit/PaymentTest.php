@@ -118,7 +118,7 @@ class PaymentTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->description = '';
         $row->default = false;
@@ -134,7 +134,7 @@ class PaymentTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->description = '';
         $row->default = false;

@@ -173,7 +173,7 @@ class UserTest extends TestAbstract
      */
     public function testSignupFirstSuccess(): void
     {
-        $row = factory(Model::class)->make()->toArray();
+        $row = Model::factory()->make()->toArray();
         $row['password'] = $row['user'];
         $row['password_repeat'] = $row['user'];
         $row['conditions'] = true;
@@ -188,7 +188,7 @@ class UserTest extends TestAbstract
      */
     public function testSignupSuccess(): void
     {
-        $row = factory(Model::class)->make()->toArray();
+        $row = Model::factory()->make()->toArray();
         $row['password'] = $row['user'];
         $row['password_repeat'] = $row['user'];
         $row['conditions'] = true;
@@ -250,7 +250,7 @@ class UserTest extends TestAbstract
      */
     public function testAuthFail(): void
     {
-        $row = factory(Model::class)->make()->toArray();
+        $row = Model::factory()->make()->toArray();
         $row['password'] = $row['user'];
 
         $this->json('POST', $this->route('auth.credentials'), $row)

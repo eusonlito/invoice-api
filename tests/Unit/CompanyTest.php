@@ -118,7 +118,7 @@ class CompanyTest extends TestAbstract
      */
     public function testUpdateFail(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth()
             ->json('PATCH', $this->route('update'), $row->toArray())
@@ -130,7 +130,7 @@ class CompanyTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth($this->userFirst())
             ->json('POST', $this->route('create'), $row->toArray())
@@ -143,7 +143,7 @@ class CompanyTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())
@@ -156,7 +156,7 @@ class CompanyTest extends TestAbstract
      */
     public function testCreateFail(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())
@@ -228,7 +228,7 @@ class CompanyTest extends TestAbstract
      */
     public function testUpdateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth($this->userFirst())
             ->json('PATCH', $this->route('update'), $row->toArray())
@@ -241,7 +241,7 @@ class CompanyTest extends TestAbstract
      */
     public function testUpdateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth()
             ->json('PATCH', $this->route('update'), $row->toArray())

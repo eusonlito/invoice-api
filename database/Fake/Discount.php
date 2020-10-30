@@ -11,7 +11,7 @@ class Discount extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'IRPF 15%',
             'type' => 'percent',
             'value' => 15,
@@ -20,7 +20,7 @@ class Discount extends FakeAbstract
             'user_id' => 1
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'IRPF 19%',
             'type' => 'percent',
             'value' => 19,
@@ -29,7 +29,7 @@ class Discount extends FakeAbstract
             'user_id' => 1
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'IRPF 21%',
             'type' => 'percent',
             'value' => 21,

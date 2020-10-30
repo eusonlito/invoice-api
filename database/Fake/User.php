@@ -12,7 +12,7 @@ class User extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Demo',
             'user' => 'demo@demo.com',
             'password' => Hash::make('demo@demo.com'),

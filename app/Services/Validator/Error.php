@@ -6,15 +6,16 @@ use Exception;
 use ErrorException;
 use LogicException;
 use RuntimeException;
+use Throwable;
 
 class Error
 {
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return bool
      */
-    public static function set(Exception $e): bool
+    public static function set(Throwable $e): bool
     {
         if (static::isSystemException($e)) {
             report($e);
@@ -24,11 +25,11 @@ class Error
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return bool
      */
-    protected static function isSystemException(Exception $e): bool
+    protected static function isSystemException(Throwable $e): bool
     {
         return ($e instanceof ErrorException)
             || ($e instanceof RuntimeException)

@@ -11,7 +11,7 @@ class InvoiceRecurring extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Semanal',
             'every' => 'week',
             'enabled' => true,
@@ -19,7 +19,7 @@ class InvoiceRecurring extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Mensual',
             'every' => 'month',
             'enabled' => true,
@@ -27,7 +27,7 @@ class InvoiceRecurring extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Anual',
             'every' => 'year',
             'enabled' => true,

@@ -145,7 +145,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreateDiscountNotAllowedFail(): void
     {
-        $row = factory(Model::class)->make(['discount_id' => 1]);
+        $row = Model::factory()->make(['discount_id' => 1]);
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())
@@ -157,7 +157,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreatePaymentNotAllowedFail(): void
     {
-        $row = factory(Model::class)->make(['payment_id' => 1]);
+        $row = Model::factory()->make(['payment_id' => 1]);
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())
@@ -169,7 +169,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreateShippingNotAllowedFail(): void
     {
-        $row = factory(Model::class)->make(['shipping_id' => 1]);
+        $row = Model::factory()->make(['shipping_id' => 1]);
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())
@@ -181,7 +181,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreateTaxNotAllowedFail(): void
     {
-        $row = factory(Model::class)->make(['tax_id' => 1]);
+        $row = Model::factory()->make(['tax_id' => 1]);
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())
@@ -202,7 +202,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth($this->userFirst())
             ->json('POST', $this->route('create'), $row->toArray())
@@ -215,7 +215,7 @@ class ClientTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth()
             ->json('POST', $this->route('create'), $row->toArray())

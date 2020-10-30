@@ -11,6 +11,6 @@ class Company extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create(['user_id' => 1]);
+        Model::factory()->create(['user_id' => 1]);
     }
 }

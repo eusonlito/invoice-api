@@ -52,26 +52,10 @@
 
             <tr class="line">
                 <th class="header city">Localidad</th>
-                <td class="data city">{{ $invoice->billing_city }}</td>
+                <td class="data city">
+                    {{ $invoice->billing_postal_code }} - {{ $invoice->billing_city }}, {{ $invoice->billing_state }}
+                </td>
             </tr>
-
-            @if ($invoice->billing_phone)
-
-            <tr class="line">
-                <th class="header phone">Teléfono</th>
-                <td class="data phone">{{ $invoice->billing_phone }}</td>
-            </tr>
-
-            @endif
-
-            @if ($invoice->billing_email)
-
-            <tr class="line">
-                <th class="header email">Email</th>
-                <td class="data email">{{ $invoice->billing_email }}</td>
-            </tr>
-
-            @endif
 
             <tr class="line">
                 <th class="header tax_number">CIF/NIF</th>

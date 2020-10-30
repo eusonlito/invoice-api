@@ -11,7 +11,7 @@ class InvoiceStatus extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Creada',
             'order' => 1,
             'paid' => false,
@@ -20,7 +20,7 @@ class InvoiceStatus extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Enviada',
             'order' => 2,
             'paid' => false,
@@ -29,7 +29,7 @@ class InvoiceStatus extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Pagada',
             'order' => 3,
             'paid' => true,
@@ -38,7 +38,7 @@ class InvoiceStatus extends FakeAbstract
             'user_id' => 1,
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Rechazada',
             'order' => 4,
             'paid' => false,

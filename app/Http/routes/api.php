@@ -21,6 +21,8 @@ Route::group(['middleware' => 'user.refresh'], static function () {
 });
 
 Route::group(['middleware' => 'user'], static function () {
+    Route::get('/notification/count', 'Notification@count')->name('notification.count');
+
     Route::get('/user', 'User@detail')->name('user.detail');
     Route::get('/user/auth/logout', 'User@authLogout')->name('user.auth.logout');
 });
@@ -107,7 +109,6 @@ Route::group(['middleware' => ['user', 'user.confirm', 'user.company']], static 
     Route::delete('/invoice-status/{id}', 'InvoiceStatus@delete')->name('invoice-status.delete');
 
     Route::get('/notification', 'Notification@index')->name('notification.index');
-    Route::get('/notification/count', 'Notification@count')->name('notification.count');
     Route::get('/notification/last', 'Notification@last')->name('notification.last');
     Route::patch('/notification', 'Notification@read')->name('notification.read');
 

@@ -11,7 +11,7 @@ class Payment extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Transferencia Bancaria',
             'description' => 'Realizar ingreso en la siguiente cuenta bancaria indicando el número de factura.',
             'default' => true,
@@ -19,7 +19,7 @@ class Payment extends FakeAbstract
             'user_id' => 1
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'Paypal',
             'description' => 'Realizar el ingreso en la siguiente cuenta indicando el número de factura.',
             'default' => false,

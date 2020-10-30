@@ -4,6 +4,7 @@ namespace App\Http\Middlewares;
 
 use Closure;
 use Exception;
+use Throwable;
 use Illuminate\Http\Request;
 use App\Domains\User\Store;
 use App\Models\User as Model;
@@ -32,11 +33,11 @@ class UserConfirm
     /**
      * @param  \Illuminate\Http\Request  $request
      * @param \App\Models\User $user
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return void
      */
-    protected function logout(Request $request, Model $user, Exception $e)
+    protected function logout(Request $request, Model $user, Throwable $e)
     {
         (new Store($request, $user, $user))->authLogout();
 

@@ -144,7 +144,7 @@ class ShippingTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test 10';
         $row->subtotal = 10;
         $row->tax_percent = 21;
@@ -166,7 +166,7 @@ class ShippingTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test 10';
         $row->subtotal = 10;
         $row->tax_percent = 21;

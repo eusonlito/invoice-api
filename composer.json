@@ -9,19 +9,19 @@
         "eusonlito/disposable-email-validator": "^0.1",
         "eusonlito/laravel-packer": "^2.1",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "fzaninotto/faker": "master",
+        "fzaninotto/faker": "^1.9",
         "h4cc/wkhtmltopdf-amd64": "^0.12",
-        "laravel/framework": "^6.18",
-        "laravel/helpers": "^1.1",
+        "laravel/framework": "^8.7",
+        "laravel/helpers": "^1.2",
         "mikehaertl/phpwkhtmltopdf": "^2.4",
         "predis/predis": "^1.1",
-        "sentry/sentry-laravel": "^1.4",
+        "sentry/sentry-laravel": "^2.0",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
-        "nunomaduro/larastan": "^0.4",
-        "nunomaduro/phpinsights": "^1.11",
-        "phpunit/phpunit": "^8.4"
+        "nunomaduro/larastan": "^0.6",
+        "nunomaduro/phpinsights": "^1.14",
+        "phpunit/phpunit": "^9.1"
     },
     "config": {
         "optimize-autoloader": true,
@@ -49,23 +49,44 @@
     "prefer-stable": true,
     "scripts": {
         "pre-install-cmd": [
-            "rm -f bootstrap/cache/*.php"
+            "@composer dump-autoload",
+            "@composer artisan-cache-clear --ansi"
         ],
+
         "pre-update-cmd": [
-            "rm -f bootstrap/cache/*.php"
+            "@composer dump-autoload",
+            "@composer artisan-cache-clear --ansi"
         ],
+
+        "post-install-cmd": [
+            "@composer artisan-cache --ansi",
+            "@php artisan queue:restart --ansi",
+            "./vendor/bin/php-cs-fixer fix --ansi",
+            "@php preload.php"
+        ],
+
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
-        "post-install-cmd": [
-            "@php artisan config:cache",
-            "@php artisan route:cache",
-            "@php artisan queue:restart",
-            "./vendor/bin/php-cs-fixer fix"
-        ],
+
         "post-update-cmd": [
-            "./vendor/bin/php-cs-fixer fix"
+            "./vendor/bin/php-cs-fixer fix --ansi",
+            "@php preload.php",
+            "@composer outdated -D --ansi"
+        ],
+
+        "artisan-cache-clear": [
+            "rm -f bootstrap/cache/*.php",
+            "@php artisan cache:clear --ansi",
+            "@php artisan config:clear --ansi",
+            "@php artisan route:clear --ansi",
+            "@php artisan view:clear --ansi"
+        ],
+
+        "artisan-cache": [
+            "@php artisan optimize --ansi",
+            "@php artisan view:cache --ansi"
         ]
     }
 }

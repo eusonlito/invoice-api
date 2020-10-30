@@ -143,7 +143,7 @@ class DiscountTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test 17';
         $row->type = 'percent';
         $row->value = 17;
@@ -162,7 +162,7 @@ class DiscountTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test 19';
         $row->type = 'percent';
         $row->value = 19;

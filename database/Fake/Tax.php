@@ -11,7 +11,7 @@ class Tax extends FakeAbstract
      */
     public function run()
     {
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'IVA 21%',
             'value' => 21,
             'default' => true,
@@ -19,7 +19,7 @@ class Tax extends FakeAbstract
             'user_id' => 1
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'IVA 10%',
             'value' => 10,
             'default' => false,
@@ -27,7 +27,7 @@ class Tax extends FakeAbstract
             'user_id' => 1
         ]);
 
-        factory(Model::class)->create([
+        Model::factory()->create([
             'name' => 'IVA 4%',
             'value' => 4,
             'default' => false,

@@ -100,7 +100,7 @@ class Invoice extends FakeAbstract
         $shipping = $client->addresses->random();
         $tax = $this->tax->random();
 
-        $row = factory(Model::class)->create([
+        $row = Model::factory()->create([
             'number' => $this->number($invoiceSerie),
 
             'company_name' => $this->user->company->name,

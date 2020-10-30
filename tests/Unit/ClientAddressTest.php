@@ -198,7 +198,7 @@ class ClientAddressTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $user = $this->userFirst();
 
         $this->auth($user)
@@ -212,7 +212,7 @@ class ClientAddressTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
 
         $this->auth()
             ->json('POST', $this->route('create', $this->client()->id), $row->toArray())

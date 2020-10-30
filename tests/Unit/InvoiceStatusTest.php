@@ -137,7 +137,7 @@ class InvoiceStatusTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->order = 1;
         $row->paid = true;
@@ -154,7 +154,7 @@ class InvoiceStatusTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->name = 'Test';
         $row->order = 1;
         $row->paid = true;

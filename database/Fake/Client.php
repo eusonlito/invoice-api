@@ -22,7 +22,7 @@ class Client extends FakeAbstract
      */
     protected function client()
     {
-        $row = factory(Model::class)->create([
+        $row = Model::factory()->create([
             'company_id' => 1,
             'discount_id' => rand(1, 3),
             'payment_id' => rand(1, 2),

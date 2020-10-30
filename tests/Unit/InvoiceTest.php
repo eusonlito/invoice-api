@@ -301,7 +301,7 @@ class InvoiceTest extends TestAbstract
      */
     public function testCreateFirstSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->user = $this->userFirst();
 
         $row = $this->data($row);
@@ -333,7 +333,7 @@ class InvoiceTest extends TestAbstract
      */
     public function testCreateSuccess(): void
     {
-        $row = factory(Model::class)->make();
+        $row = Model::factory()->make();
         $row->user = $this->user();
 
         $row = $this->data($row);
