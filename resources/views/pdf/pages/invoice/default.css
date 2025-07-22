@@ -172,7 +172,7 @@ body {
 #comment {
     margin-top: 40px;
     border: 1px solid #CCC;
-    height: 120px;
+    min-height: 120px;
 }
 
 #comment .title {
